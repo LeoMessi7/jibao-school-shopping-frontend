@@ -9,9 +9,11 @@ import ElementUI from 'element-ui'
 import 'wowjs/css/libs/animate.css'
 import wow from 'wowjs'
 import 'element-ui/lib/theme-chalk/index.css'
+import VueCookies from 'vue-cookies'
 
 Vue.prototype.$wow=wow
 Vue.use(ElementUI)
+Vue.use(VueCookies)
 Vue.config.productionTip = false
 
 

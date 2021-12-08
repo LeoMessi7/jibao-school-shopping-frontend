@@ -68,9 +68,13 @@ export default {
   mounted:function() {
     this.screenWidth =  window.innerWidth;
     this.screenHeight = window.innerHeight;
+    this.loginForm.email = this.$cookies.get("email")
+    this.loginForm.password = this.$cookies.get("password")
     window.onresize = () =>{
       this.screenWidth =  window.innerWidth;
       this.screenHeight = window.innerHeight;
+      this.loginForm.email = this.$cookies.get("email")
+      this.loginForm.password = this.$cookies.get("password")
     };
   },
   methods: {
@@ -96,6 +100,8 @@ export default {
           alert("登录失败！用户名与密码不匹配！")
         else{
           alert("登录成功")
+          this.$cookies.set("email", this.loginForm.email)
+          this.$cookies.set("password", this.loginForm.password)
           this.$router.push('/shop/item')
         }
       }).catch(function (error) {
