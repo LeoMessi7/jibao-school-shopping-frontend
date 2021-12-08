@@ -1,9 +1,9 @@
 <template>
-  <div id="home" style="">
+  <div id="home" style="height: 100%">
   <bar></bar>
-  <el-container style="height: 600px ">
+  <el-container style="height: 650px">
     <sidebar></sidebar>
-    <el-main style="height: 100%;background-color: #f3f4f6">
+    <el-main style="height: 650px;background-color: #f3f4f6">
       <router-view/>
     </el-main>
   </el-container>

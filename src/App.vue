@@ -23,6 +23,7 @@ export default {
     },
     handleLogin2() {
       this.$router.push('/Login');
+
     }
   }
 }
