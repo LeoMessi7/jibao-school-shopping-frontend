@@ -1,45 +1,34 @@
 <template>
-  <div class="login">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">家娃智能家居管理系统</h3>
-      <el-form-item prop="username">
-        <el-input  v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          auto-complete="off"
-          placeholder="密码">
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="code">
-        <el-input
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%">
-        </el-input>
-        <div class="login-code">
-        </div>
-      </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
-      <el-form-item style="width:100%;">
-        <el-button
-          :loading="loading"
-          @click.native.prevent="handleLogin"
-          size="medium"
-          type="primary"
-          style="width:100%;">
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
-        </el-button>
-      </el-form-item>
-    </el-form>
-    <!--  底部  -->
-    <div class="el-login-footer">
-      <span>Copyright © 2018-2021 JiaWa.vip All Rights Reserved.</span>
-    </div>
+  <div id="login">
+
+      <el-container style="margin-left: 300px">
+        <el-aside style="width: 50%">
+        </el-aside>
+        <el-main>
+          <div class="login" style="margin-top: 150px;">
+            <div class="login-top">
+              <el-image style="margin-left: 30px; margin-top:10px; height: 100px" :src="require('@/assets/logo2.png')"></el-image>
+              <form>
+                <input type="text" value="用户名" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'User Id';}">
+                <input type="password" value="密码" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'password';}">
+              </form>
+              <div class="forgot">
+                <a href="#">忘记密码？</a>
+                <input type="submit" value="登录" v-on:click="handleLogin">
+                <input type="submit" value="注册" v-on:click="handleLogon">
+              </div>
+            </div>
+            <div class="login-bottom">
+              <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+            </div>
+          </div>
+        </el-main>
+      </el-container>
+
+      <!--  底部  -->
+      <div class="el-login-footer">
+        <span>Copyright © 2018-2021 JiaWa.vip All Rights Reserved.</span>
+      </div>
   </div>
 </template>
 
@@ -48,6 +37,16 @@ export default {
   name: 'Login',
   data() {
     return {
+      screenHeight : 0,//图片父容器的高度
+      screenWidth :0,//屏幕的宽度
+      images:[
+        {url: require('@/image/login.jpg'), isShow:true},
+        {url: require('@/image/login1.jpg'), isShow:true},
+        {url: require('@/image/login2.jpg'), isShow:false},
+        {url: require('@/image/login3.jpg'), isShow:false},
+        {url: require('@/image/login4.jpg'), isShow:false},
+        {url: require('@/image/login5.jpg'), isShow:false}
+      ],
       loginForm: {
         username: 'admin',
         password: 'admin123',
@@ -65,12 +64,30 @@ export default {
       }
     }
   },
+  mounted:function() {
+    this.screenWidth =  window.innerWidth;
+    this.screenHeight=window.innerHeight;
+    window.onresize = () =>{
+      this.screenWidth =  window.innerWidth;
+      this.screenHeight=window.innerHeight;
+    };
+  },
   methods: {
+    handleLogon() {
+      this.loading = true;
+      if(this.loginForm.username == 'admin' && this.loginForm.password == 'admin123') {
+        alert("登录成功");
+        this.$router.push('/');
+      }
+      else
+        alert("登录失败");
+      this.loading = false;
+    },
     handleLogin() {
       this.loading = true;
-      if(this.loginForm.username === 'admin' && this.loginForm.password === 'admin123') {
+      if(this.loginForm.username == 'admin' && this.loginForm.password == 'admin123') {
         alert("登录成功");
-        this.$router.push('/Index1');
+        this.$router.push('/');
       }
       else
         alert("登录失败");
@@ -81,43 +98,19 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import "../css/style.css";
 html,body{height:100%;
   margin:0;
   padding:0;}
-.login {
-  display: flex;
-  justify-content: center;
+#login {
+  background-image: url("../image/login.jpg");
   align-items: center;
   height: 100%;
-  background-image: url("../assets/login-background.jpg");
+  background-color: #ffffff;
   background-size: cover;
 }
-.title {
-  margin: 0px auto 30px auto;
-  text-align: center;
-  color: #707070;
-}
-.login-form {
-  border-radius: 6px;
-  background: #ffffff;
-  width: 350px;
-  padding: 25px 25px 5px 25px;
-}
-.login-form el-input{
-  height: 38px;
-}
-.login-form.el-input input{
-  height: 38px;
-}
-.login-code {
-  width: 33%;
-  height: 38px;
-  float: right;
-}
-.login-code img {
-  cursor: pointer;
-  vertical-align: middle;
-}
+
+
 .el-login-footer {
   height: 40px;
   line-height: 40px;

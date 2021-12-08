@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import Login from './components/Login'
 import router from './router'
+import store from './vuex/store.js'
 import ElementUI from 'element-ui'
 import 'wowjs/css/libs/animate.css'
 import wow from 'wowjs'
@@ -18,6 +19,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
