@@ -4,7 +4,7 @@
  * @date 2021/12/8
  */
 
-import axiosInstance from "./index.js"
+import axiosInstance from "../index.js"
 
 const axios = axiosInstance
 

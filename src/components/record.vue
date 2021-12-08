@@ -1,7 +1,7 @@
 <template>
   <div id="record">
     <el-container class="box" v-for="(item,index) in onItemList" :key="index">
-      <el-aside class="img" v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
+      <el-aside class="img"  v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
       <el-main class="text">
         <div style="position: relative;height: 80%">
           <span>标签：</span>
@@ -9,8 +9,9 @@
           <span>说明：</span>
           <p>{{ item.content }}</p><br>
         </div>
-        <el-footer style="height: 30px; float: right;">
-          <el-button round icon="el-icon-chat-dot-square" type="warning">联系商家</el-button>
+        <el-footer style="position: fixed;height: 42px; right: 20px;">
+          <el-button round icon="el-icon-edit" type="warning">评价</el-button>
+          <el-button round icon="el-icon-chat-dot-square" type="success">卖家</el-button>
         </el-footer>
       </el-main>
     </el-container>
@@ -97,7 +98,7 @@ data() {
 }
 .img{
   height: 250px;
-  width: 40%;
+  width: 35% !important;
   display: flex;
   flex-direction: column;
   justify-content: center;

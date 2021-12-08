@@ -1,6 +1,6 @@
 <template>
   <div id="upload">
-    <div class="my" style="width:80%;position: relative;;margin-left: 100px;margin-top: 30px">
+    <div class="my" style="width:80%;position: relative; background-color: rgb(243, 244, 246); margin-left: 100px;margin-top: 30px">
       <p>我的物品</p>
       <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
       <el-tabs type="card" style="" v-model="activeName" @tab-click="handleClick">
@@ -13,11 +13,15 @@
                 <p>{{ item.title }}</p><br>
                 <span>说明：</span>
                 <p>{{ item.content }}</p><br>
+                <span>说明：</span>
+                <p>{{ item.content }}</p><br>
+                <span>说明：</span>
+                <p>{{ item.content }}</p><br>
               </div>
-              <el-footer style="height: 30px; float: right;">
+              <div style=" position: fixed;height: 42px;right: 20px;">
                 <el-button round icon="el-icon-edit" type="warning">编辑</el-button>
                 <el-button round icon="el-icon-delete" type="danger">下架</el-button>
-              </el-footer>
+              </div>
             </el-main>
           </el-container>
         </el-tab-pane>
@@ -31,10 +35,9 @@
                 <span>说明：</span>
                 <p>{{ item.content }}</p><br>
               </div>
-              <el-footer style="height: 30px; float: right;">
-
-                <el-button round icon="el-icon-s-custom" type="primary">买家信息</el-button>
-              </el-footer>
+              <div style="position: fixed;height: 42px; right: 20px;">
+                <el-button round icon="el-icon-s-custom" type="primary">买家</el-button>
+              </div>
             </el-main>
           </el-container>
         </el-tab-pane>
@@ -160,7 +163,7 @@ export default {
 }
 .img1{
   height: 250px;
-  width: 40%;
+  width: 35% !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
