@@ -8,10 +8,7 @@ import axiosInstance from "./index.js"
 
 const axios = axiosInstance
 
-export const loginGet = (email, password) => {
-
-  const map = {email: email, password: password}
-
+export const loginGet = (map) => {
   return axios({
     method: 'POST',
     url: 'http://localhost:8081/login/checkAccount',

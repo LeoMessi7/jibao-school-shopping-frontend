@@ -29,4 +29,5 @@ axiosInstance.interceptors.response.use(
 )
 
 Vue.prototype.axios = axiosInstance
+
 export default axiosInstance
