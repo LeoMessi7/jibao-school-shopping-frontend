@@ -75,7 +75,7 @@ export default {
   methods: {
     handleLogon() {
       this.loading = true;
-      if(this.loginForm.username == 'admin' && this.loginForm.password == 'admin123') {
+      if(this.loginForm.username === 'admin' && this.loginForm.password === 'admin123') {
         alert("登录成功");
         this.$router.push('/');
       }
@@ -85,7 +85,7 @@ export default {
     },
     handleLogin() {
       this.loading = true;
-      if(this.loginForm.username == 'admin' && this.loginForm.password == 'admin123') {
+      if(this.loginForm.username === 'admin' && this.loginForm.password === 'admin123') {
         alert("登录成功");
         this.$router.push('/');
       }
