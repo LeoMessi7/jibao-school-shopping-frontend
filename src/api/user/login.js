@@ -1,3 +1,8 @@
+/*
+ * @Autor: LOTEAT
+ * @Description: 
+ * @Date: 2021-12-09 18:22:16
+ */
 /**
  * @author Yuanhao Pei
  * @description 登录api
@@ -7,7 +12,7 @@
 import axiosInstance from "../index.js"
 
 const axios = axiosInstance
-
+axios.defaults.withCredentials=true
 export function loginGet(map){
   return axios({
     method: 'POST',
@@ -23,6 +28,7 @@ export function getImageCaptcha(){
     headers: {
       isToken: false
     },
+    //withCredentials : true,
     responseType: 'arraybuffer',
     timeout: 20000
   })
