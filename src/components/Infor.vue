@@ -150,7 +150,7 @@ export default {
           nickName: 'wo',
           phonenumber: 13614511587,
           email:'1367894568@qq.com',
-          sex:'nv'
+          sex:'0'
 
       },
       open: false,
