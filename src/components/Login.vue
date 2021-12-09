@@ -16,7 +16,7 @@
                   <input type="text" v-model="loginForm.email" placeholder=邮箱>
                   <input type="password" v-model="loginForm.password" placeholder=密码 show-password>
                   <input type="captcha_code" v-model="loginForm.captcha_code" placeholder=验证码>
-                  <el-image   :src=codeUrl></el-image>
+                  <el-image style=" position:absolute;height:40px;width:100px;margin-top:5px;margin-left: 20px" :src=codeUrl></el-image>
                 </form>
                 <div class="forgot">
                   <a href="#" v-on:click="moveToReg">没有账号？</a>
