@@ -1,6 +1,6 @@
 <template>
   <div id="upload">
-    <div class="my" style="width:80%;position: relative; background-color: rgb(243, 244, 246); margin-left: 100px;margin-top: 30px">
+    <div class="my" style="width:80%;position: relative;margin: auto; background-color: rgb(243, 244, 246); margin-left: 100px;margin-top: 30px">
       <p>我的物品</p>
       <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
       <el-tabs type="card" style="" v-model="activeName" @tab-click="handleClick">
