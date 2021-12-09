@@ -5,6 +5,7 @@
     <sidebar></sidebar>
     <el-main style="height: 650px;background-color: #f3f4f6">
       <router-view/>
+
     </el-main>
   </el-container>
   </div>

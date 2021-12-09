@@ -85,7 +85,7 @@ export default {
         default: this.$router.push(index);return
       }
       this.$router.push({
-        path:'/shop'+index,
+        path:'/shop/item',
         query:{currentPath:this.currentPath},
       })
     },

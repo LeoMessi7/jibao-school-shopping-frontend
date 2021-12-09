@@ -29,11 +29,13 @@ export default new Router({
       path: '/',
       name: 'home',
       component: home,
+      redirect:'/shop',
       children:[
         {
           path:'/shop',
           name:'全部',
           component:shop,
+          redirect:'/shop/item',
           children:[
             {
               path:'/shop/eshop',
