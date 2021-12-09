@@ -103,6 +103,7 @@ body{
   width: 88%;
   -webkit-appearance: none;
 }
+.login-top2 input[type="captcha_code"],
 .login-top1 input[type="captcha_code"]{
   outline: none;
   font-size: 15px;
@@ -118,6 +119,15 @@ body{
   margin: 0px 0px 12px 0px;
   width: 44%;
   -webkit-appearance: none;
+}
+
+.login-top2 a{
+  font-size: 15px;
+  text-decoration:none;
+  font-weight: 500;
+  color: #fcbdab;
+  display: inline-block;
+  padding: 0px 7px 0px 0px;
 }
 .forgot  a{
   font-size: 13px;

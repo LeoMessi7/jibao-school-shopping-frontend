@@ -16,7 +16,7 @@
                   <input type="text" v-model="loginForm.email" placeholder=邮箱>
                   <input type="password" v-model="loginForm.password" placeholder=密码 show-password>
                   <input type="captcha_code" v-model="loginForm.captcha_code" placeholder=验证码>
-                  <el-image style=" position:absolute;height:40px;width:100px;margin-top:5px;margin-left: 20px" :src=codeUrl></el-image>
+                  <el-image style=" position:absolute;height:40px;width:100px;margin-top:5px;margin-left: 20px" :src=codeUrl @click="getCode"></el-image>
                 </form>
                 <div class="forgot">
                   <a href="#" v-on:click="moveToReg">没有账号？</a>
@@ -36,6 +36,8 @@
                   <input type="text" v-model="regForm.email" placeholder="邮箱">
                   <input type="password" v-model="regForm.password" placeholder="设置密码" show-password>
                   <input type="password" v-model="regForm.confirm" placeholder="确认密码" show-password>
+                  <input type="captcha_code" v-model="loginForm.captcha_code" placeholder="输入验证码">
+                  <a href="#" style="margin-left: 20px" v-on:click="moveToLogin">发送验证码</a>
                 </form>
                 <div class="forgot">
                   <a href="#" v-on:click="moveToLogin">已有账号？</a>
@@ -83,15 +85,6 @@ export default {
         rememberMe: false,
         code: ""
       },
-      loginRules: {
-        email: [
-          { required: true, trigger: 'blur', message: '邮箱不能为空' }
-        ],
-        password: [
-          { required: true, trigger: 'blur', message: '密码不能为空' }
-        ],
-        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
-      }
     }
   },
   mounted:function() {

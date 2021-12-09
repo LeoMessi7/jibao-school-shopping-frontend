@@ -7,7 +7,7 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 const axiosInstance = Axios.create({
-  withCredentials: false
+  withCredentials: true
 })
 
 axiosInstance.interceptors.request.use(

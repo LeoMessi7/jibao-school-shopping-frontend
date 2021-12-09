@@ -1,6 +1,6 @@
 /*
  * @Autor: LOTEAT
- * @Description: 
+ * @Description:
  * @Date: 2021-12-09 18:22:16
  */
 /**
@@ -16,7 +16,7 @@ axios.defaults.withCredentials=true
 export function loginGet(map){
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/login/checkAccount',
+    url: 'http://100.73.131.113:8081/login/checkAccount',
     params: map
   })
 }
@@ -24,7 +24,7 @@ export function loginGet(map){
 export function getImageCaptcha(){
   return axios({
     method: 'GET',
-    url: 'http://localhost:8081/getImageCaptcha',
+    url: 'http://100.73.131.113:8081/getImageCaptcha',
     headers: {
       isToken: false
     },
