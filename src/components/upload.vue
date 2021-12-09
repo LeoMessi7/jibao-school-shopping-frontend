@@ -1,6 +1,6 @@
 <template>
   <div id="upload">
-    <div class="my" style="width:80%;position: relative;margin: auto; background-color: rgb(243, 244, 246); margin-left: 100px;margin-top: 30px">
+    <div class="my" style="width:80%;position: relative;margin: auto; background-color: #faeaea; margin-left: 100px;margin-top: 30px">
       <p>我的物品</p>
       <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
       <el-tabs type="card" style="" v-model="activeName" @tab-click="handleClick">
@@ -120,19 +120,19 @@ export default {
 </script>
 
 <style>
-.el-tabs__item {
+.my .el-tabs__item {
   color: #656565 !important;
 }
 
-.el-tabs__item.is-active {
+.my .el-tabs__item.is-active {
   color: #fcbdab !important;
 }
 
-.el-tabs__item:hover {
+.my .el-tabs__item:hover {
   color: #fcbdab !important;
 }
 
-.el-tabs__item {
+.my .el-tabs__item {
 
   height: 47px;
   line-height: 47px;
@@ -140,15 +140,18 @@ export default {
   font-size: 16px;
   font-weight: bold;
 }
-.el-tabs__nav-scroll {
-  background-color: #ECEEF3;
+.my .el-tabs__nav-scroll {
+  background-color: #f3f4f6;
 }
 
-.el-tabs--card .el-tabs__header .el-tabs__nav {
+.my .el-tabs--card .el-tabs__header .el-tabs__nav {
   border: none;
 }
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+  border-bottom-color: #fcbdab;
 
-.el-tabs__content {
+}
+.my .el-tabs__content {
   padding: 10px;
 }
 

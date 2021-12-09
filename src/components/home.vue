@@ -3,7 +3,7 @@
   <bar></bar>
   <el-container style="height: 650px">
     <sidebar></sidebar>
-    <el-main style="height: 650px;background-color: #f3f4f6">
+    <el-main style="height: 650px;background-color: #faeaea;">
       <router-view/>
 
     </el-main>
