@@ -19,7 +19,7 @@ export function loginGet(map){
 export function getImageCaptcha(){
   return axios({
     method: 'GET',
-    url: 'http://localhost:8081/login/getImageCaptcha',
+    url: 'http://localhost:8081/getImageCaptcha',
     headers: {
       isToken: false
     },

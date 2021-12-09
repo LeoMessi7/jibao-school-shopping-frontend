@@ -15,7 +15,7 @@
                 <form>
                   <input type="text" v-model="loginForm.email" placeholder=邮箱>
                   <input type="password" v-model="loginForm.password" placeholder=密码 show-password>
-                  <input type="code" v-model="loginForm.code" placeholder=验证码>
+                  <input type="captcha_code" v-model="loginForm.captcha_code" placeholder=验证码>
                   <el-image   :src=codeUrl></el-image>
                 </form>
                 <div class="forgot">
@@ -73,7 +73,7 @@ export default {
         email : "",
         password : "",
         rememberMe: false,
-        code: ""
+        captcha_code: ""
       },
       codeUrl: "",
       regForm:{
@@ -147,9 +147,8 @@ export default {
       });
     },
     handleLogin() {
-      alert("登录成功")
       this.loading = true;
-      const map = {email: this.loginForm.email, password: this.loginForm.password}
+      const map = {email: this.loginForm.email, password: this.loginForm.password, captcha_code: this.loginForm.captcha_code}
       loginGet(map).then(res => {
         let code = res.data.code
         if (code === 1)
