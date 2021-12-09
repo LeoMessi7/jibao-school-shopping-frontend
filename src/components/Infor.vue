@@ -139,7 +139,6 @@ export default {
   components: {
     bar,
     sidebar,
-
   },
 
   data() {
@@ -147,9 +146,9 @@ export default {
       // 是否显示弹出层
       activeName:'userinfo',
         user: {
-          nickName: 'wo',
+          nickName: '',
           phonenumber: 13614511587,
-          email:'1367894568@qq.com',
+          email:'',
           sex:'0'
 
       },
@@ -190,6 +189,14 @@ export default {
       }
     };
   },
+  mounted:function() {
+    this.user.email = this.$cookies.get("email")
+    this.user.nickName = this.$cookies.get("user_name")
+    window.onresize = () =>{
+      this.user.email = this.$cookies.get("email")
+      this.user.nickName = this.$cookies.get("user_name")
+    };
+  },
   methods: {
     // 编辑头像
     editCropper() {
@@ -217,7 +224,7 @@ export default {
     },
     // 上传预处理
     beforeUpload(file) {
-      if (file.type.indexOf("image/") == -1) {
+      if (file.type.indexOf("image/") === -1) {
         this.$message("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
       } else {
         const reader = new FileReader();

@@ -13,8 +13,10 @@
               </div>
               <div class="login-top1">
                 <form>
-                  <input type="text" v-model="loginForm.email" placeholder="邮箱">
-                  <input type="password" v-model="loginForm.password" placeholder="密码" show-password>
+                  <input type="text" v-model="loginForm.email" placeholder=邮箱>
+                  <input type="password" v-model="loginForm.password" placeholder=密码 show-password>
+                  <input type="code" v-model="loginForm.code" placeholder=验证码>
+                  <el-image   :src=codeUrl></el-image>
                 </form>
                 <div class="forgot">
                   <a href="#" v-on:click="moveToReg">没有账号？</a>
@@ -52,7 +54,7 @@
 </template>
 
 <script>
-import {loginGet} from "../api/user/login";
+import {getImageCaptcha, loginGet} from "../api/user/login";
 export default {
   name: 'Login',
   data() {
@@ -73,6 +75,7 @@ export default {
         rememberMe: false,
         code: ""
       },
+      codeUrl: "",
       regForm:{
         email : "",
         password : "",
@@ -94,11 +97,13 @@ export default {
   mounted:function() {
     this.screenWidth =  window.innerWidth;
     this.screenHeight = window.innerHeight;
+    this.getCode()
     this.loginForm.email = this.$cookies.get("email")
     this.loginForm.password = this.$cookies.get("password")
     window.onresize = () =>{
       this.screenWidth =  window.innerWidth;
       this.screenHeight = window.innerHeight;
+      this.getCode()
       this.loginForm.email = this.$cookies.get("email")
       this.loginForm.password = this.$cookies.get("password")
     };
@@ -136,6 +141,11 @@ export default {
       y[0].style.transitionDelay="0s";
 
     },
+    getCode(){
+      getImageCaptcha().then(res => {
+        this.codeUrl = "data:image/jpg;base64," + btoa(new Uint8Array(res.data).reduce((res, byte) => res + String.fromCharCode(byte), ''))
+      });
+    },
     handleLogin() {
       alert("登录成功")
       this.loading = true;
@@ -146,6 +156,8 @@ export default {
           alert("登录失败！该用户不存在！")
         else if(code === 2)
           alert("登录失败！用户名与密码不匹配！")
+        else if(code === 3)
+            alert("登录失败！验证码错误！")
         else{
           alert("登录成功")
           this.$cookies.set("email", this.loginForm.email)
