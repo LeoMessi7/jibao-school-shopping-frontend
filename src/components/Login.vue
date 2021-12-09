@@ -1,34 +1,53 @@
 <template>
   <div id="login">
 
-      <el-container style="margin-left: 300px">
-        <el-aside style="width: 50%">
+      <el-container style="height: 100%">
+        <el-aside style="width: 50%;height: 100%">
         </el-aside>
-        <el-main>
-          <div class="login" style="margin-top: 150px;">
-            <div class="login-top">
-              <el-image style="margin-left: 30px; margin-top:10px; height: 100px" :src="require('@/assets/logo2.png')"></el-image>
-              <form>
-                <input type="text" v-model="loginForm.email" placeholder="邮箱">
-                <input type="password" v-model="loginForm.password" placeholder="密码" show-password>
-              </form>
-              <div class="forgot">
-                <a href="#">忘记密码？</a>
-                <input type="submit" value="登录" v-on:click="handleLogin">
-                <input type="submit" value="注册" v-on:click="handleLogon">
+        <el-main style="width: 50%;position: relative;height: 100%">
+          <div style="height: 150px;width: 100%;z-index: 2"></div>
+          <div class="login" style="margin: auto!important;width:420px">
+            <div class="login-front">
+              <div class="login-img">
+              <el-image  style="margin-left: -15px; margin-top:10px; height: 100px" :src="require('@/assets/logo2.png')"></el-image>
+              </div>
+              <div class="login-top1">
+                <form>
+                  <input type="text" v-model="loginForm.email" placeholder="邮箱">
+                  <input type="password" v-model="loginForm.password" placeholder="密码" show-password>
+                </form>
+                <div class="forgot">
+                  <a href="#" v-on:click="moveToReg">没有账号？</a>
+                  <input type="submit" value="登录" v-on:click="handleLogin">
+                </div>
+              </div>
+              <div class="login-bottom">
+                <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
               </div>
             </div>
-            <div class="login-bottom">
-              <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+            <div class="login-back">
+              <div class="login-img">
+                <el-image  style="margin-left: -15px; margin-top:10px; height: 100px" :src="require('@/assets/logo2.png')"></el-image>
+              </div>
+              <div class="login-top2">
+                <form>
+                  <input type="text" v-model="regForm.email" placeholder="邮箱">
+                  <input type="password" v-model="regForm.password" placeholder="设置密码" show-password>
+                  <input type="password" v-model="regForm.confirm" placeholder="确认密码" show-password>
+                </form>
+                <div class="forgot">
+                  <a href="#" v-on:click="moveToLogin">已有账号？</a>
+                  <input type="submit" value="注册" v-on:click="handleLogon">
+                </div>
+              </div>
+              <div class="login-bottom">
+                <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+              </div>
             </div>
           </div>
         </el-main>
       </el-container>
 
-      <!--  底部  -->
-      <div class="el-login-footer">
-        <span>Copyright © 2018-2021 JiaWa.vip All Rights Reserved.</span>
-      </div>
   </div>
 </template>
 
@@ -51,6 +70,13 @@ export default {
       loginForm: {
         email : "",
         password : "",
+        rememberMe: false,
+        code: ""
+      },
+      regForm:{
+        email : "",
+        password : "",
+        confirm:"",
         rememberMe: false,
         code: ""
       },
@@ -89,7 +115,29 @@ export default {
       //   alert("登录失败");
       // this.loading = false;
     },
+    moveToReg(){
+      let x=document.getElementsByClassName("login-front");
+      let y=document.getElementsByClassName("login-back");
+      x[0].style.opacity=0;
+      x[0].style.zIndex=0;
+      y[0].style.transitionDelay="0.5s";
+      y[0].style.opacity=1;
+      y[0].style.zIndex=1;
+      x[0].style.transitionDelay="0s";
+    },
+    moveToLogin(){
+      let x=document.getElementsByClassName("login-front");
+      let y=document.getElementsByClassName("login-back");
+      y[0].style.opacity=0;
+      y[0].style.zIndex=0;
+      x[0].style.transitionDelay="0.5s";
+      x[0].style.opacity=1;
+      x[0].style.zIndex=1;
+      y[0].style.transitionDelay="0s";
+
+    },
     handleLogin() {
+      alert("登录成功")
       this.loading = true;
       const map = {email: this.loginForm.email, password: this.loginForm.password}
       loginGet(map).then(res => {
