@@ -28,6 +28,8 @@ axiosInstance.interceptors.response.use(
   }
 )
 
+axiosInstance.defaults.baseURL = 'http://localhost:8081/'
+
 Vue.prototype.axios = axiosInstance
 
 export default axiosInstance
