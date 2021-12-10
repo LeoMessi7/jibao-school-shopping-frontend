@@ -12,9 +12,9 @@ export function loginGet(email, password, captcha_code){
   const map = {email: email, password: password, captcha_code: captcha_code}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/login/checkAccount',
+    url: '/login/checkAccount',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     params: map
   })
@@ -23,9 +23,9 @@ export function loginGet(email, password, captcha_code){
 export function getImageCaptcha(){
   return axios({
     method: 'GET',
-    url: 'http://localhost:8081/getImageCaptcha',
+    url: '/getImageCaptcha',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     //withCredentials : true,
     responseType: 'arraybuffer',
@@ -37,9 +37,9 @@ export function checkAccount(email, password, name){
   const map = {name: name, password: password, email: email}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/register/checkAccount',
+    url: '/register/checkAccount',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     params: map
   })
@@ -49,9 +49,9 @@ export function checkEmailCaptcha(email, captcha_input){
   const map = {email: email, captcha_input: captcha_input}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/register/checkEmailCaptcha',
+    url: '/register/checkEmailCaptcha',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     params: map
   })
