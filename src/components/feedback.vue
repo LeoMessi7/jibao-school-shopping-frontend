@@ -2,13 +2,13 @@
   <div id="feedback" style="background-color: #faeaea;">
     <div style="margin-top:50px;background-color: #faeaea;text-align: center">
       <el-form ref="form" style="width: 60%;margin:0 auto;" :model="form" label-width="80px">
-        <el-form-item >
+        <el-form-item>
           <h1 style="margin-bottom: 0px">客服反馈</h1>
         </el-form-item>
-        <el-form-item >
-          <textarea style="width: 100%" :rows=" 15 " placeholder = "欢迎提出宝贵意见..." v-model="form.content"></textarea>
+        <el-form-item>
+          <textarea style="width: 100%" :rows=" 15 " placeholder="欢迎提出宝贵意见..." v-model="form.content"></textarea>
         </el-form-item>
-        <el-form-item >
+        <el-form-item>
           <el-button type="primary" style="margin:0 auto;" @click="onSubmit">提交</el-button>
         </el-form-item>
       </el-form>
@@ -17,92 +17,105 @@
 </template>
 
 <script>
+import {feedback} from "../api/feedback/feedback";
+
 export default {
   name: "feedback",
-  data(){
-    return{
+  data() {
+    return {
       form: {
-        name: '',
-        content:'',
+        content: '',
       }
     }
   },
   methods: {
     onSubmit() {
-      const h = this.$createElement;
-      this.$msgbox({
-        title: '提交',
-        message: h('p', null, [
-          h('span', null, '请确认是否提交？ '),
-        ]),
-        showCancelButton: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true;
-            instance.confirmButtonText = '提交中...';
-            setTimeout(() => {
-              done();
-              setTimeout(() => {
-                instance.confirmButtonLoading = false;
-              }, 300);
-            }, 300);
+      if (this.form.content === '') {
+        this.$message.error("不能提交空白信息！")
+      } else {
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '提交',
+          message: h('p', null, [
+            h('span', null, '请确认是否提交？ '),
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '提交中...';
 
-          } else {
-            done();
+              feedback(this.form.content).then(res => {
+                console.log(1)
+                let code = res.data.code
+                console.log(code)
+                if (code === 1)
+                  alert("发送失败！")
+                else
+                  alert("发送成功！")
+              }).catch(function (error) {
+                console.log(error)
+              });
+              instance.confirmButtonLoading = false;
+
+            } else {
+              done()
+            }
           }
-        }
-      }).then(action => {
-        this.$message({
-          type: 'success',
-          message: 'action: ' + action
+        }).then(action => {
+          this.$message({
+            type: 'success',
+            message: 'action: ' + action
+          });
         });
-      });
+      }
     }
   }
-
 }
 </script>
 
 <style scoped>
-/deep/ .el-input__inner:focus{
-  border-color:pink!important;
+/deep/ .el-input__inner:focus {
+  border-color: pink !important;
 }
-textarea{
-  width:400px;
 
-  min-height:20px;
+textarea {
+  width: 400px;
 
-  max-height:500px;
+  min-height: 20px;
 
-  _height:120px;
+  max-height: 500px;
 
-  margin-left:auto;
+  _height: 120px;
 
-  margin-right:auto;
+  margin-left: auto;
 
-  padding:0px;
+  margin-right: auto;
 
-  outline:0;
+  padding: 0px;
+
+  outline: 0;
   border-radius: 10px;
-  border:1px solid #dde0e7;
+  border: 1px solid #dde0e7;
 
-  font-size:16px;
+  font-size: 16px;
 
-  line-height:24px;
+  line-height: 24px;
 
-  padding:2px;
+  padding: 2px;
 
-  word-wrap:break-word;
+  word-wrap: break-word;
 
-  overflow-x:hidden;
+  overflow-x: hidden;
 
-  overflow-y:auto;
+  overflow-y: auto;
 
 }
-textarea:focus{
+
+textarea:focus {
   border-color: #efd6cf;
-  box-shadow:0 1px 10px rgb(252, 208, 195),0 10px 10px rgb(243, 244, 246);
+  box-shadow: 0 1px 10px rgb(252, 208, 195), 0 10px 10px rgb(243, 244, 246);
 }
 </style>
