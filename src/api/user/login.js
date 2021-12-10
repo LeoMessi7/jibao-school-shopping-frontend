@@ -1,12 +1,7 @@
 /*
- * @Autor: LOTEAT
- * @Description:
- * @Date: 2021-12-09 18:22:16
- */
-/**
- * @author Yuanhao Pei
- * @description 登录api
- * @date 2021/12/8
+ * @Author Yuanhao Pei
+ * @Description Login and register api
+ * @Date 2021/12/9
  */
 
 import axiosInstance from "../index.js"

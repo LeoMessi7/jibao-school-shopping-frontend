@@ -1,6 +1,7 @@
-/**
- * @author Yuanhao Pei
- * @date 2021/12/8
+/*
+ * @Author Yuanhao Pei
+ * @Description axios configuration
+ * @Date 2021/12/8
  */
 
 import Vue from 'vue'

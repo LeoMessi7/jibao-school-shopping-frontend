@@ -164,27 +164,27 @@ export default {
       let x = document.getElementsByClassName("dyEmailButton");
       this.waitingtime--;
       if(this.regForm.userName === ""){
-        alert("用户名不能为空");
-        this.waitingtime=60;
+        alert("用户名不能为空")
+        this.waitingtime=60
       }
       else if(this.regForm.password === "" && this.regForm.confirm === ""){
         alert("密码不能为空")
-      this.waitingtime=60;
-    }
+        this.waitingtime=60
+      }
       else if(this.regForm.email === ""){
         alert("邮箱不能为空")
-        this.waitingtime=60;
+        this.waitingtime=60
       }
       else if(this.regForm.password !== this.regForm.confirm){
         alert("两次输入的密码不一致")
-        this.waitingtime=60;
+        this.waitingtime=60
       }
       else{
         checkAccount(this.regForm.email, this.regForm.password, this.regForm.userName).then(res => {
           let code = res.data.code
           if (code === 1){
             alert("该邮箱已被注册！");
-            this.waitingtime=60;
+            this.waitingtime=60
           }
           else{
             alert("验证码已发送至邮箱！")

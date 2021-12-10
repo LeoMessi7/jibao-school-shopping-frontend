@@ -56,9 +56,9 @@
                @mouseleave="mouseLeave(2)"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="/Login">登录</el-dropdown-item>
-            <el-dropdown-item command="/Infor">个人中心</el-dropdown-item>
-            <el-dropdown-item command="/Login">注销</el-dropdown-item>
+            <el-dropdown-item command="/Login" v-show=!this.loginState>登录</el-dropdown-item>
+            <el-dropdown-item command="/Infor" v-show=this.loginState>个人中心</el-dropdown-item>
+            <el-dropdown-item @click.native="handleLogout" v-show=this.loginState>注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -88,9 +88,15 @@ export default {
       newList:[],
       goodsNum:0,
       totalNum:0,
+      loginState : this.$cookies.get("user_name") !== null
     }
   },
   methods:{
+    handleLogout(){
+      this.$cookies.set("user_name", null)
+      this.$cookies.set("avatar_url", null)
+      this.$router.push('/Login')
+    },
     search(){
       this.$router.push('/Login');
     },
