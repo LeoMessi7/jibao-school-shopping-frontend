@@ -5,16 +5,22 @@
  */
 
 import axiosInstance from "../index.js"
+import axios from "axios";
 
-const axios = axiosInstance
+const service = axios.create({
+  baseURL:  "http://localhost:8081",
+  withCredentials:  true,
+  timeout:  5000
+})
 
 export function feedback(content){
   const map = {content: content}
-  return axios({
+  console.log(map)
+  return service({
     method: 'POST',
-    url: 'http://127.0.0.1:8081/feedback',
+    url: 'http://localhost:8081/feedback',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     params: map
   })

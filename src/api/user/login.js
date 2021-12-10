@@ -4,15 +4,22 @@
  * @Date 2021/12/9
  */
 
-import axiosInstance from "../index.js"
 
-const axios = axiosInstance
+
+import axios from "axios";
+
+const service = axios.create({
+  baseURL:  "http://localhost:8081",
+  withCredentials:  true,
+  timeout:  5000
+})
+
 
 export function loginGet(email, password, captcha_code){
   const map = {email: email, password: password, captcha_code: captcha_code}
-  return axios({
+  return service({
     method: 'POST',
-    url: '/login/checkAccount',
+    url: 'http://localhost:8081/login/checkAccount',
     headers: {
       'Content-Type':'application/json'
     },
@@ -21,9 +28,9 @@ export function loginGet(email, password, captcha_code){
 }
 
 export function getImageCaptcha(){
-  return axios({
+  return service({
     method: 'GET',
-    url: '/getImageCaptcha',
+    url: 'http://localhost:8081/getImageCaptcha',
     headers: {
       'Content-Type':'application/json'
     },
@@ -35,9 +42,9 @@ export function getImageCaptcha(){
 
 export function checkAccount(email, password, name){
   const map = {name: name, password: password, email: email}
-  return axios({
+  return service({
     method: 'POST',
-    url: '/register/checkAccount',
+    url: 'http://localhost:8081/register/checkAccount',
     headers: {
       'Content-Type':'application/json'
     },
@@ -47,9 +54,9 @@ export function checkAccount(email, password, name){
 
 export function checkEmailCaptcha(email, captcha_input){
   const map = {email: email, captcha_input: captcha_input}
-  return axios({
+  return service({
     method: 'POST',
-    url: '/register/checkEmailCaptcha',
+    url: 'http://localhost:8081/register/checkEmailCaptcha',
     headers: {
       'Content-Type':'application/json'
     },
