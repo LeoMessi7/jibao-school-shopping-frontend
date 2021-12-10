@@ -1,6 +1,6 @@
 <template>
-  <div id="feedback" style="background-color: rgb(243, 244, 246);">
-    <div style="margin-top:50px;background-color: #f2f3f5;text-align: center">
+  <div id="feedback" style="background-color: #faeaea;">
+    <div style="margin-top:50px;background-color: #faeaea;text-align: center">
       <el-form ref="form" style="width: 60%;margin:0 auto;" :model="form" label-width="80px">
         <el-form-item >
           <h1 style="margin-bottom: 0px">客服反馈</h1>

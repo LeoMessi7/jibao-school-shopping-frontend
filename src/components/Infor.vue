@@ -3,7 +3,7 @@
     <bar></bar>
     <el-container style="height: 650px">
       <sidebar></sidebar>
-      <el-main style="background-color: #e5d7d7; height: 650px">
+      <el-main style="background-color: #faeaea;; height: 650px">
 
         <el-row :gutter="20" style="width: 70%;margin: auto">
           <el-col :span="8" :xs="24">
@@ -117,7 +117,20 @@
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="修改密码" name="resetPwd">
-
+                  <el-form ref="form" :model="user" :rules="rules" label-width="80px">
+                    <el-form-item label="旧密码" prop="oldpassword">
+                      <el-input v-model="user.oldpassword" />
+                    </el-form-item>
+                    <el-form-item label="新密码" prop="newpassword">
+                      <el-input v-model="user.newpassword" maxlength="11" />
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="renewpassword">
+                      <el-input v-model="user.renewpassword" maxlength="50" />
+                    </el-form-item>
+                  </el-form>
+                  <div style="text-align: center">
+                    <el-button type="primary" size="medium" @click="confirmPassword">修改</el-button>
+                  </div>
                 </el-tab-pane>
               </el-tabs>
             </el-card>
@@ -149,7 +162,11 @@ export default {
           nickName: '',
           phonenumber: 13614511587,
           email:'',
-          sex:'0'
+          sex:'0',
+          password:'',
+          oldpassword:'',
+          newpassword:'',
+          renewpassword:''
 
       },
       open: false,
@@ -257,6 +274,9 @@ export default {
     },
     close() {
       this.$router.push({ path: "/index" });
+    },
+    confirmPassword(){
+      this.$message({message:"修改成功",type:'success'});
     }
   }
 }
