@@ -16,54 +16,25 @@
                   <div class="user-info-head" @click="editCropper()"><img v-bind:src="options.img" title="点击上传头像" class="img-circle img-lg" alt=""  /></div>
                   <el-dialog :title="title"
                              :visible.sync="open"
-                             width="800px"
-                             append-to-body
+                             width="300px"
+                              style="text-align: center;height: 500px"
                              @opened="modalOpened">
                     <el-row>
-                      <el-col :xs="24" :md="12" :style="{height: '350px'}">
-                        <vue-cropper
-                          ref="cropper"
-                          :img="options.img"
-                          :info="true"
-                          :autoCrop="options.autoCrop"
-                          :autoCropWidth="options.autoCropWidth"
-                          :autoCropHeight="options.autoCropHeight"
-                          :fixedBox="options.fixedBox"
-                          @realTime="realTime"
-                          v-if="visible"
-                        />
-                      </el-col>
-                      <el-col :xs="24" :md="12" :style="{height: '350px'}">
+                      <el-col  style="height: 240px">
                         <div class="avatar-upload-preview">
                           <img :src="options.img"/>
                         </div>
                       </el-col>
                     </el-row>
-                    <el-row>
-                      <el-col :lg="2" :md="2">
-                        <el-upload action="#" :http-request="requestUpload" :show-file-list="false" :before-upload="beforeUpload">
-                          <el-button size="small">
+                    <el-row >
+                        <el-upload style="margin-left:40px; float: left" action="#" :http-request="requestUpload" :show-file-list="false" :before-upload="beforeUpload">
+                          <el-button  size="small">
                             选择
                             <i class="el-icon-upload el-icon--right"></i>
                           </el-button>
                         </el-upload>
-                      </el-col>
-                      <el-col :lg="{span: 1, offset: 2}" :md="2">
-                        <el-button icon="el-icon-plus" size="small" @click="changeScale(1)"></el-button>
-                      </el-col>
-                      <el-col :lg="{span: 1, offset: 1}" :md="2">
-                        <el-button icon="el-icon-minus" size="small" @click="changeScale(-1)"></el-button>
-                      </el-col>
-                      <el-col :lg="{span: 1, offset: 1}" :md="2">
-                        <el-button icon="el-icon-refresh-left" size="small" @click="rotateLeft()"></el-button>
-                      </el-col>
-                      <el-col :lg="{span: 1, offset: 1}" :md="2">
-                        <el-button icon="el-icon-refresh-right" size="small" @click="rotateRight()"></el-button>
-                      </el-col>
-                      <el-col :lg="{span: 2, offset: 6}" :md="2">
-                        <el-button type="primary" size="small" @click="uploadImg">提 交</el-button>
-                      </el-col>
-                    </el-row>
+                        <el-button style="margin-right:40px;float: right" type="primary" size="small" @click="uploadImg">提 交</el-button>
+                      </el-row>
                   </el-dialog>
                 </div>
                 <ul class="list-group list-group-striped">
@@ -314,9 +285,8 @@ export default {
   height: 120px;
 }
 .avatar-upload-preview {
-  position: absolute;
-  top: 50%;
-  transform: translate(50%, -50%);
+  display: flex;
+  margin-left: 30px;
   width: 200px;
   height: 200px;
   border-radius: 50%;
