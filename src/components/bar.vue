@@ -88,17 +88,13 @@ export default {
       newList:[],
       goodsNum:0,
       totalNum:0,
-      loginState: this.$cookies.get("user_name") !== null
+      loginState: this.$cookies.isKey("user_name")
     }
-  },
-  mounted() {
-    console.log(this.$cookies.get("user_name"))
-    console.log(this.loginState)
   },
   methods:{
     handleLogout(){
-      this.$cookies.set("user_name", "")
-      this.$cookies.set("avatar_url", "")
+      this.$cookies.remove("user_name")
+      this.$cookies.remove("avatar_url")
       this.$router.push('/Login')
     },
     search(){
