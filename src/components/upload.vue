@@ -1,6 +1,6 @@
 <template>
-  <div id="upload">
-    <div class="my" style="width:80%;position: relative;margin: auto; background-color: #faeaea; margin-left: 100px;margin-top: 30px">
+  <div id="upload" >
+    <div class="my" style="width:80%; background-color: #faeaea; margin:auto; margin-top: 30px">
       <p>我的物品</p>
       <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
       <el-tabs type="card" style="" v-model="activeName" @tab-click="handleClick">
@@ -156,10 +156,11 @@ export default {
 }
 
 .box1{
-  width:80%;
+  width:60%;
   background-color: #fff;
-  margin-bottom: 20px;
-  margin-left: 50px;
+  margin-left:20%;
+  margin-right:20%;
+  margin-bottom: 40px;
   height: 250px;
   perspective: 1000px;
   border-radius: 20px;
