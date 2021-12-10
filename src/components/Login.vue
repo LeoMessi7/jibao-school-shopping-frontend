@@ -3,6 +3,9 @@
 
       <el-container style="height: 100%">
         <el-aside style="width: 50%;height: 100%">
+          <p class="text1" style="font-size:50px;text-align:center;margin-left:100px;margin-top: 50%">"济宝" </p>
+          <p class="text1">——同济二手交易平台</p>
+          <p class="text1">挑选你的心仪二手宝物</p>
         </el-aside>
         <el-main style="width: 50%;position: relative;height: 100%">
           <div style="height: 150px;width: 100%;z-index: 2"></div>
@@ -190,6 +193,17 @@ html,body{height:100%;
   font-family: Arial;
   font-size: 12px;
   letter-spacing: 1px;
+}
+.text1{
+  font-family:baotuxiaobai;
+  color: #481e13;
+  text-align: right;
+  font-size: 40px;
+  height: 40px;
+}
+@font-face {
+  font-family:baotuxiaobai;
+  src:url("../font/baotuxiaobai.ttf");
 }
 </style>
 
