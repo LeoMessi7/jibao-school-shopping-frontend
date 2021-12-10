@@ -117,6 +117,7 @@
 <script>
 import bar from './bar'
 import sidebar from './sidebar'
+import {updateAvatar} from "../api/user/info";
 
 export default {
   name: "Infor",
@@ -197,44 +198,39 @@ export default {
     // 覆盖默认的上传行为
     requestUpload() {
     },
-    // 向左旋转
-    rotateLeft() {
-      this.$refs.cropper.rotateLeft();
-    },
-    // 向右旋转
-    rotateRight() {
-      this.$refs.cropper.rotateRight();
-    },
-    // 图片缩放
-    changeScale(num) {
-      num = num || 1;
-      this.$refs.cropper.changeScale(num);
-    },
     // 上传预处理
     beforeUpload(file) {
       if (file.type.indexOf("image/") === -1) {
         this.$message("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
       } else {
+        console.log(file)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
           this.options.img = reader.result;
-        };
+          this.$cookies.set("avatar_img", file)
+        }
       }
     },
     // 上传图片
     uploadImg() {
-      this.$refs.cropper.getCropBlob(data => {
-        let formData = new FormData();
-        formData.append("avatarfile", data);
-        this.open = false;
-        this.$message({message:"修改成功",type:'success',customClass:'zZindex'});
-        this.visible = false;
-      });
-    },
-    // 实时预览
-    realTime(data) {
-      this.previews = data;
+      let image = this.$cookies.get("avatar_img")
+      console.log(image)
+      updateAvatar(image).then(res => {
+        let code = res.data.code
+        if(code === 1){
+          this.$message({message:"修改失败",type:'failed',customClass:'zZindex'});
+        }
+        else if(code === 0){
+          this.open = false;
+          this.$message({message:"修改成功",type:'success',customClass:'zZindex'});
+          this.options.img = 'http://127.0.0.1:8081/' + res.data.avatar_url
+          this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
+          this.visible = false;
+        }
+      })
+        // let formData = new FormData();
+        // formData.append("avatarfile", data);
     },
     submit() {
       this.$refs["form"].validate(valid => {
