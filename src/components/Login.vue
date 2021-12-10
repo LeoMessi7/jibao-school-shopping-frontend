@@ -74,14 +74,6 @@ export default {
       screenWidth: 0,//屏幕的宽度
       emailbtn: "发送验证码",
       waitingtime: 60,
-      images: [
-        {url: require('@/image/login.jpg'), isShow: true},
-        {url: require('@/image/login1.jpg'), isShow: true},
-        {url: require('@/image/login2.jpg'), isShow: false},
-        {url: require('@/image/login3.jpg'), isShow: false},
-        {url: require('@/image/login4.jpg'), isShow: false},
-        {url: require('@/image/login5.jpg'), isShow: false}
-      ],
       loginForm: {
         email: "",
         password: "",
@@ -170,22 +162,32 @@ export default {
     },
     getEmail() {
       let x = document.getElementsByClassName("dyEmailButton");
-      if(this.regForm.userName === "")
-        alert("用户名不能为空")
-      else if(this.regForm.password === "" && this.regForm.confirm === "")
+      this.waitingtime--;
+      if(this.regForm.userName === ""){
+        alert("用户名不能为空");
+        this.waitingtime=60;
+      }
+      else if(this.regForm.password === "" && this.regForm.confirm === ""){
         alert("密码不能为空")
-      else if(this.regForm.email === "")
+      this.waitingtime=60;
+    }
+      else if(this.regForm.email === ""){
         alert("邮箱不能为空")
-      else if(this.regForm.password !== this.regForm.confirm)
+        this.waitingtime=60;
+      }
+      else if(this.regForm.password !== this.regForm.confirm){
         alert("两次输入的密码不一致")
+        this.waitingtime=60;
+      }
       else{
         checkAccount(this.regForm.email, this.regForm.password, this.regForm.userName).then(res => {
           let code = res.data.code
-          if (code === 1)
-            alert("该邮箱已被注册！")
+          if (code === 1){
+            alert("该邮箱已被注册！");
+            this.waitingtime=60;
+          }
           else{
             alert("验证码已发送至邮箱！")
-            let x = document.getElementsByClassName("dyEmailButton");
             let timer = setInterval(() => {
               this.emailbtn = this.waitingtime + "秒后重新发送"
               this.waitingtime--;
