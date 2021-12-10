@@ -1,6 +1,5 @@
 <template>
   <div id="login">
-
     <el-container style="height: 100%">
       <el-aside style="width: 50%;height: 100%">
         <p class="text1" style="font-size:50px;text-align:center;margin-left:100px;margin-top: 50%">"济宝" </p>
@@ -8,52 +7,59 @@
         <p class="text1">挑选你的心仪二手宝物</p>
       </el-aside>
       <el-main style="width: 50%;position: relative;height: 100%">
-        <div style="height: 150px;width: 100%;z-index: 2"></div>
         <div class="login" style="margin: auto!important;width:420px">
           <div class="login-front">
-            <div class="login-img">
-              <el-image style="margin-left: -15px; margin-top:10px; height: 100px"
-                        :src="require('@/assets/logo2.png')"></el-image>
-            </div>
-            <div class="login-top1">
-              <form>
-                <input type="text" v-model="loginForm.email" placeholder=邮箱>
-                <input type="password" v-model="loginForm.password" placeholder=密码 show-password>
-                <input type="captcha_code" v-model="loginForm.captcha_code" placeholder=验证码>
-                <el-image style=" position:absolute;height:40px;width:100px;margin-top:5px;margin-left: 20px"
-                          :src=codeUrl @click="getCode"></el-image>
-              </form>
-              <div class="forgot">
-                <a href="#" v-on:click="moveToReg">没有账号？</a>
-                <input type="submit" value="登录" v-on:click="handleLogin">
+            <div style="height: 130px;width: 100%;z-index: 2"></div>
+            <div style="  border-radius: 18px; box-shadow: 0px 5px 20px 0px rgba(252,189,171,0.5);">
+              <div class="login-img">
+                <el-image style="margin-left: -15px; margin-top:10px; height: 100px"
+                          :src="require('@/assets/logo2.png')"></el-image>
               </div>
-            </div>
-            <div class="login-bottom">
-              <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+              <div class="login-top1">
+                <form>
+                  <input type="text" v-model="loginForm.email" placeholder=邮箱>
+                  <input type="password" v-model="loginForm.password" placeholder=密码 show-password>
+                  <input type="captcha_code" v-model="loginForm.captcha_code" placeholder=验证码>
+                  <el-image style=" position:absolute;height:40px;width:100px;margin-top:5px;margin-left: 20px"
+                            :src=codeUrl @click="getCode"></el-image>
+                </form>
+                <div class="forgot">
+                  <a href="#" v-on:click="moveToReg">没有账号？</a>
+                  <input type="submit" value="登录" v-on:click="handleLogin">
+                </div>
+              </div>
+              <div class="login-bottom">
+                <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+              </div>
             </div>
           </div>
           <div class="login-back">
-            <div class="login-img">
-              <el-image style="margin-left: -15px; margin-top:10px; height: 100px"
-                        :src="require('@/assets/logo2.png')"></el-image>
-            </div>
-            <div class="login-top2">
-              <form>
-                <input type="text" v-model="regForm.userName" placeholder="设置用户名">
-                <input type="text" v-model="regForm.email" placeholder="邮箱">
-                <input type="password" v-model="regForm.password" placeholder="设置密码" show-password>
-                <input type="password" v-model="regForm.confirm" placeholder="确认密码" show-password>
-                <input type="captcha_code" v-model="regForm.captcha_code" placeholder="输入验证码">
-                <a class="dyEmailButton" href="#" style="color : #fcbdab; font-size:15px;margin-left: 20px" v-if="this.waitingtime===60" v-on:click="getEmail">{{ emailbtn }}</a>
-                <a class="dyEmailButton" href="#" style="color : #656565; font-size:13px;margin-left: 20px" v-if="this.waitingtime!==60">{{ emailbtn }}</a>
-              </form>
-              <div class="forgot">
-                <a href="#" v-on:click="moveToLogin">已有账号？</a>
-                <input type="submit" value="注册" v-on:click="handleLogon">
+            <div style="height: 70px;width: 100%;z-index: 2"></div>
+            <div style=" border-radius: 18px; box-shadow: 0px 5px 20px 0px rgba(252,189,171,0.5);">
+              <div class="login-img">
+                <el-image style="margin-left: -15px; margin-top:10px; height: 100px"
+                          :src="require('@/assets/logo2.png')"></el-image>
               </div>
-            </div>
-            <div class="login-bottom">
-              <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+              <div class="login-top2">
+                <form>
+                  <input type="text" v-model="regForm.userName" placeholder="设置用户名">
+                  <input type="text" v-model="regForm.email" placeholder="邮箱">
+                  <input type="password" v-model="regForm.password" placeholder="设置密码" show-password>
+                  <input type="password" v-model="regForm.confirm" placeholder="确认密码" show-password>
+                  <input type="captcha_code" v-model="regForm.captcha_code" placeholder="输入验证码">
+                  <a class="dyEmailButton" href="#" style="color : #fcbdab; font-size:15px;margin-left: 20px"
+                     v-if="this.waitingtime===60" v-on:click="getEmail">{{ emailbtn }}</a>
+                  <a class="dyEmailButton" href="#" style="color : #656565; font-size:13px;margin-left: 20px"
+                     v-if="this.waitingtime!==60">{{ emailbtn }}</a>
+                </form>
+                <div class="forgot">
+                  <a href="#" v-on:click="moveToLogin">已有账号？</a>
+                  <input type="submit" value="注册" v-on:click="handleLogon">
+                </div>
+              </div>
+              <div class="login-bottom">
+                <el-image style="height: 20px" :src="require('@/assets/logo3.png')"></el-image>
+              </div>
             </div>
           </div>
         </div>
@@ -70,6 +76,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      flag: 1,
       screenHeight: 0,//图片父容器的高度
       screenWidth: 0,//屏幕的宽度
       emailbtn: "发送验证码",
@@ -81,24 +88,24 @@ export default {
         captcha_code: ""
       },
       codeUrl: "",
-      regForm:{
-        userName : "",
-        email : "",
-        password : "",
-        confirm:"",
+      regForm: {
+        userName: "",
+        email: "",
+        password: "",
+        confirm: "",
         rememberMe: false,
         captcha_code: ""
       },
     }
   },
-  mounted:function() {
-    this.screenWidth =  window.innerWidth;
+  mounted: function () {
+    this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     this.getCode()
     this.loginForm.email = this.$cookies.get("email")
     this.loginForm.password = this.$cookies.get("password")
-    window.onresize = () =>{
-      this.screenWidth =  window.innerWidth;
+    window.onresize = () => {
+      this.screenWidth = window.innerWidth;
       this.screenHeight = window.innerHeight;
       this.getCode()
       this.loginForm.email = this.$cookies.get("email")
@@ -108,18 +115,18 @@ export default {
   methods: {
     handleLogon() {
       this.loading = true;
-      if(this.regForm.email === "")
+      if (this.regForm.email === "")
         alert("邮箱不能为空")
-      else if(this.regForm.captcha_code === "")
+      else if (this.regForm.captcha_code === "")
         alert("验证码不能为空")
-      else{
+      else {
         checkEmailCaptcha(this.regForm.email, this.regForm.captcha_code).then(res => {
           let code = res.data.code
           if (code === 1)
             alert("注册失败！该邮箱不存在！")
-          else if(code === 2 || code === 3)
+          else if (code === 2 || code === 3)
             alert("注册失败！验证码错误！")
-          else if(code === 0){
+          else if (code === 0) {
             alert("注册成功")
             this.$cookies.set("email", this.regForm.email)
             this.$cookies.set("password", this.regForm.password)
@@ -132,6 +139,7 @@ export default {
       }
     },
     moveToReg() {
+      this.flag = 0;
       let x = document.getElementsByClassName("login-front");
       let y = document.getElementsByClassName("login-back");
       x[0].style.opacity = 0;
@@ -142,6 +150,7 @@ export default {
       x[0].style.transitionDelay = "0s";
     },
     moveToLogin() {
+      this.flag = 1;
       let x = document.getElementsByClassName("login-front");
       let y = document.getElementsByClassName("login-back");
       y[0].style.opacity = 0;
@@ -158,42 +167,37 @@ export default {
       });
     },
     time() {
-    this.waitingtime--;
+      this.waitingtime--;
     },
     getEmail() {
       let x = document.getElementsByClassName("dyEmailButton");
       this.waitingtime--;
-      if(this.regForm.userName === ""){
-        alert("用户名不能为空")
-        this.waitingtime=60
-      }
-      else if(this.regForm.password === "" && this.regForm.confirm === ""){
+      if (this.regForm.userName === "") {
+        alert("用户名不能为空");
+        this.waitingtime = 60;
+      } else if (this.regForm.password === "" && this.regForm.confirm === "") {
         alert("密码不能为空")
-        this.waitingtime=60
-      }
-      else if(this.regForm.email === ""){
+        this.waitingtime = 60;
+      } else if (this.regForm.email === "") {
         alert("邮箱不能为空")
-        this.waitingtime=60
-      }
-      else if(this.regForm.password !== this.regForm.confirm){
+        this.waitingtime = 60;
+      } else if (this.regForm.password !== this.regForm.confirm) {
         alert("两次输入的密码不一致")
-        this.waitingtime=60
-      }
-      else{
+        this.waitingtime = 60;
+      } else {
         checkAccount(this.regForm.email, this.regForm.password, this.regForm.userName).then(res => {
           let code = res.data.code
-          if (code === 1){
+          if (code === 1) {
             alert("该邮箱已被注册！");
-            this.waitingtime=60
-          }
-          else{
+            this.waitingtime = 60;
+          } else {
             alert("验证码已发送至邮箱！")
             let timer = setInterval(() => {
               this.emailbtn = this.waitingtime + "秒后重新发送"
               this.waitingtime--;
               if (this.waitingtime < 0) {
                 this.emailbtn = "获取验证码";
-                this.waitingtime=60;
+                this.waitingtime = 60;
                 clearInterval(timer);
               }
             }, 1000);
@@ -205,23 +209,23 @@ export default {
     },
     handleLogin() {
       this.loading = true;
-      if(this.loginForm.email === "")
+      if (this.loginForm.email === "")
         alert("邮箱不能为空")
-      else if(this.loginForm.password === "")
+      else if (this.loginForm.password === "")
         alert("密码不能为空")
-      else if(this.loginForm.captcha_code === "")
+      else if (this.loginForm.captcha_code === "")
         alert("验证码不能为空")
-      else{
+      else {
         loginGet(this.loginForm.email, this.loginForm.password, this.loginForm.captcha_code).then(res => {
           let code = res.data.code
           console.log(code)
           if (code === 1)
             alert("登录失败！该用户不存在！")
-          else if(code === 2)
+          else if (code === 2)
             alert("登录失败！用户名与密码不匹配！")
-          else if(code === 3)
+          else if (code === 3)
             alert("登录失败！验证码错误！")
-          else if(code === 0){
+          else if (code === 0) {
             alert("登录成功")
             this.$cookies.set("email", this.loginForm.email)
             this.$cookies.set("password", this.loginForm.password)
