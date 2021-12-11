@@ -32,8 +32,8 @@ export function searchGoods(key_word){
   })
 }
 
-export function uploadGoods(description, name,sub_category, price){
-  const map = {description: description, name: name, sub_category: sub_category, price: price}
+export function uploadGoods(description, name,sub_category, price, image){
+  const map = {description: description, name: name, sub_category: sub_category, price: price, image: image}
   return axios({
     method: 'POST',
     url: 'goods/upload',
