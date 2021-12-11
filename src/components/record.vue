@@ -1,37 +1,58 @@
 <template>
   <div id="record">
-    <el-container class="box" v-for="(item,index) in onItemList" :key="index">
-      <el-aside class="img"  v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
-      <el-main class="text">
-        <div style="position: relative;height: 80%">
-          <span>标签：</span>
-          <p>{{ item.title }}</p><br>
-          <span>说明：</span>
-          <p>{{ item.content }}</p><br>
+    <div v-for="(item,index) in onItemList" :key="index">
+      <el-dialog :visible.sync="item.showcommit" style="padding-top: 80px;margin:auto;width: 80%" @close="resetForm('commodity')">
+        <div style="margin-left: 5%">
+          <span style="display: inline">评分：</span>
+          <el-rate style="display: inline;" :colors="['#fcbdab','#fcbdab','#fcbdab']" v-model="item.rate"></el-rate>
         </div>
-        <el-footer>
-          <div class="contact" style="margin-left:240px;">
-            <el-button round icon="el-icon-edit" type="warning" @click="clickcommit(item)">评价</el-button>
-            <el-button round icon="el-icon-chat-dot-square" type="success">卖家</el-button>
-          </div>
+        <div style="padding-top: 20px;margin-left: 5%">
+          <span >评价：</span><br>
           <el-input
             class="commit"
             type="textarea"
-            :autosize="{minRows:2}"
+            :autosize="{minRows:3}"
             placeholder="请输入评价"
             v-model="item.commit"
-            style="width:460px;margin-top:30px;margin-left:-12px;"
+            style="width:90%;margin-top: 10px"
             v-show="item.showcommit"
-          >
-          </el-input>
-          <div class="reply" style="margin-left:240px;margin-top:15px;height:70px;" v-show="item.showcommit">
-            <el-button round icon="el-icon-check" type="primary" @click="submitcommit(item)">提交</el-button>
-            <el-button round icon="el-icon-close" type="danger" @click="clickcancel(item)">取消</el-button>
-          </div>
-        </el-footer>
+          />
+        </div>
+        <div class="reply" style="margin-top:20px;text-align: center" v-show="item.showcommit">
+          <i class="el-icon-circle-check"
+             :style="icolor"
+             @mouseover="mouseOver(0)"
+             @mouseleave="mouseLeave(0)"
+             style=" font-size: 25px;transform: translateX(-15px)" @click="submitcommit(item)"></i>
+          <i class="el-icon-circle-close"
+             :style="icolor1"
+             @mouseover="mouseOver(1)"
+             @mouseleave="mouseLeave(1)"
+             style=" font-size: 25px;transform: translateX(15px)" @click="clickcancel(item)"></i>
+        </div>
+      </el-dialog>
+      <el-container class="box">
 
-      </el-main>
-    </el-container>
+        <el-aside class="img"
+                  v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
+        <el-main class="text">
+          <div style="position: relative;height: 70%">
+            <span>标签：</span>
+            <p>{{ item.title }}</p><br>
+            <span>说明：</span>
+            <p>{{ item.content }}</p><br>
+          </div>
+          <el-footer style="position: fixed;height: 42px;right: 20px;bottom: 20px">
+            <div class="contact" style="margin-left:240px;">
+              <el-button round icon="el-icon-edit" type="warning" @click="item.showcommit=true">评价</el-button>
+              <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success">卖家</el-button>
+            </div>
+          </el-footer>
+
+        </el-main>
+      </el-container>
+    </div>
+
   </div>
 </template>
 
@@ -41,48 +62,57 @@ export default {
   data() {
     return {
       activeName: 'first',
+      showComment: false,
+      icolor:'color:grey' ,
+      icolor1:'color:grey',
       onItemList: [
         {
           url: '../../static/item/jt1.jpg',
           title: '美女1',
           content: '1111111111111111111111111111111111111111111111111111111111111111111111111111111',
-          showcommit:false,
-          commit:'',
+          showcommit: false,
+          rate: null,
+          commit: '',
         },
         {
           url: '../../static/item/jt2.jpg',
           title: '美女2',
           content: '22222222222222222222222222222222222222222222222222222222222222222',
-          showcommit:false,
-          commit:'',
+          showcommit: false,
+          rate: null,
+          commit: '',
         },
         {
           url: '../../static/item/jt3.jpg',
           title: '美女3',
           content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333',
           showcommit: false,
-          commit:'',
+          rate: null,
+          commit: '',
         },
         {
           url: '../../static/item/jt4.jpg',
           title: '美女3',
           content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333',
           showcommit: false,
-          commit:'',
+          rate: null,
+          commit: '',
         },
         {
           url: "../../static/item/jt5.jpg",
           title: '美女3',
           content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333',
           showcommit: false,
-          commit:'',
+          rate: null,
+          commit: '',
         },
         {
           url: "../../static/item/jt6.jpg",
           title: '美女3',
           content: '都擦无法无法无法恶法挖法啊啊啊啊啊啊啊啊我阿达伟大顶顶顶顶顶顶顶顶顶顶',
-          showcommit:false,
-          commit:'',
+          showcommit: false,
+          rate: null,
+          commit: '',
         },
       ],
       buyItemList: [
@@ -119,16 +149,27 @@ export default {
       ]
     };
   },
-  methods:{
-    clickcommit(item){
-      item.showcommit=!item.showcommit;
-    },
-    submitcommit(item){
-      item.showcommit=!item.showcommit;
+  methods: {
+    mouseOver(index) {
+      if(index==0)
+        this.icolor = 'color: #F56C6C';
+      else if(index==1)
+        this.icolor1=  'color: #F56C6C';
 
     },
-    clickcancel(item){
-      item.showcommit=!item.showcommit;
+    mouseLeave(index) {
+      if(index==0)
+        this.icolor = 'color: black';
+      else if(index==1)
+        this.icolor1=  'color: black';
+
+    },
+    submitcommit(item) {
+      item.showcommit = !item.showcommit;
+
+    },
+    clickcancel(item) {
+      item.showcommit = !item.showcommit;
     },
   }
 
@@ -136,16 +177,17 @@ export default {
 </script>
 
 <style scoped>
-.box{
+.box {
   margin: auto;
-  width:60%;
+  width: 60%;
   background-color: #fff;
   margin-bottom: 40px;
   height: 250px;
   perspective: 1000px;
   border-radius: 20px;
 }
-.img{
+
+.img {
   height: 250px;
   width: 35% !important;
   display: flex;
@@ -154,19 +196,24 @@ export default {
   border-radius: 20px 0px 0px 20px;
 
 }
-.text span{
+
+.text span {
   margin-top: 10px;
 
 
   font-weight: bold;
 }
-.text p{
+
+.text p {
   margin-top: 10px;
   margin-right: 10px;
-  word-wrap:break-word;
-  white-space:pre-wrap;
+  word-wrap: break-word;
+  white-space: pre-wrap;
   text-align: justify;
   display: inline;
 }
-
+/deep/ .el-textarea__inner:focus {
+  border: 1px solid rgb(252, 208, 195);
+  box-shadow: 0 1px 3px rgb(252, 208, 195), 0 3px 3px rgb(243, 244, 246);
+}
 </style>
