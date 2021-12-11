@@ -135,87 +135,14 @@
 <script>
 import {updateAvatar} from "../api/user/info";
 import {feedback} from "../api/feedback/feedback";
-import {uploadGoods} from"../api/goods/goods"
+import {getPurchase, getUpload, uploadGoods} from "../api/goods/goods"
+import {getCategory} from "../api/category/category";
+
 export default {
   name: "upload",
   data() {
     return {
-      options: [
-        {
-          value: '电子产品',
-          label: '电子产品',
-          children: [{
-            value: '手机',
-            label: '手机',
-          }, {
-            value: '电脑',
-            label: '电脑',
-          }]
-        },
-        {
-          value: '衣服裤子',
-          label: '衣服裤子',
-          children: [{
-            value: '衣服',
-            label: '衣服',
-          }, {
-            value: '裤子',
-            label: '裤子',
-          }]
-        },
-        {
-          value: '零食小吃',
-          label: '零食小吃',
-          children: [{
-            value: '水果',
-            label: '水果',
-          }, {
-            value: '饼干',
-            label: '饼干',
-          }]
-        },
-        {
-          value: '体育用品',
-          label: '体育用品',
-          children: [{
-            value: '篮球',
-            label: '篮球',
-          }, {
-            value: '足球',
-            label: '足球',
-          }]
-        },
-        {
-          value: '美容化妆',
-          label: '美容化妆',
-          children: [{
-            value: '口红',
-            label: '口红',
-          }, {
-            value: '粉底',
-            label: '粉底',
-          }]
-        },
-        {
-          value: '书籍资料',
-          label: '书籍资料',
-          children: [{
-            value: '数学',
-            label: '数学',
-          }, {
-            value: '计算机',
-            label: '计算机',
-          }]
-        },
-        {
-          value: '其他',
-          label: '其他',
-          children: [{
-            value: '其他',
-            label: '其他',
-          }]
-        },
-      ],
+      options: [],
       activeName: 'y',
       //修改商品用的
       temp: {
@@ -279,6 +206,60 @@ export default {
       }
     };
   },
+  mounted: function () {
+    this.options = []
+    getCategory().then(res => {
+      let category = res.data.category
+      let length = res.data.category.length
+      for (let i = 0; i < length; i++) {
+        this.options.push({
+          value: category[i].category,
+          label: category[i].category,
+          children: []
+        })
+        let s = '';
+        for (let j = 0; j < category[i].sub_category.length; j++) {
+          if (category[i].sub_category[j] !== '[' && category[i].sub_category[j] !== ']' && category[i].sub_category[j] !== ',') {
+            s += category[i].sub_category[j];
+          } else if (category[i].sub_category[j] !== '[') {
+            this.options[i].children.push({
+              value: s,
+              label: s,
+            })
+            s = ''
+          }
+        }
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
+    //得到上架的物品
+    getUpload().then(res => {
+      console.log(res.data)
+      let goodsList = res.data.goodsInfoList
+      for (let i; i < goodsList.length; i++) {
+        if (goodsList[i].status === "售卖中")
+          this.onItemList.push({
+            name: goodsList[i].name,
+            description: goodsList[i].description,
+            category: goodsList[i].sub_category,
+            url: goodsList[i].goods_url,
+            price: goodsList[i].price,
+            showonload: false,
+          })
+        else {
+          this.buyItemList.push({
+            name: goodsList[i].name,
+            time: goodsList[i].time,
+            url: goodsList[i].goods_url,
+            customer: goodsList[i].customer,
+          })
+        }
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
+  },
   methods: {
     editCropper() {
       this.open = true;
@@ -303,8 +284,9 @@ export default {
     submitForm(commodity) {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
-          uploadGoods(this.commodity.description,this.commodity.name,this.commodity.category[1],this.commodity.price ,this.commodity.image).then(res => {
+          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, this.commodity.image).then(res => {
             this.$message.success("上传成功！")
+            this.showuploadcommodity = false
           }).catch(function (error) {
             console.log(error)
           });
@@ -315,9 +297,9 @@ export default {
       });
     },
     resetForm(formName) {
-      if(formName==='temp')
+      if (formName === 'temp')
 
-      this.showuploadcommodity = false;
+        this.showuploadcommodity = false;
       this.$refs[formName].resetFields();
     },
     // 覆盖默认的上传行为
