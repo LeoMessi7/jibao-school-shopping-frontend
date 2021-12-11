@@ -62,8 +62,6 @@
                            class="img-circle img-lg" alt=""/>
                     </div>
                   </el-upload>
-
-
                 </el-form-item>
                 <el-form-item label="商品名称" prop="name">
                   <el-input v-model="item.title"></el-input>
@@ -108,7 +106,7 @@
                 </div>
                 <div style=" position: fixed;height: 42px;right: 20px;">
                   <el-button round icon="el-icon-edit" @click="item.showonload = true" type="warning">编辑</el-button>
-                  <el-button round icon="el-icon-delete" type="danger">下架</el-button>
+                  <el-button round icon="el-icon-delete" type="danger" @click="removeItem(item)">下架</el-button>
                 </div>
               </el-main>
             </el-container>
@@ -140,6 +138,7 @@
 
 <script>
 import {updateAvatar} from "../api/user/info";
+import {feedback} from "../api/feedback/feedback";
 
 export default {
   name: "upload",
@@ -332,6 +331,31 @@ export default {
       // let formData = new FormData();
       // formData.append("avatarfile", data);
     },
+    removeItem(item){
+      this.$confirm('确认是否下架?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        setTimeout(() => {
+          withdrawGoods(gid).then(res => {
+            let code = res.data.code
+            console.log(code)
+            if (code === 1)
+              this.$message.error("发送失败！")
+            else
+              this.$message.success("发送成功！")
+          }).catch(function (error) {
+            console.log(error)
+          });
+        }, 300);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消下架'
+        });
+      });
+    }
   }
 }
 </script>
