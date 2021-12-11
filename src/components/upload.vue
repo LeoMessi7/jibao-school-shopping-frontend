@@ -303,7 +303,7 @@ export default {
     submitForm(commodity) {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
-          uploadGoods(this.commodity.description,this.commodity.name,this.commodity.category[1],this.commodity.price).then(res => {
+          uploadGoods(this.commodity.description,this.commodity.name,this.commodity.category[1],this.commodity.price ,this.commodity.image).then(res => {
             this.$message.success("上传成功！")
           }).catch(function (error) {
             console.log(error)
