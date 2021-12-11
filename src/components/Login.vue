@@ -116,18 +116,18 @@ export default {
     handleLogon() {
       this.loading = true;
       if (this.regForm.email === "")
-        alert("邮箱不能为空")
+        this.$message({message:"邮箱不能为空！",type:'error',customClass:'zZindex'})
       else if (this.regForm.captcha_code === "")
-        alert("验证码不能为空")
+        this.$message({message:"验证码不能为空！",type:'error',customClass:'zZindex'})
       else {
         checkEmailCaptcha(this.regForm.email, this.regForm.captcha_code).then(res => {
           let code = res.data.code
           if (code === 1)
-            alert("注册失败！该邮箱不存在！")
+            this.$message({message:"注册失败！该邮箱不存在！",type:'error',customClass:'zZindex'})
           else if (code === 2 || code === 3)
-            alert("注册失败！验证码错误！")
+            this.$message({message:"注册失败！验证码错误！",type:'error',customClass:'zZindex'})
           else if (code === 0) {
-            alert("注册成功")
+            this.$message({message:"注册成功！",type:'success',customClass:'zZindex'})
             this.$cookies.set("email", this.regForm.email)
             this.$cookies.set("password", this.regForm.password)
             this.moveToLogin()
@@ -173,25 +173,25 @@ export default {
       let x = document.getElementsByClassName("dyEmailButton");
       this.waitingtime--;
       if (this.regForm.userName === "") {
-        alert("用户名不能为空");
+        this.$message({message:"用户名不能为空！",type:'error',customClass:'zZindex'})
         this.waitingtime = 60;
       } else if (this.regForm.password === "" && this.regForm.confirm === "") {
-        alert("密码不能为空")
+        this.$message({message:"密码不能为空！",type:'error',customClass:'zZindex'})
         this.waitingtime = 60;
       } else if (this.regForm.email === "") {
-        alert("邮箱不能为空")
+        this.$message({message:"邮箱不能为空！",type:'error',customClass:'zZindex'})
         this.waitingtime = 60;
       } else if (this.regForm.password !== this.regForm.confirm) {
-        alert("两次输入的密码不一致")
+        this.$message({message:"两次输入的密码不一致！",type:'error',customClass:'zZindex'})
         this.waitingtime = 60;
       } else {
         checkAccount(this.regForm.email, this.regForm.password, this.regForm.userName).then(res => {
           let code = res.data.code
           if (code === 1) {
-            alert("该邮箱已被注册！");
+            this.$message({message:"该邮箱已被注册！",type:'error',customClass:'zZindex'})
             this.waitingtime = 60;
           } else {
-            alert("验证码已发送至邮箱！")
+            this.$message({message:"验证码已发送至邮箱！",type:'success',customClass:'zZindex'})
             let timer = setInterval(() => {
               this.emailbtn = this.waitingtime + "秒后重新发送"
               this.waitingtime--;
@@ -210,23 +210,23 @@ export default {
     handleLogin() {
       this.loading = true;
       if (this.loginForm.email === "")
-        alert("邮箱不能为空")
+        alert("邮箱不能为空！")
       else if (this.loginForm.password === "")
-        alert("密码不能为空")
+        alert("密码不能为空！")
       else if (this.loginForm.captcha_code === "")
-        alert("验证码不能为空")
+        alert("验证码不能为空！")
       else {
         loginGet(this.loginForm.email, this.loginForm.password, this.loginForm.captcha_code).then(res => {
           let code = res.data.code
           console.log(code)
           if (code === 1)
-            alert("登录失败！该用户不存在！")
+            this.$message({message:"登录失败！该用户不存在！",type:'error',customClass:'zZindex'})
           else if (code === 2)
-            alert("登录失败！用户名与密码不匹配！")
+            this.$message({message:"登录失败！用户名与密码不匹配！",type:'error',customClass:'zZindex'})
           else if (code === 3)
-            alert("登录失败！验证码错误！")
+            this.$message({message:"登录失败！验证码错误！",type:'error',customClass:'zZindex'})
           else if (code === 0) {
-            alert("登录成功")
+            this.$message({message:"登录成功！",type:'success',customClass:'zZindex'})
             this.$cookies.set("email", this.loginForm.email)
             this.$cookies.set("password", this.loginForm.password)
             this.$cookies.set("user_name", res.data.user_name)

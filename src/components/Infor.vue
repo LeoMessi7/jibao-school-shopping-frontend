@@ -117,7 +117,7 @@
 <script>
 import bar from './bar'
 import sidebar from './sidebar'
-import {updateAvatar} from "../api/user/info";
+import {changePassword, updateAvatar} from "../api/user/info";
 
 export default {
   name: "Infor",
@@ -180,6 +180,10 @@ export default {
     };
   },
   mounted:function() {
+    if(!this.$cookies.isKey("user_name")){
+      this.$message({message:"请先登录！",type:'warning',customClass:'zZindex'})
+      this.$router.push("/Login")
+    }
     this.user.email = this.$cookies.get("email")
     this.user.nickName = this.$cookies.get("user_name")
     window.onresize = () =>{
@@ -202,9 +206,8 @@ export default {
     // 上传预处理
     beforeUpload(file) {
       if (file.type.indexOf("image/") === -1) {
-        this.$message("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+        this.$message({message:"文件格式错误，请上传图片类型，如：JPG，PNG后缀的文件！",type:'error',customClass:'zZindex'})
       } else {
-        console.log(file)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -218,21 +221,24 @@ export default {
       updateAvatar(this.formData).then(res => {
         let code = res.data.code
         if(code === 1){
-          this.$message({message:"修改失败",type:'failed',customClass:'zZindex'});
+          this.$message({message:"修改失败！",type:'error',customClass:'zZindex'})
         }
         else if(code === 0){
           this.open = false;
-          this.$message({message:"修改成功",type:'success',customClass:'zZindex'});
+          this.$message({message:"修改成功！",type:'success',customClass:'zZindex'});
           this.options.img = 'http://127.0.0.1:8081/' + res.data.avatar_url
+
           this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
           this.visible = false;
         }
-      })
+      }).catch(function (error) {
+        console.log(error)
+      });
     },
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-            this.$message({message:"修改成功",type:'success'});
+            this.$message({message:"修改成功！",type:'success'});
         }
       });
     },
@@ -240,7 +246,22 @@ export default {
       this.$router.push({ path: "/index" });
     },
     confirmPassword(){
-      this.$message({message:"修改成功",type:'success'});
+      if(this.user.oldpassword !== this.$cookies.get("password"))
+        this.$message({message:"请输入正确的旧密码！",type:'error',customClass:'zZindex'})
+      else if(this.user.newpassword === "")
+        this.$message({message:"新密码不能为空！",type:'error',customClass:'zZindex'})
+      else if(this.user.newpassword !== this.user.renewpassword)
+        this.$message({message:"两次输入的密码不一致",type:'error',customClass:'zZindex'})
+      else if(this.user.newpassword === this.user.oldpassword)
+        this.$message({message:"该密码正在被使用！",type:'error',customClass:'zZindex'})
+      else {
+        changePassword(this.user.newpassword).then(res => {
+          this.$message({message:"修改成功！",type:'success',customClass:'zZindex'})
+          this.$cookies.set("password", this.user.newpassword)
+        }).catch(function (error) {
+          console.log(error)
+        });
+      }
     }
   }
 }

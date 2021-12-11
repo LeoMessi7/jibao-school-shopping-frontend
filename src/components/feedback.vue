@@ -28,6 +28,12 @@ export default {
       }
     }
   },
+  mounted(){
+    if(!this.$cookies.isKey("user_name")){
+      this.$message({message:"请先登录！",type:'warning',customClass:'zZindex'})
+      this.$router.push("/Login")
+    }
+  },
   methods: {
     onSubmit() {
       if (this.form.content === '') {
@@ -53,7 +59,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消发送'
+            message: '已取消发送！'
           });
         });
       }
