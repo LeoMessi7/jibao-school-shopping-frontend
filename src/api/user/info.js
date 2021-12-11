@@ -8,15 +8,14 @@ import axiosInstance from "../index.js"
 
 const axios = axiosInstance
 
-export function updateAvatar(image){
-  const map = {avatar: image}
+export function updateAvatar(formData){
+  console.log(1)
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/user/info/updateAvatar',
+    url: '/user/info/updateAvatar',
     headers: {
-      isToken: true,
-      'Content-Type':'application/json'
+      'Content-Type':'multipart/form-data'
     },
-    params: map
+    params: formData
   })
 }

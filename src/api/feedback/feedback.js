@@ -12,9 +12,9 @@ export function feedback(content){
   const map = {content: content}
   return axios({
     method: 'POST',
-    url: 'http://127.0.0.1:8081/feedback',
+    url: '/feedback',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     params: map
   })
