@@ -1,16 +1,17 @@
 <template>
   <div id="shop">
-    <el-container style="margin-left: 20px;height: 100%">
-      <el-header class="relate" style="height:70px;margin-top: 8px;width: 100%">
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="float: left">
-          <el-breadcrumb-item to="/shop/item">全部</el-breadcrumb-item>
-          <el-breadcrumb-item v-for="(item,index) in this.$route.query.currentPath"
-                              :key="index"
-                              >{{item.name}}</el-breadcrumb-item>
-          <el-breadcrumb-item v-for="(item,index) in currentPath"
-                              :key="index"
-          >{{item.name}}</el-breadcrumb-item>
-        </el-breadcrumb>
+    <br>
+    <el-container style="margin-left: 20px;height: 100%;">
+      <el-header class="relate" style="height:60px;margin-top: -8px;width: 100%">
+<!--        <el-breadcrumb separator-class="el-icon-arrow-right" style="float: left">-->
+<!--          <el-breadcrumb-item to="/shop/item">全部</el-breadcrumb-item>-->
+<!--          <el-breadcrumb-item v-for="(item,index) in this.$route.query.currentPath"-->
+<!--                              :key="index"-->
+<!--                              >{{item.name}}</el-breadcrumb-item>-->
+<!--          <el-breadcrumb-item v-for="(item,index) in currentPath"-->
+<!--                              :key="index"-->
+<!--          >{{item.name}}</el-breadcrumb-item>-->
+<!--        </el-breadcrumb>-->
         <div class="ul-1">
             <span style="font-size: medium;display: inline"> 类别：</span>
           <div

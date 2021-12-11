@@ -33,41 +33,27 @@ export default {
       if (this.form.content === '') {
         this.$message.error("不能提交空白信息！")
       } else {
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '提交',
-          message: h('p', null, [
-            h('span', null, '请确认是否提交？ '),
-          ]),
-          showCancelButton: true,
+        this.$confirm('确认是否提交?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = '提交中...';
-
-              feedback(this.form.content).then(res => {
-                console.log(1)
-                let code = res.data.code
-                console.log(code)
-                if (code === 1)
-                  alert("发送失败！")
-                else
-                  alert("发送成功！")
-              }).catch(function (error) {
-                console.log(error)
-              });
-              instance.confirmButtonLoading = false;
-
-            } else {
-              done()
-            }
-          }
-        }).then(action => {
+          type: 'warning'
+        }).then(() => {
+          setTimeout(() => {
+            feedback(this.form.content).then(res => {
+              let code = res.data.code
+              console.log(code)
+              if (code === 1)
+                this.$message.error("发送失败！")
+              else
+                this.$message.success("发送成功！")
+            }).catch(function (error) {
+              console.log(error)
+            });
+          }, 300);
+        }).catch(() => {
           this.$message({
-            type: 'success',
-            message: 'action: ' + action
+            type: 'info',
+            message: '已取消发送'
           });
         });
       }
