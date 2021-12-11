@@ -141,6 +141,7 @@ export default {
           renewpassword:''
 
       },
+      formData: new FormData(),
       open: false,
       // 是否显示cropper
       visible: false,
@@ -203,16 +204,14 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-          this.options.img = reader.result;
-          this.$cookies.set("avatar_img", file)
+          this.options.img = reader.result
         }
+        this.formData.append("avatar", file);
       }
     },
     // 上传图片
     uploadImg() {
-      let image = this.$cookies.get("avatar_img")
-      console.log(image)
-      updateAvatar(image).then(res => {
+      updateAvatar(this.formData).then(res => {
         let code = res.data.code
         if(code === 1){
           this.$message({message:"修改失败",type:'failed',customClass:'zZindex'});
@@ -225,8 +224,6 @@ export default {
           this.visible = false;
         }
       })
-        // let formData = new FormData();
-        // formData.append("avatarfile", data);
     },
     submit() {
       this.$refs["form"].validate(valid => {
