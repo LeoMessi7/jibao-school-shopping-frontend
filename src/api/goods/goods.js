@@ -59,9 +59,21 @@ export function withdrawGoods(gid){
 export function getPurchase(){
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/goods/getPurchase',
+    url: 'goods/getPurchase',
     headers: {
-      isToken: false
+      'Content-Type': 'application/json'
     },
+  })
+}
+
+
+export function getUpload() {
+  return axios({
+    method: 'POST',
+    url: 'goods/getUpload',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    params: {}
   })
 }
