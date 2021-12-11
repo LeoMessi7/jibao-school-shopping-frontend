@@ -197,7 +197,6 @@ export default{
     },
     clickreturn:function(){
       this.$router.push('/admin');
-
     },
   }
 }

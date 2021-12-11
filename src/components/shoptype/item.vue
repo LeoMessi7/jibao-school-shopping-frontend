@@ -9,7 +9,14 @@
       </div>
       <div class="back-face">
         <span>{{item.title}}</span>
-        <p>{{item.content}}</p>
+        <p>描述：{{item.description}}</p>
+        <p>商家：{{item.provider}}</p>
+        <p>价格：{{item.price}}</p>
+        <el-row class="collectbuy">
+          <el-button :type="item.collecttype" :icon="item.collectionicon" circle @click="changecolor(item)"></el-button>
+          <el-button type="success" icon="el-icon-goods" circle></el-button>
+          <el-button type="danger" icon="el-icon-user-solid" circle plain></el-button>
+        </el-row>
       </div>
     </div>
 
@@ -24,14 +31,28 @@ export default {
   data(){
     return{
       list:[
-        {url:'../../../static/item/jt1.jpg',title:'美女1',content:'1111111111111111111111111111111111111111111111111111111111111111111111111111111'},
-        {url:'../../../static/item/jt2.jpg',title:'美女2',content:'22222222222222222222222222222222222222222222222222222222222222222'},
-        {url:'../../../static/item/jt3.jpg',title:'美女3',content:'33333333333333333333333333333333333333333333333333333333333333333333333333333333'},
-        {url:'../../../static/item/jt4.jpg',title:'美女3',content:'33333333333333333333333333333333333333333333333333333333333333333333333333333333'},
-        {url:"../../../static/item/jt5.jpg",title:'美女3',content:'33333333333333333333333333333333333333333333333333333333333333333333333333333333'},
-        {url:"../../../static/item/jt6.jpg",title:'美女3',content:'都擦无法无法无法恶法挖法啊啊啊啊啊啊啊啊我阿达伟大顶顶顶顶顶顶顶顶顶顶'},
+        {url:'../../../static/item/jt1.jpg',title:'美女1',description:'我在门后 假装你人还没走',provider:'马牛逼',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
+        {url:'../../../static/item/jt2.jpg',title:'美女2',description:'旧地如重游 月圆更寂寞',provider:'王老师',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
+        {url:'../../../static/item/jt3.jpg',title:'美女3',description:'夜半清醒的烛火 不忍苛责我',provider:'小迪小迪',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
+        {url:'../../../static/item/jt4.jpg',title:'美女3',description:'一壶漂泊 浪迹天涯难入喉',provider:'啦啦啦',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
+        {url:"../../../static/item/jt5.jpg",title:'美女3',description:'你走之后 酒暖回忆思念瘦',provider:'唔西迪西',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
+        {url:"../../../static/item/jt6.jpg",title:'美女3',description:'水向东流 上面的朋友',provider:'玛卡巴卡',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
+      ],
 
-      ]
+    }
+  },
+  methods:{
+    changecolor:function(item){
+      if(item.collecttype==""){
+        item.collecttype="primary";
+      }else{
+        item.collecttype="";
+      }
+      if(item.collectionicon=="el-icon-shopping-cart-2"){
+        item.collectionicon="el-icon-shopping-cart-full";
+      }else{
+        item.collectionicon="el-icon-shopping-cart-2";
+      }
     }
   }
 }
@@ -90,7 +111,7 @@ export default {
   transition: all 0.5s ease;
 }
 .box .back-face span{
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 600;
   color: #4d2419;
   -webkit-background-clip: text;
@@ -124,12 +145,17 @@ export default {
   box-shadow: 0px 5px 20px 0px rgba(252,189,171,0.5);
 }
 .box .back-face p{
+  font-size:20px;
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 10px;
   word-wrap:break-word;
   white-space:pre-wrap;
   text-align: justify;
+}
+.collectbuy{
+  margin-top:40px;
+  margin-left:150px;
 }
 
 @font-face {
