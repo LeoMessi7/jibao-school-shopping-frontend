@@ -8,7 +8,9 @@ import axiosInstance from "../index.js"
 
 const axios = axiosInstance
 
-export function updateAvatar(formData){
+export function updateAvatar(image){
+  let formData = new FormData()
+  formData.append("avatar", image)
   return axios({
     method: 'POST',
     url: '/user/info/updateAvatar',

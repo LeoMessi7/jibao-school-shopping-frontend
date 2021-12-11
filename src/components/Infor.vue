@@ -214,7 +214,8 @@ export default {
     },
     // 上传图片
     uploadImg() {
-      updateAvatar(this.formData).then(res => {
+      let image = this.formData.get("avatar")
+      updateAvatar(image).then(res => {
         let code = res.data.code
         if(code === 1){
           this.$message({message:"修改失败！",type:'error',customClass:'zZindex'})
@@ -222,8 +223,7 @@ export default {
         else if(code === 0){
           this.open = false;
           this.$message({message:"修改成功！",type:'success',customClass:'zZindex'});
-          this.options.img = 'http://127.0.0.1:8081/' + res.data.avatar_url
-
+          console.log(this.options.img)
           this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
           this.visible = false;
         }
