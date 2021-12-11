@@ -114,8 +114,6 @@
             </el-container>
 
           </div>
-          >
-
         </el-tab-pane>
         <el-tab-pane label="已卖出" name="n">
           <el-container class="box1" v-for="(item,index) in buyItemList" :key="index">
