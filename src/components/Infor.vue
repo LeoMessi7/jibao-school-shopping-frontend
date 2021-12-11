@@ -13,46 +13,52 @@
               </div>
               <div>
                 <div class="text-center" style="text-align: center">
-                  <div class="user-info-head" @click="editCropper()"><img v-bind:src="options.img" title="点击上传头像" class="img-circle img-lg" alt=""  /></div>
+                  <div class="user-info-head" @click="editCropper()"><img v-bind:src="options.img" title="点击上传头像"
+                                                                          class="img-circle img-lg" alt=""/></div>
                   <el-dialog :title="title"
                              :visible.sync="open"
                              width="300px"
-                              style="text-align: center;height: 500px"
+                             style="text-align: center;height: 500px"
                              @opened="modalOpened">
                     <el-row>
-                      <el-col  style="height: 240px">
+                      <el-col style="height: 240px">
                         <div class="avatar-upload-preview">
                           <img :src="options.img"/>
                         </div>
                       </el-col>
                     </el-row>
-                    <el-row >
-                        <el-upload style="margin-left:40px; float: left" action="#" :http-request="requestUpload" :show-file-list="false" :before-upload="beforeUpload">
-                          <el-button  size="small">
-                            选择
-                            <i class="el-icon-upload el-icon--right"></i>
-                          </el-button>
-                        </el-upload>
-                        <el-button style="margin-right:40px;float: right" type="primary" size="small" @click="uploadImg">提 交</el-button>
-                      </el-row>
+                    <el-row>
+                      <el-upload style="margin-left:40px; float: left" action="#" :http-request="requestUpload"
+                                 :show-file-list="false" :before-upload="beforeUpload">
+                        <el-button size="small">
+                          选择
+                          <i class="el-icon-upload el-icon--right"></i>
+                        </el-button>
+                      </el-upload>
+                      <el-button style="margin-right:40px;float: right" type="primary" size="small" @click="uploadImg">提
+                        交
+                      </el-button>
+                    </el-row>
                   </el-dialog>
                 </div>
                 <ul class="list-group list-group-striped">
                   <li class="list-group-item">
                     <span>用户名称:</span>
-                    <div class="pull-right">朱狗屎</div>
-                  </li>
-                  <li class="list-group-item">
-                    <span>手机号码:</span>
-                    <div class="pull-right">13033333333</div>
+                    <div class="pull-right">{{ user.nickName }}</div>
                   </li>
                   <li class="list-group-item">
                     <span>邮箱:</span>
-                    <div class="pull-right">1367878459@qq.com</div>
+                    <div class="pull-right">{{ user.email }}</div>
                   </li>
                   <li class="list-group-item">
-                    <span>创建日期:</span>
-                    <div class="pull-right">1921.12.2</div>
+                    <span>综合评分:</span>
+                    <div class="pull-right">
+                      <el-rate style="display: inline;"
+                               disabled
+                               show-score
+                               :colors="['#fcbdab','#fcbdab','#fcbdab']" v-model="user.rate">
+                      </el-rate>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -67,40 +73,34 @@
                 <el-tab-pane label="基本资料" name="userinfo">
                   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
                     <el-form-item label="用户昵称" prop="nickName">
-                      <el-input v-model="user.nickName" />
-                    </el-form-item>
-                    <el-form-item label="手机号码" prop="phonenumber">
-                      <el-input v-model="user.phonenumber" maxlength="11" />
+                      <el-input v-model="user.nickName" disabled/>
                     </el-form-item>
                     <el-form-item label="邮箱" prop="email">
-                      <el-input v-model="user.email" maxlength="50" />
+                      <el-input v-model="user.email" maxlength="50" disabled/>
                     </el-form-item>
-                    <el-form-item label="性别">
-                      <el-radio-group v-model="user.sex">
-                        <el-radio label="0">男</el-radio>
-                        <el-radio label="1">女</el-radio>
-                      </el-radio-group>
+                    <el-form-item label="综合评分" prop="rate">
+                      <el-input v-model="user.rate" maxlength="50" disabled/>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="primary" size="mini" @click="submit">保存</el-button>
                       <el-button type="danger" size="mini" @click="close">关闭</el-button>
                     </el-form-item>
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="修改密码" name="resetPwd">
-                  <el-form ref="form" :model="user" :rules="rules" label-width="80px">
-                    <el-form-item label="旧密码" prop="oldpassword">
-                      <el-input v-model="user.oldpassword" />
+                  <el-form ref="formPassword" :model="formPassword"  :rules="rules" label-width="80px">
+                    <el-form-item label="旧密码" prop="oldpassword" autocomplete="off">
+                      <el-input type="password" v-model="formPassword.oldpassword"/>
                     </el-form-item>
                     <el-form-item label="新密码" prop="newpassword">
-                      <el-input v-model="user.newpassword" maxlength="11" />
+                      <el-input type="password" v-model="formPassword.newpassword" maxlength="16"/>
                     </el-form-item>
                     <el-form-item label="确认密码" prop="renewpassword">
-                      <el-input v-model="user.renewpassword" maxlength="50" />
+                      <el-input type="password" v-model="formPassword.renewpassword" maxlength="16"/>
                     </el-form-item>
                   </el-form>
                   <div style="text-align: center">
                     <el-button type="primary" size="medium" @click="confirmPassword">修改</el-button>
+                    <el-button @click="resetForm('formPassword')">重置</el-button>
                   </div>
                 </el-tab-pane>
               </el-tabs>
@@ -129,17 +129,16 @@ export default {
   data() {
     return {
       // 是否显示弹出层
-      activeName:'userinfo',
-        user: {
-          nickName: '',
-          phonenumber: 13614511587,
-          email:'',
-          sex:'0',
-          password:'',
-          oldpassword:'',
-          newpassword:'',
-          renewpassword:''
-
+      activeName: 'userinfo',
+      user: {
+        nickName: '',
+        email: '',
+        rate: '4.5',
+      },
+      formPassword:{
+        oldpassword:'',
+        newpassword:'',
+        renewpassword:'',
       },
       formData: new FormData(),
       open: false,
@@ -154,37 +153,30 @@ export default {
       // 表单校验
       rules: {
         nickName: [
-          { required: true, message: "用户昵称不能为空", trigger: "blur" }
+          {required: true, message: "用户昵称不能为空", trigger: "blur"}
         ],
         email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+          {required: true, message: "邮箱地址不能为空", trigger: "blur"},
           {
             type: "email",
             message: "'请输入正确的邮箱地址",
             trigger: ["blur", "change"]
           }
         ],
-        phonenumber: [
-          { required: true, message: "手机号码不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: "blur"
-          }
-        ]
       }
     };
   },
-  mounted:function() {
-    if(!this.$cookies.isKey("user_name")){
-      this.$message({message:"请先登录！",type:'warning',customClass:'zZindex'})
+  mounted: function () {
+    if (!this.$cookies.isKey("user_name")) {
+      this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
       this.$router.push("/Login")
     }
     this.user.email = this.$cookies.get("email")
     this.user.nickName = this.$cookies.get("user_name")
-    window.onresize = () =>{
+    window.onresize = () => {
       this.user.email = this.$cookies.get("email")
       this.user.nickName = this.$cookies.get("user_name")
+      this.user.rate = this.$cookies.get("mark")
     };
   },
   methods: {
@@ -202,7 +194,7 @@ export default {
     // 上传预处理
     beforeUpload(file) {
       if (file.type.indexOf("image/") === -1) {
-        this.$message({message:"文件格式错误，请上传图片类型，如：JPG，PNG后缀的文件！",type:'error',customClass:'zZindex'})
+        this.$message({message: "文件格式错误，请上传图片类型，如：JPG，PNG后缀的文件！", type: 'error', customClass: 'zZindex'})
       } else {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -217,12 +209,11 @@ export default {
       let image = this.formData.get("avatar")
       updateAvatar(image).then(res => {
         let code = res.data.code
-        if(code === 1){
-          this.$message({message:"修改失败！",type:'error',customClass:'zZindex'})
-        }
-        else if(code === 0){
+        if (code === 1) {
+          this.$message({message: "修改失败！", type: 'error', customClass: 'zZindex'})
+        } else if (code === 0) {
           this.open = false;
-          this.$message({message:"修改成功！",type:'success',customClass:'zZindex'});
+          this.$message({message: "修改成功！", type: 'success', customClass: 'zZindex'});
           console.log(this.options.img)
           this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
           this.visible = false;
@@ -234,30 +225,33 @@ export default {
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-            this.$message({message:"修改成功！",type:'success'});
+          this.$message({message: "修改成功！", type: 'success'});
         }
       });
     },
     close() {
-      this.$router.push({ path: "/index" });
+      this.$router.push({path: "/"});
     },
-    confirmPassword(){
-      if(this.user.oldpassword !== this.$cookies.get("password"))
-        this.$message({message:"请输入正确的旧密码！",type:'error',customClass:'zZindex'})
-      else if(this.user.newpassword === "")
-        this.$message({message:"新密码不能为空！",type:'error',customClass:'zZindex'})
-      else if(this.user.newpassword !== this.user.renewpassword)
-        this.$message({message:"两次输入的密码不一致",type:'error',customClass:'zZindex'})
-      else if(this.user.newpassword === this.user.oldpassword)
-        this.$message({message:"该密码正在被使用！",type:'error',customClass:'zZindex'})
+    confirmPassword() {
+      if (this.formPassword.oldpassword !== this.$cookies.get("password"))
+        this.$message({message: "请输入正确的旧密码！", type: 'error', customClass: 'zZindex'})
+      else if (this.formPassword.newpassword === "")
+        this.$message({message: "新密码不能为空！", type: 'error', customClass: 'zZindex'})
+      else if (this.formPassword.newpassword !== this.formPassword.renewpassword)
+        this.$message({message: "两次输入的密码不一致", type: 'error', customClass: 'zZindex'})
+      else if (this.formPassword.newpassword === this.formPassword.oldpassword)
+        this.$message({message: "该密码正在被使用！", type: 'error', customClass: 'zZindex'})
       else {
-        changePassword(this.user.newpassword).then(res => {
-          this.$message({message:"修改成功！",type:'success',customClass:'zZindex'})
-          this.$cookies.set("password", this.user.newpassword)
+        changePassword(this.formPassword.newpassword).then(res => {
+          this.$message({message: "修改成功！", type: 'success', customClass: 'zZindex'})
+          this.$cookies.set("password", this.formPassword.newpassword)
         }).catch(function (error) {
           console.log(error)
         });
       }
+    },
+    resetForm(formPassword) {
+      this.$refs[formPassword].resetFields();
     }
   }
 }
@@ -287,13 +281,16 @@ export default {
   line-height: 110px;
   border-radius: 50%;
 }
+
 .img-circle {
   border-radius: 50%;
 }
+
 .img-lg {
   width: 120px;
   height: 120px;
 }
+
 .avatar-upload-preview {
   display: flex;
   margin-left: 30px;
@@ -303,7 +300,11 @@ export default {
   box-shadow: 0 0 4px #ccc;
   overflow: hidden;
 }
-.list-group-item{list-style-type:none}
+
+.list-group-item {
+  list-style-type: none
+}
+
 .list-group-striped > .list-group-item {
   border-left: 0;
   border-right: 0;
@@ -324,14 +325,23 @@ export default {
   padding: 11px 0px;
   font-size: 13px;
 }
+
 .clearfix:after {
-   visibility: hidden;
-   display: block;
-   font-size: 0;
-   content: " ";
-   clear: both;
-   height: 0;
- }
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+/deep/ .el-input.is-disabled .el-input__inner {
+  background-color: #F5F7FA;
+  border-color: #E4E7ED;
+  color: #3a3939;
+  cursor: not-allowed;
+}
+
 .pull-right {
   float: right !important;
 }

@@ -1,7 +1,7 @@
 <template>
   <div id="record">
     <div v-for="(item,index) in onItemList" :key="index">
-      <el-dialog :visible.sync="item.showcommit" style="padding-top: 80px;margin:auto;width: 80%" @close="resetForm('commodity')">
+      <el-dialog :visible.sync="item.showcomment" style="padding-top: 80px;margin:auto;width: 80%" @close="resetForm('commodity')">
         <div style="margin-left: 5%">
           <span style="display: inline">评分：</span>
           <el-rate style="display: inline;" :colors="['#fcbdab','#fcbdab','#fcbdab']" v-model="item.rate"></el-rate>
@@ -13,12 +13,12 @@
             type="textarea"
             :autosize="{minRows:3}"
             placeholder="请输入评价"
-            v-model="item.commit"
+            v-model="item.comment"
             style="width:90%;margin-top: 10px"
-            v-show="item.showcommit"
+            v-show="item.showcomment"
           />
         </div>
-        <div class="reply" style="margin-top:20px;text-align: center" v-show="item.showcommit">
+        <div class="reply" style="margin-top:20px;text-align: center" v-show="item.showcomment">
           <i class="el-icon-circle-check"
              :style="icolor"
              @mouseover="mouseOver(0)"
@@ -44,7 +44,7 @@
           </div>
           <el-footer style="position: fixed;height: 42px;right: 20px;bottom: 20px">
             <div class="contact" style="margin-left:240px;">
-              <el-button round icon="el-icon-edit" type="warning" @click="item.showcommit=true">评价</el-button>
+              <el-button round icon="el-icon-edit" type="warning" @click="item.showcomment=true">评价</el-button>
               <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success">卖家</el-button>
             </div>
           </el-footer>
@@ -64,7 +64,6 @@ export default {
   data() {
     return {
       activeName: 'first',
-      showComment: false,
       icolor:'color:grey' ,
       icolor1:'color:grey',
       onItemList: [
@@ -117,11 +116,11 @@ export default {
 
     },
     submitcommit(item) {
-      item.showcommit = !item.showcommit;
+      item.showcomment = !item.showcomment;
 
     },
     clickcancel(item) {
-      item.showcommit = !item.showcommit;
+      item.showcomment = !item.showcomment;
     },
   }
 
