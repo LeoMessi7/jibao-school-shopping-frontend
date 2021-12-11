@@ -18,6 +18,10 @@ import beauty from '../components/shoptype/beauty'
 import sport from '../components/shoptype/sport'
 import item from '../components/shoptype/item'
 import Infor from '../components/Infor'
+import admin from '../components/administrator/admin'
+import adminbar from '../components/administrator/adminbar'
+import adminsidebar from '../components/administrator/adminsidebar'
+import dealfeedback from '../components/administrator/dealfeedback'
 import 'animate.css'
 
 Vue.use(Router)
@@ -114,6 +118,16 @@ export default new Router({
       path:'/Login',
       name:'Login',
       component:Login
+    },
+    {
+      path:'/admin',
+      name:'admin',
+      component:admin
+    },
+    {
+      path:'/dealfeedback',
+      name:'dealfeedback',
+      component:dealfeedback
     }
   ]
 })
