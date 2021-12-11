@@ -48,7 +48,6 @@
               <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success">卖家</el-button>
             </div>
           </el-footer>
-
         </el-main>
       </el-container>
     </div>
@@ -58,7 +57,6 @@
 
 <script>
 import {getPurchase} from '../api/goods/goods'
-import upload from "./upload";
 export default {
   name: "record",
   data() {
