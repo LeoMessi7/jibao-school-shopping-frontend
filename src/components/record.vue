@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import {getPurchase} from '../api/goods/goods'
+import upload from "./upload";
 export default {
   name: "record",
   data() {
@@ -70,85 +72,35 @@ export default {
           url: '../../static/item/jt1.jpg',
           title: '美女1',
           content: '1111111111111111111111111111111111111111111111111111111111111111111111111111111',
-          showcommit: false,
+          showcomment: false,
           rate: null,
-          commit: '',
-        },
-        {
-          url: '../../static/item/jt2.jpg',
-          title: '美女2',
-          content: '22222222222222222222222222222222222222222222222222222222222222222',
-          showcommit: false,
-          rate: null,
-          commit: '',
-        },
-        {
-          url: '../../static/item/jt3.jpg',
-          title: '美女3',
-          content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333',
-          showcommit: false,
-          rate: null,
-          commit: '',
-        },
-        {
-          url: '../../static/item/jt4.jpg',
-          title: '美女3',
-          content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333',
-          showcommit: false,
-          rate: null,
-          commit: '',
-        },
-        {
-          url: "../../static/item/jt5.jpg",
-          title: '美女3',
-          content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333',
-          showcommit: false,
-          rate: null,
-          commit: '',
-        },
-        {
-          url: "../../static/item/jt6.jpg",
-          title: '美女3',
-          content: '都擦无法无法无法恶法挖法啊啊啊啊啊啊啊啊我阿达伟大顶顶顶顶顶顶顶顶顶顶',
-          showcommit: false,
-          rate: null,
-          commit: '',
+          comment: '',
         },
       ],
-      buyItemList: [
-        {
-          url: '../../static/item/jt1.jpg',
-          title: '美女1',
-          content: '1111111111111111111111111111111111111111111111111111111111111111111111111111111'
-        },
-        {
-          url: '../../static/item/jt2.jpg',
-          title: '美女2',
-          content: '22222222222222222222222222222222222222222222222222222222222222222'
-        },
-        {
-          url: '../../static/item/jt3.jpg',
-          title: '美女3',
-          content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333'
-        },
-        {
-          url: '../../static/item/jt4.jpg',
-          title: '美女3',
-          content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333'
-        },
-        {
-          url: "../../static/item/jt5.jpg",
-          title: '美女3',
-          content: '33333333333333333333333333333333333333333333333333333333333333333333333333333333'
-        },
-        {
-          url: "../../static/item/jt6.jpg",
-          title: '美女3',
-          content: '都擦无法无法无法恶法挖法啊啊啊啊啊啊啊啊我阿达伟大顶顶顶顶顶顶顶顶顶顶'
-        },
-      ]
     };
   },
+
+
+  mounted:function() {
+    getPurchase().then(res =>{
+      console.log(res.data)
+      let purchase_list = res.data.goodsInfoList
+      let length = res.data.length
+      for(let i = 0; i < length; i++){
+        this.onItemList.push({
+          url: 'http://127.0.0.1:8081/' + purchase_list[i].goods_url,
+          title: purchase_list[i].name,
+          content: purchase_list[i].description,
+          showcomment: false,
+          rate: null,
+          comment: '',
+        })
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
+  },
+
   methods: {
     mouseOver(index) {
       if(index==0)
