@@ -7,7 +7,7 @@ import home from '../components/home'
 import car from '../components/shopcar'
 import upload from '../components/upload'
 import feedback from '../components/feedback'
-import chat from '../components/chat'
+import chat from '../components/chat/x'
 import record from '../components/record'
 import shop from '../components/shoptype/shop'
 import eshop from '../components/shoptype/eshop'
@@ -18,10 +18,7 @@ import beauty from '../components/shoptype/beauty'
 import sport from '../components/shoptype/sport'
 import item from '../components/shoptype/item'
 import Infor from '../components/Infor'
-import admin from '../components/administrator/admin'
-import adminbar from '../components/administrator/adminbar'
-import adminsidebar from '../components/administrator/adminsidebar'
-import dealfeedback from '../components/administrator/dealfeedback'
+
 import 'animate.css'
 
 Vue.use(Router)
@@ -119,15 +116,5 @@ export default new Router({
       name:'Login',
       component:Login
     },
-    {
-      path:'/admin',
-      name:'admin',
-      component:admin
-    },
-    {
-      path:'/dealfeedback',
-      name:'dealfeedback',
-      component:dealfeedback
-    }
   ]
 })

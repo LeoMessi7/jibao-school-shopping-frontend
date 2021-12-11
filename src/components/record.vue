@@ -45,7 +45,7 @@
           <el-footer style="position: fixed;height: 42px;right: 20px;bottom: 20px">
             <div class="contact" style="margin-left:240px;">
               <el-button round icon="el-icon-edit" type="warning" @click="item.showcomment=true">评价</el-button>
-              <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success">卖家</el-button>
+              <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success" @click="addUser(item)">卖家</el-button>
             </div>
           </el-footer>
 
@@ -58,7 +58,7 @@
 
 <script>
 import {getPurchase} from '../api/goods/goods'
-import upload from "./upload";
+import {addChatUser} from "../js/global"
 export default {
   name: "record",
   data() {
@@ -71,6 +71,8 @@ export default {
           url: '../../static/item/jt1.jpg',
           title: '美女1',
           content: '1111111111111111111111111111111111111111111111111111111111111111111111111111111',
+/*          seller_name: "",
+          seller_avatar_url: "",*/
           showcomment: false,
           rate: null,
           comment: '',
@@ -81,15 +83,18 @@ export default {
 
 
   mounted:function() {
-    getPurchase().then(res =>{
+      getPurchase().then(res =>{
       console.log(res.data)
       let purchase_list = res.data.goodsInfoList
+      let seller_list = res.data.sellersInfoList
       let length = res.data.length
       for(let i = 0; i < length; i++){
         this.onItemList.push({
           url: 'http://127.0.0.1:8081/' + purchase_list[i].goods_url,
           title: purchase_list[i].name,
           content: purchase_list[i].description,
+          seller_name: seller_list[i].name,
+          seller_avatar_url: seller_list[i].avatar_url,
           showcomment: false,
           rate: null,
           comment: '',
@@ -101,17 +106,22 @@ export default {
   },
 
   methods: {
+
+    addUser(item){
+      addChatUser(item.seller_name, item.seller_avatar_url)
+    },
+
     mouseOver(index) {
-      if(index==0)
+      if(index===0)
         this.icolor = 'color: #F56C6C';
-      else if(index==1)
+      else if(index===1)
         this.icolor1=  'color: #F56C6C';
 
     },
     mouseLeave(index) {
-      if(index==0)
+      if(index===0)
         this.icolor = 'color: black';
-      else if(index==1)
+      else if(index===1)
         this.icolor1=  'color: black';
 
     },
