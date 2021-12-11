@@ -36,6 +36,7 @@
                 <input type="checkbox" class="fl minInput" v-model="item.pd" @click="itemClick(index)"/>
                 <img :src="item.imgUrl" class="fl" :class="{active:item.isActive}"/>
                 <span class="fl" style="margin-left: 10px">{{item.price.toFixed(2)}} 元</span>
+                <span class="fl" style="margin-left:20px;">{{item.num}}</span>
                 <span class="fl" style="color:red;margin-left:30px;" @click="deleteClick(index)">删除</span>
               </li>
             </ul>
@@ -85,7 +86,6 @@ export default {
         { id: 4, imgUrl:'./image/jt5.jpg',price: 6,num: 1, pd: false,isActive:false }
       ],
       totalInt:false,
-      newList:[],
       goodsNum:0,
       totalNum:0,
       loginState: this.$cookies.isKey("user_name")
@@ -102,30 +102,11 @@ export default {
     },
     filters: {
       priceNum: function(val) {
-        return val.toFixed(2)
+        return val.toFixed(2);
       }
     },
     computed:{
-      totalNum:function(){
-        var total=0;
-        for(var i in this.newList){
-          if(this.newList[i].pd){
-            total+=this.newList[i].price*this.newList[i].num
-          }else{
-            total=0
-          }
-        }
-        return total.toFixed(2)
-      },
-      goodsNum:function(){
-        var goods=0;
-        for(var i in this.newList){
-          if(this.newList[i].pd){
-            goods+=this.newList[i].num;
-          }
-        }
-        return goods
-      }
+
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -155,58 +136,49 @@ export default {
     },
     deleteClick(index) {
       if(this.list[index].pd){
-        this.list.splice(index,1);
-        this.newList.splice(index,1)
+        this.totalNum-=this.list[index].price*this.list[index].num;
+        this.goodsNum-=this.list[index].num;
+        this.list.splice(index,this.list[index].num);
       }else{
         alert('请先选择删除的选项')
       }
     },
     totalClick(){
-      this.totalInt=!this.totalInt
+      this.totalInt=!this.totalInt;
       if(this.totalInt){
-        for(let i in this.list){
-          this.list[i].pd=true;
-          this.list[i].isActive=true
-          if(this.list[i].pd){
-            this.newList.push(this.list[i]);
-          }
+        for(let i in this.list) {
+          this.list[i].pd = true;
+          this.list[i].isActive = true;
+        }
+        this.goodsNum=0;
+        this.totalNum=0;
         for(let j in this.list){
           this.goodsNum+=this.list[j].num;
-          console.log(this.list[j].num)
+          this.totalNum+=this.list[j].num*this.list[j].price;
+          console.log(this.list[j].num);
         }
-        }
-
       }else{
         for(var i in this.list){
           this.list[i].pd=false;
-          this.newList=[];
-          this.list[i].isActive=false
+          this.list[i].isActive=false;
           this.goodsNum=0;
+          this.totalNum=0;
         }
       }
     },
     itemClick(index){
-      this.list[index].pd=!this.list[index].pd
+      this.list[index].pd=!this.list[index].pd;
       if(this.list[index].pd){
-        this.newList.push(this.list[index]);
-        this.goodsNum+=this.list[index].num;
         this.list[index].isActive=true;
+        this.goodsNum+=this.list[index].num;
+        this.totalNum+=this.list[index].num*this.list[index].price;
       }else{
-        for(var i in this.newList){
-          if(this.newList[i].pd==false){
-            this.newList.splice(i,1)
-          }
-        }
         this.list[index].isActive=false;
+        this.totalInt=false;
+        this.totalNum-=this.list[index].num*this.list[index].price;
         this.goodsNum-=this.list[index].num;
       }
-      if(this.newList.length==this.list.length){
-        this.totalInt=true;
-      }else{
-        this.totalInt=false;
-      }
     }
-
   }
 }
 </script>
