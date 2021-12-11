@@ -71,7 +71,7 @@
 
 <script>
 import {checkAccount, checkEmailCaptcha, getImageCaptcha, loginGet} from "../api/user/login";
-
+import {message, my_name, set_name, avatar_url, set_avatar_url, addMessage} from "../js/global"
 export default {
   name: 'Login',
   data() {
@@ -231,6 +231,37 @@ export default {
             this.$cookies.set("password", this.loginForm.password)
             this.$cookies.set("user_name", res.data.user_name)
             this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
+
+            global.ws = new WebSocket('ws://127.0.0.1:8081/chat/' + res.data.user_name)
+            set_name(res.data.user_name)
+            set_avatar_url('http://127.0.0.1:8081/' + res.data.avatar_url)
+            console.log(my_name)
+            global.ws.onopen = function()
+            {
+              console.log("connect");
+              message[0].content.push(
+                {
+                  from: "robert",
+                  to: my_name,
+                  content: "welcome, " + my_name,
+                  date: new Date(),
+                }
+              )
+            };
+            global.ws.onclose = function () {
+              console.log("close");
+            };
+
+            global.ws.onmessage = function(evt){
+              var data = JSON.parse(evt.data);
+              console.log(data)
+              let from_username = data.from_username
+              let to_username = data.from_tousername
+              let content = data.content
+              let avatar_url = data.avatar_url
+              addMessage(from_username, to_username, content, avatar_url)
+            };
+
             this.$router.push('/shop/item')
           }
         }).catch(function (error) {

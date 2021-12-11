@@ -82,6 +82,7 @@ export default {
         case '/book':this.currentPath.pop();this.currentPath.push({name:'书籍',url:'/shop/book'});break
         case '/beauty':this.currentPath.pop();this.currentPath.push({name:'化妆品',url:'/shop/beauty'});break
         case '/food':this.currentPath.pop();this.currentPath.push({name:'食物',url:'/shop/food'});break
+
         default: this.$router.push(index);return
       }
       this.$router.push({
