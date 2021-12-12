@@ -1,7 +1,7 @@
 <template>
   <div id="record">
     <div v-for="(item,index) in onItemList" :key="index">
-      <el-dialog :visible.sync="item.showcomment" style="padding-top: 80px;margin:auto;width: 80%" @close="resetForm('commodity')">
+      <el-dialog :visible.sync="item.showcomment" style="padding-top: 80px;margin:auto;width: 80%" @close="item.rate=null,item.content=''">
         <div style="margin-left: 5%">
           <span style="display: inline">评分：</span>
           <el-rate style="display: inline;" :colors="['#fcbdab','#fcbdab','#fcbdab']" v-model="item.rate"></el-rate>
@@ -23,12 +23,12 @@
              :style="icolor"
              @mouseover="mouseOver(0)"
              @mouseleave="mouseLeave(0)"
-             style=" font-size: 25px;transform: translateX(-15px)" @click="submitcomment(item)"></i>
+             style=" font-size: 25px;transform: translateX(-15px)" @click="submitComment(item)"></i>
           <i class="el-icon-circle-close"
              :style="icolor1"
              @mouseover="mouseOver(1)"
              @mouseleave="mouseLeave(1)"
-             style=" font-size: 25px;transform: translateX(15px)" @click="clickcancel(item)"></i>
+             style=" font-size: 25px;transform: translateX(15px)" @click="clickCancel(item)"></i>
         </div>
       </el-dialog>
       <el-container class="box" style="min-width: 500px">
@@ -64,8 +64,10 @@
 </template>
 
 <script>
-import {getPurchase} from '../api/goods/goods'
+import {getPurchase, getUpload, uploadGoods} from '../api/goods/goods'
 import {addChatUser} from "../js/global"
+import {comment,commentCheck} from "../api/comment/comment";
+
 export default {
   name: "record",
   data() {
@@ -143,11 +145,22 @@ export default {
         this.icolor1=  'color: black';
 
     },
-    submitcomment(item) {
-      item.showcomment = !item.showcomment;
+    submitComment(item) {
+      if(item.rate!==null&&item.comment!==''){
+        comment(item.seller_name,item.content,item.rate).then(res => {
+          this.$message.success("上传成功！")
+          item.showcomment = false
+        }).catch(function (error) {
+          console.log(error)
+        });
+      }
+      else{
 
+      }
     },
-    clickcancel(item) {
+    clickCancel(item) {
+      item.content='';
+      item.rate=null;
       item.showcomment = !item.showcomment;
     },
   }
@@ -180,8 +193,6 @@ export default {
 
 .text span {
   margin-top: 10px;
-
-
   font-weight: bold;
 }
 
