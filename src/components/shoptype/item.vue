@@ -3,7 +3,7 @@
   <div class="wrapper">
     <div class="box" v-for="(item,index) in list" :key="index">
       <div class="front-face">
-        <div class= "img" v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }">
+        <div class= "img" v-bind:style="{'background':'url('+item.url+')'}">
         </div>
         <span>{{item.title}}</span>
       </div>
@@ -124,6 +124,9 @@ export default {
 .box .front-face .img{
   height: 250px;
   border-radius: 20px 20px 0px 0px;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:cover!important;
 }
 .box .back-face span,
 .box .front-face span{
