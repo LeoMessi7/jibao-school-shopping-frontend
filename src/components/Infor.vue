@@ -200,11 +200,13 @@ export default {
           this.options.img = reader.result
         }
         this.formData.append("avatar", file);
+        console.log(this.formData)
       }
     },
     // 上传图片
     uploadImg() {
       let image = this.formData.get("avatar")
+      console.log(image)
       updateAvatar(image).then(res => {
         let code = res.data.code
         if (code === 1) {

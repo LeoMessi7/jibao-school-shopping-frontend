@@ -57,7 +57,7 @@
                   <el-upload style="margin-left:40px; float: left" action="#" :http-request="requestUpload"
                              :show-file-list="false" :before-upload="beforeUpload">
                     <div class="user-info-head">
-                      <img v-bind:src="flag?temp.url:img" title="点击上传头像"
+                      <img v-bind:src="temp.url" title="点击上传图片"
                            class="img-circle img-lg" alt=""/>
                     </div>
                   </el-upload>
@@ -86,7 +86,7 @@
             </el-dialog>
             <el-container class="box1">
               <el-aside class="img1"
-                        v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
+                        v-bind:style="{'background':'url('+item.url+')'}"></el-aside>
               <el-main class="text">
                 <div style="position: relative;height: 80%;line-height: 25px;">
                   <span style="color: #656565; font-weight: 600">名称：</span>
@@ -133,8 +133,6 @@
 </template>
 
 <script>
-import {updateAvatar} from "../api/user/info";
-import {feedback} from "../api/feedback/feedback";
 import {modifyGoods,withdrawGoods, getUpload, uploadGoods} from "../api/goods/goods"
 import {getCategory} from "../api/category/category";
 
@@ -164,8 +162,6 @@ export default {
         category:'',
         description: '',
       },
-      flag: true,//是否第一次上传头像
-      img: this.$cookies.get("avatar_url"),
       uploadURL: '',
       headerObj: {
         Authorization: localStorage.getItem("token"),
@@ -192,6 +188,10 @@ export default {
     };
   },
   mounted: function () {
+    if (!this.$cookies.isKey("user_name")) {
+      this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
+      this.$router.push("/Login")
+    }
     this.options = []
     getCategory().then(res => {
       console.log(res.data)
@@ -262,24 +262,39 @@ export default {
     },
     handleRemove(file, fileList) {
       this.hideUploadEdit = true;
-      this.listLength = fileList.length;
       this.hideUploadEdit = fileList.length >= this.limitCount;
     },
     handlePictureCardPreview(file) {
       console.log(file);
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-      this.formData.append("goods",file)
     },
     handleEditChange(file, fileList) {
       let vm = this;
       vm.hideUploadEdit = fileList.length >= this.limitCount;
+      this.formData.append("upload", file.raw)
+    },
+    // 覆盖默认的上传行为
+    requestUpload() {
+    },
+    // 上传预处理
+    beforeUpload(file) {
+      if (file.type.indexOf("image/") === -1) {
+        this.$message("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+      } else {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.temp.url = reader.result;
+        }
+        this.formData.append("modify", file)
+      }
     },
     //上传商品
     submitForm(commodity) {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
-          let image = this.formData.get("goods")
+          let image = this.formData.get("upload")
           uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, image).then(res => {
             this.$message.success("上传成功！")
             getUpload().then(res => {
@@ -333,8 +348,8 @@ export default {
           item.price=this.temp.price
           item.url=this.temp.url
           item.category=this.temp.category
-
-          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1], this.temp.price, this.temp.url).then(res => {
+          let image = this.formData.get("modify")
+          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1], this.temp.price, image).then(res => {
             this.$message.success("上传成功！")
             item.showonload = false
           }).catch(function (error) {
@@ -356,6 +371,7 @@ export default {
       item.showonload = true
       this.temp.name = item.name
       this.temp.url = item.url
+      console.log(item.url)
       this.temp.category = item.category
       this.temp.price = item.price
       this.temp.description = item.description
@@ -450,6 +466,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   border-radius: 20px 0px 0px 20px;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:cover!important;
 
 }
 
