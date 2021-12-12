@@ -74,13 +74,11 @@ export default new Router({
               path:'/shop/item',
               name:'物品',
               component:item,
-              children:[
-                {
-                  path:'/itemdetail',
-                  name:'itemdetail',
-                  component:itemdetail
-                }
-              ]
+            },
+            {
+              path:'/itemdetail',
+              name:'itemdetail',
+              component:itemdetail
             }
           ]
         },
