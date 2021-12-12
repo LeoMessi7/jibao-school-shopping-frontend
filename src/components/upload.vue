@@ -52,7 +52,7 @@
         <el-tab-pane label="在售" name="y">
           <div v-for="(item,index) in onItemList" :key="index">
             <el-dialog title="编辑商品" :visible.sync="item.showonload">
-              <el-form :rules="rules" ref="form" :model="item" label-width="80px" class="demo-ruleForm">
+              <el-form :rules="rules" ref="temp" :model="item" label-width="80px" class="demo-ruleForm">
                 <el-form-item label="商品图片">
                   <el-upload style="margin-left:40px; float: left" action="#" :http-request="requestUpload"
                              :show-file-list="false" :before-upload="beforeUpload">
@@ -70,7 +70,7 @@
                 </el-form-item>
                 <el-form-item label="商品分类" prop="category" required>
                   <el-cascader
-                    v-model="temp.sub_category"
+                    v-model="temp.category"
                     :show-all-levels="false"
                     :options="options"
                     clearable></el-cascader>
@@ -79,7 +79,7 @@
                   <el-input type="textarea" v-model="temp.description"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm1('temp')">修改</el-button>
+                  <el-button type="primary" @click="submitForm1('temp',item)">修改</el-button>
                   <el-button type="danger" @click="item.showonload=false">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -94,7 +94,7 @@
                   <span style="color: #656565; font-weight: 600">价格：</span>
                   <p style="color: #656565">{{ item.price }}</p><br>
                   <span style="color: #656565; font-weight: 600">分类：</span>
-                  <p style="color: #656565;">{{ item.category }}</p><br>
+                  <p style="color: #656565;">{{ item.category[1] }}</p><br>
                   <span style="color: #656565; font-weight: 600">描述：</span>
                   <p style="color: #656565;">{{ item.description }}</p><br>
                 </div>
@@ -135,7 +135,7 @@
 <script>
 import {updateAvatar} from "../api/user/info";
 import {feedback} from "../api/feedback/feedback";
-import {getPurchase,withdrawGoods, getUpload, uploadGoods} from "../api/goods/goods"
+import {modifyGoods,withdrawGoods, getUpload, uploadGoods} from "../api/goods/goods"
 import {getCategory} from "../api/category/category";
 
 export default {
@@ -149,7 +149,7 @@ export default {
         url: '',
         name: '',
         price: '',
-        category: '',
+        category: [],
         description: '',
       },
       onItemList: [],
@@ -224,28 +224,28 @@ export default {
       this.buyItemList=[]
       let goodsList = res.data.goodsInfoList
       for (let i=0; i < res.data.goodsInfoList.length; i++) {
-        if (goodsList[i].status === "售卖中")
+        if (goodsList[i].status === "售卖中") {
           this.onItemList.push({
-            id:goodsList[i].goods_id,
+            id: goodsList[i].goods_id,
             name: goodsList[i].goods_name,
             description: goodsList[i].description,
-            category: goodsList[i].category,
-            sub_category: goodsList[i].sub_category,
-            url: goodsList[i].goods_url,
+            category: [goodsList[i].category, goodsList[i].sub_category,],
+            url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
             price: goodsList[i].price,
             showonload: false,
           })
+        }
         else if(goodsList[i].status === "已售出"){
           this.buyItemList.push({
             id:goodsList[i].goods_id,
             price: goodsList[i].price,
-            category: goodsList[i].category,
-            sub_category: goodsList[i].sub_category,
+            category: [goodsList[i].category,goodsList[i].sub_category,],
             name: goodsList[i].goods_name,
             date: goodsList[i].date,
-            url: goodsList[i].goods_url,
+            url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
             customer: goodsList[i].user_name,
           })
+
         }
       }
     }).catch(function (error) {
@@ -273,12 +273,34 @@ export default {
       let vm = this;
       vm.hideUploadEdit = fileList.length >= this.limitCount;
     },
+    //上传商品
     submitForm(commodity) {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
           uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, this.commodity.image).then(res => {
             this.$message.success("上传成功！")
             this.showuploadcommodity = false
+          }).catch(function (error) {
+            console.log(error)
+          });
+        } else {
+          console.log('上传失败!!');
+          return false;
+        }
+      });
+    },
+    //修改商品
+    submitForm1(temp,item){
+      this.$refs[temp][0].validate((valid) => {
+        if (valid) {
+          item.description=this.temp.description
+          item.name=this.temp.name
+          item.price=this.temp.price
+          item.url=this.temp.url
+          item.category=this.temp.category
+          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1], this.temp.price, this.temp.url).then(res => {
+            this.$message.success("上传成功！")
+            item.showonload = false
           }).catch(function (error) {
             console.log(error)
           });

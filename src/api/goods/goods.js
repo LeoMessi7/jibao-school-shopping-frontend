@@ -8,18 +8,6 @@ import axiosInstance from "../index.js"
 
 const axios = axiosInstance
 
-export function addCategory(category, sub_category, description){
-  const map = {category: category, sub_category: sub_category, description: description}
-  return axios({
-    method: 'POST',
-    url: 'http://localhost:8081/goods/info/addCategory',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    params: map
-  })
-}
-
 export function searchGoods(key_word){
   const map = {key_word: key_word}
   return axios({
@@ -44,7 +32,17 @@ export function uploadGoods(description, name,sub_category, price, image){
   })
 }
 
-
+export function modifyGoods(id,description, name,sub_category, price, image){
+  const map = {gid:id,description: description, name: name, sub_category: sub_category, price: price, image: image}
+  return axios({
+    method: 'POST',
+    url: 'goods/update',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    params: map
+  })
+}
 
 export function withdrawGoods(gid){
   const map = {gid: gid}

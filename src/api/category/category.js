@@ -17,3 +17,15 @@ export function getCategory(){
     },
   })
 }
+
+export function addCategory(category, sub_category, description){
+  const map = {category: category, sub_category: sub_category, description: description}
+  return axios({
+    method: 'POST',
+    url: 'http://localhost:8081/goods/info/addCategory',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    params: map
+  })
+}
