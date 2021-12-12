@@ -9,7 +9,7 @@
         </div>
         <div class="table">
           <el-table
-            :data="editForm"
+            :data="totalForm"
             border
             style="width:100%"
             height="450">
@@ -32,7 +32,7 @@
               label="操作"
               width="200">
               <template slot-scope="scope">
-                <el-button @click="editDialogue(scope.row)" icon="el-icon-edit" size="small" type="primary">编辑</el-button>
+                <el-button @click="editDialogue(scope.row.id)" icon="el-icon-edit" size="small" type="primary">编辑</el-button>
                 <el-button icon="el-icon-delete" size="small" type="danger" @click="deleterow(scope.$index,scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -45,26 +45,26 @@
           width="50%"
           @close="editDialogClosed">
           <el-form
-            :model="editForm"
-            :rules="editFormRules"
-            ref="editFormRef"
+            :model="totalForm"
+            :rules="totalFormRules"
+            ref="totalFormRef"
             label-width="80px">
             <el-form-item label="一级目录" prop="firstcatalogue">
-              <el-input v-model="editForm.firstcatalogue"></el-input>
+              <el-input v-model="totalForm.firstcatalogue"></el-input>
             </el-form-item>
             <el-form-item label="二级目录" prop="secondcatalogue">
-              <el-input v-model="editForm.secondcatalogue"></el-input>
+              <el-input v-model="totalForm.secondcatalogue"></el-input>
             </el-form-item>
             <el-form-item label="目录描述" prop="description">
               <el-input
                 type="textarea"
                 :autosize="{minRows:2}"
-                v-model="editForm.description">
+                v-model="totalForm.description">
               </el-input>
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialoguefooter">
-            <el-button type="primary" icon="el-icon-check" @click="showeditdialogue=false">确定</el-button>
+            <el-button type="primary" icon="el-icon-check" @click="editDialogue">确定</el-button>
             <el-button type="danger" icon="el-icon-close" @click="showeditdialogue=false">取消</el-button>
           </span>
         </el-dialog>
@@ -94,7 +94,7 @@
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialoguefooter">
-            <el-button type="primary" icon="el-icon-check" @click="showadddialogue=false">确定</el-button>
+            <el-button type="primary" icon="el-icon-check" @click="addDialogue">确定</el-button>
             <el-button type="danger" icon="el-icon-close" @click="showadddialogue=false">取消</el-button>
           </span>
         </el-dialog>
@@ -115,7 +115,7 @@ export default{
   },
   data(){
     return {
-      editForm:[{
+      totalForm:[{
         firstcatalogue:'0',
         secondcatalogue:'0',
         description:'0',
@@ -163,7 +163,7 @@ export default{
         secondcatalogue:'',
         description:'',
       },
-      editFormRules:{
+      totalFormRules:{
         firstcatalogue: [
           {required:true,message:'请输入一级目录',trigger:'blur'},
         ],
@@ -201,7 +201,10 @@ export default{
       this.$refs.addFormRef.resetFields();
     },
     editDialogClosed() {
-      this.$refs.editFormRef.resetFields();
+      this.$refs.totalFormRef.resetFields();
+    },
+    addDialogue(totalForm){
+      this.totalForm.unshift(this.addForm);
     },
   }
 }
