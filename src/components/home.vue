@@ -3,7 +3,7 @@
   <bar></bar>
   <el-container style="height: 650px">
     <sidebar></sidebar>
-    <el-main style="height: 650px;background-color: #faeaea;">
+    <el-main style="height: 650px;background-color: #faeaea;overflow: hidden">
       <el-breadcrumb separator-class="el-icon-arrow-right" style="float: left;height: 20px;margin-top:10px;width: 100%; position: fixed">
         <el-breadcrumb-item to="/shop/item">商品</el-breadcrumb-item>
         <el-breadcrumb-item v-for="(item,index) in this.$route.query.currentPath"
