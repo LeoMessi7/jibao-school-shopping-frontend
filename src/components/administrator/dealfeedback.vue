@@ -18,8 +18,8 @@
           </el-badge>
           </span>
           <span style="margin:10px;">
-          <el-badge :value="refusenumber" class="refuseitem" type="warning">
-            <el-button>拒绝</el-button>
+          <el-badge :value="feedback.length-replynumber" class="refuseitem" type="warning">
+            <el-button>未回复</el-button>
           </el-badge>
           </span>
         </div>
@@ -43,13 +43,13 @@
               </el-input>
               <div class="operate">
                 <span style="margin:10px;">
-                  <el-button type="primary" icon="el-icon-message" size="mini" @click="clickreply(item)" v-show="item.IsReplyShow">回复</el-button>
+                  <el-button type="primary" icon="el-icon-bottom" size="mini" @click="clickreply(item)">回复</el-button>
                 </span>
                 <span style="margin:10px;">
-                  <el-button type="danger" icon="el-icon-delete" size="mini" @click="clickignore(item)">{{item.ignore}}</el-button>
+                  <el-button type="danger" icon="el-icon-top" size="mini" @click="clickignore(item)">收起</el-button>
                 </span>
               </div>
-              <el-form ref="form" label-width="80px" class="demo-form" v-show="item.IsFeedbackShow">
+              <el-form ref="item" label-width="80px" class="demo-form" v-show="item.IsFeedbackShow" :model="item">
                 <el-form-item label="反馈">
                   <el-input
                     type="textarea"
@@ -57,16 +57,17 @@
                     placeholder="请输入回复的内容"
                     v-model="item.reply"
                     style="width:560px;"
+                    prop="reply"
                   >
                   </el-input>
                 </el-form-item>
               </el-form>
               <div class="choice" v-show="item.IsFeedbackShow">
                 <span style="margin:10px;">
-                    <el-button type="success" icon="el-icon-circle-check" size="mini" @click="clickfinish(item)">{{item.finish}}</el-button>
+                    <el-button type="success" :icon="item.send" size="mini" @click="clickfinish(item)">{{item.finish}}</el-button>
                   </span>
                 <span style="margin:10px;">
-                    <el-button type="warning" icon="el-icon-circle-close" size="mini" v-show="item.IsCancelShow" @click="clickcancel(item)">取消</el-button>
+                    <el-button type="warning" icon="el-icon-circle-close" size="mini" @click="clickcancel(item)">取消</el-button>
                   </span>
               </div>
             </div>
@@ -94,106 +95,89 @@ export default{
           time:"2002-10-23",
           content:"lsy太帅了",
           IsFeedbackShow:false,
-          IsReplyShow:true,
-          ignore:"忽略",
+          IsFeedbackSend:false,
           reply:'',
-          IsCancelShow:true,
           finish:"确认",
+          send:"el-icon-message",
         },
         {
           name:"prince",
           time:"2021-12-06",
           content:"听说贝克汉姆都没他拽",
           IsFeedbackShow:false,
-          IsReplyShow:true,
-          ignore:"忽略",
+          IsFeedbackSend:false,
           reply:'',
-          IsCancelShow:true,
           finish:"确认",
+          send:"el-icon-message",
         },
         {
           name:"某人",
           time:"2021-12-06",
           content:'隔壁的xjj好漂亮',
           IsFeedbackShow:false,
-          IsReplyShow:true,
-          ignore:"忽略",
+          IsFeedbackSend:false,
           reply:'',
-          IsCancelShow:true,
           finish:"确认",
+          send:"el-icon-message",
         },
         {
           name:"某人",
           time:"2021-12-06",
           content:'隔壁的xjj好漂亮',
           IsFeedbackShow:false,
-          IsReplyShow:true,
-          ignore:"忽略",
+          IsFeedbackSend:false,
           reply:'',
-          IsCancelShow:true,
           finish:"确认",
+          send:"el-icon-message",
         },
         {
           name:"某人",
           time:"2021-12-06",
           content:'隔壁的xjj好漂亮',
           IsFeedbackShow:false,
-          IsReplyShow:true,
-          ignore:"忽略",
+          IsFeedbackSend:false,
           reply:'',
-          IsCancelShow:true,
           finish:"确认",
+          send:"el-icon-message",
         },
         {
           name:"某人",
           time:"2021-12-06",
           content:'隔壁的xjj好漂亮',
           IsFeedbackShow:false,
-          IsReplyShow:true,
-          ignore:"忽略",
+          IsFeedbackSend:false,
           reply:'',
-          IsCancelShow:true,
           finish:"确认",
+          send:"el-icon-message",
         },
       ],
       readonly:true,
       replynumber:0,
-      refusenumber:0,
     }
   },
   methods: {
     clickreply:function(item){
-      if(item.finish=="完成"){
-        item.IsCancelShow=true;
-        item.finish="确认";
-      }
-      else{
-        item.IsFeedbackShow=!item.IsFeedbackShow;
-      }
+      item.IsFeedbackShow=true;
     },
     clickignore:function(item){
-      item.IsReplyShow=!item.IsReplyShow;
       item.IsFeedbackShow=false;
-      if(item.IsReplyShow){
-        item.ignore="忽略";
-        this.refusenumber--;
-      }
-      else{
-        item.ignore="撤销";
-        this.refusenumber++;
-      }
     },
     clickfinish:function(item){
-      if(item.IsFeedbackShow){
-        if(item.IsCancelShow){
-          item.IsCancelShow=false;
-          item.finish="完成";
+      if(item.finish=="确认"){
+        if(!item.IsFeedbackSend){
           this.replynumber++;
         }
+        item.IsFeedbackSend=true;
       }
+      item.finish="完成";
+      item.send="el-icon-circle-check";
     },
     clickcancel:function(item){
-      item.IsFeedbackShow=!item.IsFeedbackShow;
+      if(item.finish=="完成"){
+        item.finish="确认";
+        item.send="el-icon-message";
+      }
+      item.reply='';
     },
     clickreturn:function(){
       this.$router.push('/admin');
