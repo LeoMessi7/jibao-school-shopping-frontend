@@ -31,26 +31,26 @@
              style=" font-size: 25px;transform: translateX(15px)" @click="clickcancel(item)"></i>
         </div>
       </el-dialog>
-      <el-container class="box">
+      <el-container class="box" style="min-width: 500px">
         <el-aside class="img"
                   v-bind:style="{'background':'url('+item.url+')'}"></el-aside>
         <el-main class="text">
-          <div style="position: relative;height: 70%">
-            <span>商品：</span>
-            <p>{{ item.name }}</p><br>
-            <span>标签：</span>
-            <p>{{ item.title }}</p><br>
-            <span>说明：</span>
-            <p>{{ item.content }}</p><br>
-            <span>购买时间：</span>
-            <p>{{ item.purchase_time }}</p><br>
-            <span>价格：</span>
-            <p>{{ item.price }}</p><br>
-            <span>卖家：</span>
-            <p>{{ item.seller_name }}</p><br>
+          <div style="position: relative;height: 80%;line-height: 25px;">
+            <span style="color: #656565; font-weight: 600">商品：</span>
+            <p style="color: #656565;">{{ item.name }}</p><br>
+            <span style="color: #656565; font-weight: 600">标签：</span>
+            <p style="color: #656565;">{{ item.title }}</p><br>
+            <span style="color: #656565; font-weight: 600">说明：</span>
+            <p style="color: #656565;">{{ item.content }}</p><br>
+            <span style="color: #656565; font-weight: 600">购买时间：</span>
+            <p style="color: #656565;">{{ item.purchase_time }}</p><br>
+            <span style="color: #656565; font-weight: 600">价格：</span>
+            <p style="color: #656565;">{{ item.price }}</p><br>
+            <span style="color: #656565; font-weight: 600">卖家：</span>
+            <p style="color: #656565;">{{ item.seller_name }}</p><br>
           </div>
-          <el-footer style="position: fixed;height: 42px;right: 20px;bottom: 20px">
-            <div class="contact" style="margin-left:240px;">
+          <el-footer style="float:right;height: 42px;">
+            <div class="contact" style="">
               <el-button round icon="el-icon-edit" type="warning" @click="item.showcomment=true">评价</el-button>
               <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success" @click="addUser(item)">卖家</el-button>
             </div>
@@ -105,7 +105,7 @@ export default {
         this.onItemList.push({
           url: 'http://127.0.0.1:8081/' + purchase_list[i].goods_url,
           name: purchase_list[i].goods_name,
-          title: purchase_list[i].category + ">>>" + purchase_list[i].sub_category,
+          title: purchase_list[i].category + "/" + purchase_list[i].sub_category,
           content: purchase_list[i].description,
           price: purchase_list[i].price,
           purchase_time: purchase_list[i].date,
@@ -161,13 +161,13 @@ export default {
   width: 60%;
   background-color: #fff;
   margin-bottom: 40px;
-  height: 250px;
+  height: 280px;
   perspective: 1000px;
   border-radius: 20px;
 }
 
 .img {
-  height: 250px;
+  height: 280px;
   width: 35% !important;
   display: flex;
   flex-direction: column;

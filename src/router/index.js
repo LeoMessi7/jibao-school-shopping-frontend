@@ -73,7 +73,14 @@ export default new Router({
             {
               path:'/shop/item',
               name:'物品',
-              component:item
+              component:item,
+              children:[
+                {
+                  path:'/itemdetail',
+                  name:'itemdetail',
+                  component:itemdetail
+                }
+              ]
             }
           ]
         },
@@ -128,10 +135,5 @@ export default new Router({
       name:'dealfeedback',
       component:dealfeedback
     },
-    {
-      path:'/itemdetail',
-      name:'itemdetail',
-      component:itemdetail
-    }
   ]
 })
