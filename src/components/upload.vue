@@ -100,7 +100,7 @@
                 </div>
                 <div style=" position: fixed;height: 42px;right: 20px;">
                   <el-button round icon="el-icon-edit" v-on:click="editItem(item)" type="warning">编辑</el-button>
-                  <el-button round icon="el-icon-delete" type="danger" @click="removeItem(item)">下架</el-button>
+                  <el-button round icon="el-icon-delete" type="danger" @click="removeItem(item,index)">下架</el-button>
                 </div>
               </el-main>
             </el-container>
@@ -279,6 +279,38 @@ export default {
         if (valid) {
           uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, this.commodity.image).then(res => {
             this.$message.success("上传成功！")
+            getUpload().then(res => {
+              this.onItemList=[]
+              this.buyItemList=[]
+              let goodsList = res.data.goodsInfoList
+              for (let i=0; i < res.data.goodsInfoList.length; i++) {
+                if (goodsList[i].status === "售卖中") {
+                  this.onItemList.push({
+                    id: goodsList[i].goods_id,
+                    name: goodsList[i].goods_name,
+                    description: goodsList[i].description,
+                    category: [goodsList[i].category, goodsList[i].sub_category,],
+                    url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
+                    price: goodsList[i].price,
+                    showonload: false,
+                  })
+                }
+                else if(goodsList[i].status === "已售出"){
+                  this.buyItemList.push({
+                    id:goodsList[i].goods_id,
+                    price: goodsList[i].price,
+                    category: [goodsList[i].category,goodsList[i].sub_category,],
+                    name: goodsList[i].goods_name,
+                    date: goodsList[i].date,
+                    url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
+                    customer: goodsList[i].user_name,
+                  })
+
+                }
+              }
+            }).catch(function (error) {
+              console.log(error)
+            });
             this.showuploadcommodity = false
           }).catch(function (error) {
             console.log(error)
@@ -312,7 +344,6 @@ export default {
     },
     resetForm(formName) {
       if (formName === 'temp')
-
         this.showuploadcommodity = false;
       this.$refs[formName].resetFields();
     },
@@ -361,7 +392,7 @@ export default {
       this.temp.price = item.price
       this.temp.description = item.description
     },
-    removeItem(item) {
+    removeItem(item,index) {
       this.$confirm('确认是否下架?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -374,7 +405,11 @@ export default {
             if (code === 1)
               this.$message.error("下架失败！")
             else
+            {
+              this.onItemList.splice(index)
               this.$message.success("下架成功！")
+            }
+
           }).catch(function (error) {
             console.log(error)
           });
