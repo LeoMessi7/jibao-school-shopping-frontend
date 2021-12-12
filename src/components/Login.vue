@@ -211,11 +211,11 @@ export default {
     handleLogin() {
       this.loading = true;
       if (this.loginForm.email === "")
-        alert("邮箱不能为空！")
+        this.$message({message:"邮箱不能为空！",type:'error',customClass:'zZindex'})
       else if (this.loginForm.password === "")
-        alert("密码不能为空！")
+        this.$message({message:"密码不能为空！",type:'error',customClass:'zZindex'})
       else if (this.loginForm.captcha_code === "")
-        alert("验证码不能为空！")
+        this.$message({message:"验证码不能为空！",type:'error',customClass:'zZindex'})
       else {
         loginGet(this.loginForm.email, this.loginForm.password, this.loginForm.captcha_code).then(res => {
           let code = res.data.code
@@ -231,7 +231,9 @@ export default {
             this.$cookies.set("email", this.loginForm.email)
             this.$cookies.set("password", this.loginForm.password)
             this.$cookies.set("user_name", res.data.user_name)
-            this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
+            this.$cookies.set("mark", res.data.mark)
+            console.log(this.$cookies.get("mark"))
+            this.$cookies.set("avatar_url", 'http://localhost:8081/' + res.data.avatar_url + "?timestamp=" + new Date().getTime())
 
             global.ws = new WebSocket('ws://127.0.0.1:8081/chat/' + res.data.user_name)
             set_name(res.data.user_name)

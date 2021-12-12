@@ -52,7 +52,7 @@
         <el-tab-pane label="在售" name="y">
           <div v-for="(item,index) in onItemList" :key="index">
             <el-dialog title="编辑商品" :visible.sync="item.showonload">
-              <el-form :rules="rules" ref="form" :model="item" label-width="80px" class="demo-ruleForm">
+              <el-form :rules="rules" ref="temp" :model="item" label-width="80px" class="demo-ruleForm">
                 <el-form-item label="商品图片">
                   <el-upload style="margin-left:40px; float: left" action="#" :http-request="requestUpload"
                              :show-file-list="false" :before-upload="beforeUpload">
@@ -79,7 +79,7 @@
                   <el-input type="textarea" v-model="temp.description"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('temp')">修改</el-button>
+                  <el-button type="primary" @click="submitForm1('temp',item)">修改</el-button>
                   <el-button type="danger" @click="item.showonload=false">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -94,13 +94,13 @@
                   <span style="color: #656565; font-weight: 600">价格：</span>
                   <p style="color: #656565">{{ item.price }}</p><br>
                   <span style="color: #656565; font-weight: 600">分类：</span>
-                  <p style="color: #656565;">{{ item.category }}</p><br>
+                  <p style="color: #656565;">{{ item.category[1] }}</p><br>
                   <span style="color: #656565; font-weight: 600">描述：</span>
                   <p style="color: #656565;">{{ item.description }}</p><br>
                 </div>
                 <div style=" position: fixed;height: 42px;right: 20px;">
                   <el-button round icon="el-icon-edit" v-on:click="editItem(item)" type="warning">编辑</el-button>
-                  <el-button round icon="el-icon-delete" type="danger" @click="removeItem(item)">下架</el-button>
+                  <el-button round icon="el-icon-delete" type="danger" @click="removeItem(item,index)">下架</el-button>
                 </div>
               </el-main>
             </el-container>
@@ -118,7 +118,7 @@
                 <span style="color: #656565; font-weight: 600">买家:</span>
                 <p style="color: #656565;">{{ item.customer }}</p><br>
                 <span style="color: #656565; font-weight: 600">卖出时间：</span>
-                <p style="color: #656565;">{{ item.time }}</p><br>
+                <p style="color: #656565;">{{ item.date }}</p><br>
               </div>
               <div style="position: fixed;height: 42px; right: 20px;">
                 <el-button round icon="el-icon-s-custom" type="primary">买家</el-button>
@@ -135,121 +135,32 @@
 <script>
 import {updateAvatar} from "../api/user/info";
 import {feedback} from "../api/feedback/feedback";
-import {uploadGoods} from"../api/goods/goods"
+import {modifyGoods,withdrawGoods, getUpload, uploadGoods} from "../api/goods/goods"
+import {getCategory} from "../api/category/category";
+
 export default {
   name: "upload",
   data() {
     return {
-      options: [
-        {
-          value: '电子产品',
-          label: '电子产品',
-          children: [{
-            value: '手机',
-            label: '手机',
-          }, {
-            value: '电脑',
-            label: '电脑',
-          }]
-        },
-        {
-          value: '衣服裤子',
-          label: '衣服裤子',
-          children: [{
-            value: '衣服',
-            label: '衣服',
-          }, {
-            value: '裤子',
-            label: '裤子',
-          }]
-        },
-        {
-          value: '零食小吃',
-          label: '零食小吃',
-          children: [{
-            value: '水果',
-            label: '水果',
-          }, {
-            value: '饼干',
-            label: '饼干',
-          }]
-        },
-        {
-          value: '体育用品',
-          label: '体育用品',
-          children: [{
-            value: '篮球',
-            label: '篮球',
-          }, {
-            value: '足球',
-            label: '足球',
-          }]
-        },
-        {
-          value: '美容化妆',
-          label: '美容化妆',
-          children: [{
-            value: '口红',
-            label: '口红',
-          }, {
-            value: '粉底',
-            label: '粉底',
-          }]
-        },
-        {
-          value: '书籍资料',
-          label: '书籍资料',
-          children: [{
-            value: '数学',
-            label: '数学',
-          }, {
-            value: '计算机',
-            label: '计算机',
-          }]
-        },
-        {
-          value: '其他',
-          label: '其他',
-          children: [{
-            value: '其他',
-            label: '其他',
-          }]
-        },
-      ],
+      options: [],
       activeName: 'y',
       //修改商品用的
       temp: {
         url: '',
         name: '',
         price: '',
-        category: '',
+        category: [],
         description: '',
       },
-      onItemList: [
-        {
-          url: '../../static/item/jt1.jpg',
-          name: '123',
-          price: '123',
-          category: '数学',
-          description: '123',
-          showonload: false,
-        },
-      ],
-      buyItemList: [
-        {
-          url: '../../static/item/jt1.jpg',
-          name: '123',
-          time: '123',
-          customer: '123',
-        },
-      ],
+      onItemList: [],
+      buyItemList: [],
       showuploadcommodity: false,
       //上传商品用的
       commodity: {
         image: '',
         name: '',
         price: '',
-        category: '',
+        category:'',
         description: '',
       },
       flag: true,//是否第一次上传头像
@@ -279,6 +190,68 @@ export default {
       }
     };
   },
+  mounted: function () {
+    this.options = []
+    getCategory().then(res => {
+      console.log(res.data)
+      let category = res.data.category
+      let length = res.data.category.length
+      for (let i = 0; i < length; i++) {
+        this.options.push({
+          value: category[i].category,
+          label: category[i].category,
+          children: []
+        })
+        let s = '';
+        for (let j = 0; j < category[i].sub_category.length; j++) {
+          if (category[i].sub_category[j] !== '[' && category[i].sub_category[j] !== ']' && category[i].sub_category[j] !== ','&&category[i].sub_category[j] !== ' ') {
+            s += category[i].sub_category[j];
+          } else if (category[i].sub_category[j] !== '['&&category[i].sub_category[j] !== ' ') {
+            this.options[i].children.push({
+              value: s,
+              label: s,
+            })
+            s = ''
+          }
+        }
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
+    //得到上架的物品
+    getUpload().then(res => {
+      this.onItemList=[]
+      this.buyItemList=[]
+      let goodsList = res.data.goodsInfoList
+      for (let i=0; i < res.data.goodsInfoList.length; i++) {
+        if (goodsList[i].status === "售卖中") {
+          this.onItemList.push({
+            id: goodsList[i].goods_id,
+            name: goodsList[i].goods_name,
+            description: goodsList[i].description,
+            category: [goodsList[i].category, goodsList[i].sub_category,],
+            url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
+            price: goodsList[i].price,
+            showonload: false,
+          })
+        }
+        else if(goodsList[i].status === "已售出"){
+          this.buyItemList.push({
+            id:goodsList[i].goods_id,
+            price: goodsList[i].price,
+            category: [goodsList[i].category,goodsList[i].sub_category,],
+            name: goodsList[i].goods_name,
+            date: goodsList[i].date,
+            url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
+            customer: goodsList[i].user_name,
+          })
+
+        }
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
+  },
   methods: {
     editCropper() {
       this.open = true;
@@ -300,11 +273,66 @@ export default {
       let vm = this;
       vm.hideUploadEdit = fileList.length >= this.limitCount;
     },
+    //上传商品
     submitForm(commodity) {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
-          uploadGoods(this.commodity.description,this.commodity.name,this.commodity.category[1],this.commodity.price ,this.commodity.image).then(res => {
+          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, this.commodity.image).then(res => {
             this.$message.success("上传成功！")
+            getUpload().then(res => {
+              this.onItemList=[]
+              this.buyItemList=[]
+              let goodsList = res.data.goodsInfoList
+              for (let i=0; i < res.data.goodsInfoList.length; i++) {
+                if (goodsList[i].status === "售卖中") {
+                  this.onItemList.push({
+                    id: goodsList[i].goods_id,
+                    name: goodsList[i].goods_name,
+                    description: goodsList[i].description,
+                    category: [goodsList[i].category, goodsList[i].sub_category,],
+                    url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
+                    price: goodsList[i].price,
+                    showonload: false,
+                  })
+                }
+                else if(goodsList[i].status === "已售出"){
+                  this.buyItemList.push({
+                    id:goodsList[i].goods_id,
+                    price: goodsList[i].price,
+                    category: [goodsList[i].category,goodsList[i].sub_category,],
+                    name: goodsList[i].goods_name,
+                    date: goodsList[i].date,
+                    url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
+                    customer: goodsList[i].user_name,
+                  })
+
+                }
+              }
+            }).catch(function (error) {
+              console.log(error)
+            });
+            this.showuploadcommodity = false
+          }).catch(function (error) {
+            console.log(error)
+          });
+        } else {
+          console.log('上传失败!!');
+          return false;
+        }
+      });
+    },
+    //修改商品
+    submitForm1(temp,item){
+      this.$refs[temp][0].validate((valid) => {
+        if (valid) {
+          item.description=this.temp.description
+          item.name=this.temp.name
+          item.price=this.temp.price
+          item.url=this.temp.url
+          item.category=this.temp.category
+          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1], this.temp.price, this.temp.url).then(res => {
+            this.$message.success("上传成功！")
+            item.showonload = false
           }).catch(function (error) {
             console.log(error)
           });
@@ -315,9 +343,8 @@ export default {
       });
     },
     resetForm(formName) {
-      if(formName==='temp')
-
-      this.showuploadcommodity = false;
+      if (formName === 'temp')
+        this.showuploadcommodity = false;
       this.$refs[formName].resetFields();
     },
     // 覆盖默认的上传行为
@@ -365,20 +392,24 @@ export default {
       this.temp.price = item.price
       this.temp.description = item.description
     },
-    removeItem(item) {
+    removeItem(item,index) {
       this.$confirm('确认是否下架?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         setTimeout(() => {
-          withdrawGoods(gid).then(res => {
+          withdrawGoods(item.id).then(res => {
             let code = res.data.code
             console.log(code)
             if (code === 1)
-              this.$message.error("发送失败！")
+              this.$message.error("下架失败！")
             else
-              this.$message.success("发送成功！")
+            {
+              this.onItemList.splice(index)
+              this.$message.success("下架成功！")
+            }
+
           }).catch(function (error) {
             console.log(error)
           });

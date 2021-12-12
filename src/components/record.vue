@@ -23,7 +23,7 @@
              :style="icolor"
              @mouseover="mouseOver(0)"
              @mouseleave="mouseLeave(0)"
-             style=" font-size: 25px;transform: translateX(-15px)" @click="submitcommit(item)"></i>
+             style=" font-size: 25px;transform: translateX(-15px)" @click="submitcomment(item)"></i>
           <i class="el-icon-circle-close"
              :style="icolor1"
              @mouseover="mouseOver(1)"
@@ -32,15 +32,22 @@
         </div>
       </el-dialog>
       <el-container class="box">
-
         <el-aside class="img"
-                  v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
+                  v-bind:style="{'background':'url('+item.url+')'}"></el-aside>
         <el-main class="text">
           <div style="position: relative;height: 70%">
+            <span>商品：</span>
+            <p>{{ item.name }}</p><br>
             <span>标签：</span>
             <p>{{ item.title }}</p><br>
             <span>说明：</span>
             <p>{{ item.content }}</p><br>
+            <span>购买时间：</span>
+            <p>{{ item.purchase_time }}</p><br>
+            <span>价格：</span>
+            <p>{{ item.price }}</p><br>
+            <span>卖家：</span>
+            <p>{{ item.seller_name }}</p><br>
           </div>
           <el-footer style="position: fixed;height: 42px;right: 20px;bottom: 20px">
             <div class="contact" style="margin-left:240px;">
@@ -68,11 +75,13 @@ export default {
       icolor1:'color:grey',
       onItemList: [
         {
-          url: '../../static/item/jt1.jpg',
-          title: '美女1',
-          content: '1111111111111111111111111111111111111111111111111111111111111111111111111111111',
-/*          seller_name: "",
-          seller_avatar_url: "",*/
+          name: '',
+          url: '',
+          title: '',
+          content: '',
+          purchase_time: '',
+          price: '',
+          seller_name: '',
           showcomment: false,
           rate: null,
           comment: '',
@@ -84,17 +93,18 @@ export default {
 
   mounted:function() {
       getPurchase().then(res =>{
-      console.log(res.data)
       let purchase_list = res.data.goodsInfoList
-      let seller_list = res.data.sellersInfoList
       let length = res.data.length
+      this.onItemList = []
       for(let i = 0; i < length; i++){
         this.onItemList.push({
           url: 'http://127.0.0.1:8081/' + purchase_list[i].goods_url,
-          title: purchase_list[i].name,
+          name: purchase_list[i].goods_name,
+          title: purchase_list[i].category + ">>>" + purchase_list[i].sub_category,
           content: purchase_list[i].description,
-          seller_name: seller_list[i].name,
-          seller_avatar_url: seller_list[i].avatar_url,
+          price: purchase_list[i].price,
+          purchase_time: purchase_list[i].date,
+          seller_name: purchase_list[i].user_name,
           showcomment: false,
           rate: null,
           comment: '',
@@ -125,7 +135,7 @@ export default {
         this.icolor1=  'color: black';
 
     },
-    submitcommit(item) {
+    submitcomment(item) {
       item.showcomment = !item.showcomment;
 
     },
@@ -155,7 +165,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   border-radius: 20px 0px 0px 20px;
-
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:cover!important
 }
 
 .text span {

@@ -50,7 +50,7 @@ export default{
         {
           path:"/admin",
           name:"admin",
-          label:"用户管理",
+          label:"目录管理",
           icon:"location",
         },
         {

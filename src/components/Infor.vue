@@ -13,8 +13,9 @@
               </div>
               <div>
                 <div class="text-center" style="text-align: center">
-                  <div class="user-info-head" @click="editCropper()"><img v-bind:src="options.img" title="点击上传头像"
-                                                                          class="img-circle img-lg" alt=""/></div>
+                  <div class="user-info-head" @click="editCropper()">
+                    <meta content="no-cache"  />
+                    <img :src=options.img title="点击上传头像" class="img-circle img-lg" alt=""/></div>
                   <el-dialog :title="title"
                              :visible.sync="open"
                              width="300px"
@@ -214,19 +215,11 @@ export default {
         } else if (code === 0) {
           this.open = false;
           this.$message({message: "修改成功！", type: 'success', customClass: 'zZindex'});
-          console.log(this.options.img)
-          this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
+          this.$cookies.set("avatar_url", 'http://localhost:8081/' + res.data.avatar_url)
           this.visible = false;
         }
       }).catch(function (error) {
         console.log(error)
-      });
-    },
-    submit() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$message({message: "修改成功！", type: 'success'});
-        }
       });
     },
     close() {
