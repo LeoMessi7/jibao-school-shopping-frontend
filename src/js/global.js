@@ -7,6 +7,10 @@ var ws=null;
 export let current_to_name = "robert";
 export let my_name = null;
 export let avatar_url = null;
+
+export let goodsList = null;
+
+
 export let message = [
 {
   to: 'robert',
@@ -142,6 +146,9 @@ export function send(from, to, content){
   return JSON.stringify(message)
 }
 
+export function setGoodsList(goods_list){
+  goodsList = goods_list
+}
 
 export function sendMessage(content){
   for(let i =0; i<message.length;i++){
@@ -167,6 +174,7 @@ export default {
   my_name,
   avatar_url,
   addMessage,
+  goodsList,
   set_avatar_url,
   sendMessage,
   change_to,

@@ -12,11 +12,22 @@ export function searchGoods(key_word){
   const map = {key_word: key_word}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/goods/search',
+    url: '/search',
     headers: {
-      isToken: false
+      'Content-Type': 'application/json'
     },
     params: map
+  })
+}
+
+
+export function searchRandomGoods(){
+  return axios({
+    method: 'POST',
+    url: '/randomSearch',
+    headers: {
+      'Content-Type': 'application/json'
+    },
   })
 }
 

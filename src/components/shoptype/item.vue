@@ -10,7 +10,7 @@
       <div class="back-face">
         <span>{{item.title}}</span>
         <p>描述：{{item.description}}</p>
-        <p>商家：{{item.provider}}</p>
+        <p>类别：{{item.category}}</p>
         <p>价格：{{item.price}}</p>
         <el-row class="collectbuy">
           <el-button :type="item.collecttype" :icon="item.collectionicon" circle @click="changecolor(item)"></el-button>
@@ -25,30 +25,57 @@
 </template>
 
 <script>
-
+import {goodsList, message, setGoodsList} from "../../js/global";
+import {searchGoods, searchRandomGoods} from "../../api/goods/goods";
 export default {
   name: "item",
   data(){
     return{
+      goods_list: goodsList,
       list:[
-        {url:'../../../static/item/jt1.jpg',title:'美女1',description:'我在门后 假装你人还没走',provider:'马牛逼',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
-        {url:'../../../static/item/jt2.jpg',title:'美女2',description:'旧地如重游 月圆更寂寞',provider:'王老师',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
-        {url:'../../../static/item/jt3.jpg',title:'美女3',description:'夜半清醒的烛火 不忍苛责我',provider:'小迪小迪',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
-        {url:'../../../static/item/jt4.jpg',title:'美女3',description:'一壶漂泊 浪迹天涯难入喉',provider:'啦啦啦',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
-        {url:"../../../static/item/jt5.jpg",title:'美女3',description:'你走之后 酒暖回忆思念瘦',provider:'唔西迪西',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
-        {url:"../../../static/item/jt6.jpg",title:'美女3',description:'水向东流 上面的朋友',provider:'玛卡巴卡',price:'100元',collecttype:"", collectionicon:"el-icon-shopping-cart-2",},
       ],
 
     }
   },
+  mounted() {
+    if(goodsList === null){
+        searchRandomGoods().then(res =>{
+          console.log(res.data)
+        setGoodsList(res.data)
+      }).catch(function (error) {
+        console.log(error)
+      });
+    }
+  },
+  created: function () {
+    setInterval(this.timer, 1000);
+  },
   methods:{
+    timer:function (){
+      this.goods_list = goodsList
+      this.list = []
+      let goodsInfoList = goodsList.goodsInfoList;
+      for(let i = 0; i<goodsInfoList.length;i++){
+        this.list.push({
+          url:'http://127.0.0.1:8081/' + goodsInfoList[i].goods_url,
+          title:goodsInfoList[i].goods_name,
+          description: goodsInfoList[i].description,
+          category: goodsInfoList[i].sub_category,
+          price: goodsInfoList[i].price,
+          goods_id: goodsInfoList[i].goods_id,
+          collecttype:"",
+          collectionicon:"el-icon-shopping-cart-2"
+        })
+      }
+    },
+
     changecolor:function(item){
-      if(item.collecttype==""){
+      if(item.collecttype===""){
         item.collecttype="primary";
       }else{
         item.collecttype="";
       }
-      if(item.collectionicon=="el-icon-shopping-cart-2"){
+      if(item.collectionicon==="el-icon-shopping-cart-2"){
         item.collectionicon="el-icon-shopping-cart-full";
       }else{
         item.collectionicon="el-icon-shopping-cart-2";

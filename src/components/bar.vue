@@ -6,8 +6,8 @@
       <el-image style="top:-6px;margin-left:120px;height: 30px" :src="require('@/assets/title.png')"></el-image>
       <div class="search-bar-top">
         <div class="bar7">
-          <form>
-            <input type="text" placeholder="请输入您要搜索的物品...">
+          <form onsubmit="event.preventDefault()">
+            <input type="text" placeholder="请输入您要搜索的物品..." v-model="keyWord" v-on:keyup="search">
               <i class="el-icon-search"
                  :style="icolor"
                  @mouseover="mouseOver(0)"
@@ -69,10 +69,14 @@
   </div>
 </template>
 <script>
+import {searchGoods} from "../api/goods/goods";
+import {goodsList, setGoodsList} from "../js/global";
+
 export default {
   name: "bar",
   data(){
     return{
+      keyWord: '',
       icolor:'color:black',
       icolor1:'color:black',
       icolor2:'color:black',
@@ -91,6 +95,9 @@ export default {
       loginState: this.$cookies.isKey("user_name")
     }
   },
+  watch:{
+    $route(to, from) {this.$router.go(0)}
+  },
   methods:{
     handleLogout(){
       this.$cookies.remove("user_name")
@@ -98,8 +105,19 @@ export default {
       this.$cookies.remove("balance")
       this.$router.push('/Login')
     },
-    search(){
-      this.$router.push('/Login');
+    search(e){
+      if(e.keyCode === 13){
+        searchGoods(this.keyWord).then(res =>{
+          setGoodsList(res.data)
+          if (this.$route.name !== '物品') {
+            this.$router.push({
+              path: '/shop/item',
+            })
+          }
+        }).catch(function (error) {
+          console.log(error)
+        });
+      }
     },
     filters: {
       priceNum: function(val) {
