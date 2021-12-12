@@ -1,5 +1,5 @@
 <template>
-  <div id="bar" style="height: 60px;z-index: -1">
+  <div id="bar" style="height: 60px;z-index: 100">
   <el-header class="head" style="height: 60px;min-width: 400px">
     <div style="margin: 0 auto; height: 60px; width: 1140px; min-width: 400px">
       <el-image style="height: 50px" :src="require('@/assets/logo2.png')"></el-image>
