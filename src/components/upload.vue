@@ -70,7 +70,7 @@
                 </el-form-item>
                 <el-form-item label="商品分类" prop="category" required>
                   <el-cascader
-                    v-model="temp.category"
+                    v-model="temp.sub_category"
                     :show-all-levels="false"
                     :options="options"
                     clearable></el-cascader>
@@ -79,7 +79,7 @@
                   <el-input type="textarea" v-model="temp.description"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('temp')">修改</el-button>
+                  <el-button type="primary" @click="submitForm1('temp')">修改</el-button>
                   <el-button type="danger" @click="item.showonload=false">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -135,7 +135,7 @@
 <script>
 import {updateAvatar} from "../api/user/info";
 import {feedback} from "../api/feedback/feedback";
-import {getPurchase, getUpload, uploadGoods} from "../api/goods/goods"
+import {getPurchase,withdrawGoods, getUpload, uploadGoods} from "../api/goods/goods"
 import {getCategory} from "../api/category/category";
 
 export default {
@@ -160,7 +160,7 @@ export default {
         image: '',
         name: '',
         price: '',
-        category: '',
+        category:'',
         description: '',
       },
       flag: true,//是否第一次上传头像
@@ -193,6 +193,7 @@ export default {
   mounted: function () {
     this.options = []
     getCategory().then(res => {
+      console.log(res.data)
       let category = res.data.category
       let length = res.data.category.length
       for (let i = 0; i < length; i++) {
@@ -203,9 +204,9 @@ export default {
         })
         let s = '';
         for (let j = 0; j < category[i].sub_category.length; j++) {
-          if (category[i].sub_category[j] !== '[' && category[i].sub_category[j] !== ']' && category[i].sub_category[j] !== ',') {
+          if (category[i].sub_category[j] !== '[' && category[i].sub_category[j] !== ']' && category[i].sub_category[j] !== ','&&category[i].sub_category[j] !== ' ') {
             s += category[i].sub_category[j];
-          } else if (category[i].sub_category[j] !== '[') {
+          } else if (category[i].sub_category[j] !== '['&&category[i].sub_category[j] !== ' ') {
             this.options[i].children.push({
               value: s,
               label: s,
@@ -219,7 +220,8 @@ export default {
     });
     //得到上架的物品
     getUpload().then(res => {
-      console.log(res.data)
+      this.onItemList=[]
+      this.buyItemList=[]
       let goodsList = res.data.goodsInfoList
       for (let i=0; i < res.data.goodsInfoList.length; i++) {
         if (goodsList[i].status === "售卖中")
@@ -233,7 +235,7 @@ export default {
             price: goodsList[i].price,
             showonload: false,
           })
-        else {
+        else if(goodsList[i].status === "已售出"){
           this.buyItemList.push({
             id:goodsList[i].goods_id,
             price: goodsList[i].price,
@@ -344,13 +346,13 @@ export default {
         type: 'warning'
       }).then(() => {
         setTimeout(() => {
-          withdrawGoods(gid).then(res => {
+          withdrawGoods(item.id).then(res => {
             let code = res.data.code
             console.log(code)
             if (code === 1)
-              this.$message.error("发送失败！")
+              this.$message.error("下架失败！")
             else
-              this.$message.success("发送成功！")
+              this.$message.success("下架成功！")
           }).catch(function (error) {
             console.log(error)
           });

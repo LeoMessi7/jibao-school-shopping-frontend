@@ -50,9 +50,9 @@ export function withdrawGoods(gid){
   const map = {gid: gid}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/goods/withdraw',
+    url: '/goods/withdraw',
     headers: {
-      isToken: false
+      'Content-Type': 'application/json'
     },
     params: map
   })
