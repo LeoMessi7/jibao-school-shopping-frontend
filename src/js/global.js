@@ -1,3 +1,7 @@
+
+import {getChat} from "../api/user/chat";
+import {getPurchase} from "../api/goods/goods";
+
 var ws=null;
 
 export let current_to_name = "robert";
@@ -18,8 +22,10 @@ export let message = [
 ]
 
 
+
+
+
 export function addChatUser(user_name, avatar){
-  alert(avatar)
   let flag = 1
   for(let i =0; i<message.length;i++){
     if(message[i].to === user_name){
@@ -28,18 +34,39 @@ export function addChatUser(user_name, avatar){
     }
   }
   if(flag){
-    alert('http://127.0.0.1:8081/'+ avatar)
-    message.push({
-      to: user_name,
-      avatar: 'http://127.0.0.1:8081/'+ avatar,
-      content:[]
-    })
-    console.log(message)
+    let content = []
+    getChat(user_name).then(res =>{
+      let chat_list = res.data.chat
+      let length = res.data.chat.length
+      for(let i = 0; i < length; i++){
+        content.push({
+          from: chat_list[i].from_username,
+          to: chat_list[i].to_username,
+          content: chat_list[i].content,
+          date: chat_list[i].date
+        })
+      }
+
+      message.push({
+        to: user_name,
+        avatar: 'http://127.0.0.1:8081/'+ avatar,
+        content:content
+      })
+
+    }).catch(function (error) {
+      message.push({
+        to: user_name,
+        avatar: 'http://127.0.0.1:8081/'+ avatar,
+        content:content
+      })
+      console.log(error)
+    });
   }
 }
 
 
 export function addMessage(from_username, to_username, content, avatar_url){
+
   let flag = 1
   for(let i =0; i<message.length;i++){
     if(message[i].to === from_username){
@@ -56,16 +83,40 @@ export function addMessage(from_username, to_username, content, avatar_url){
     }
   }
   if(flag){
-    message.push({
-      to: from_username,
-      avatar: 'http://127.0.0.1:8081/'+ avatar_url,
-      content:[{
-        from: from_username,
-        to: to_username,
-        content: content,
-        date: new Date(),
-      }]
-    })
+
+
+    let content = [{
+      from: from_username,
+      to: to_username,
+      content: content,
+      date: new Date(),
+    }]
+    getChat(from_username).then(res =>{
+      let chat_list = res.data.chat
+      let length = res.data.chat.length
+      for(let i = 0; i < length; i++){
+        content.push({
+          from: chat_list[i].from_username,
+          to: chat_list[i].to_username,
+          content: chat_list[i].content,
+          date: chat_list[i].date
+        })
+      }
+      message.push({
+        to: from_username,
+        avatar: avatar_url,
+        content:content
+      })
+    }).catch(function (error) {
+      message.push({
+        to: from_username,
+        avatar: avatar_url,
+        content:content
+      })
+      console.log(error)
+    });
+
+
   }
 }
 
@@ -83,6 +134,7 @@ export function change_to(to){
 
 export function send(from, to, content){
   let message = {
+    "avatar_url": avatar_url,
     "content":content,
     "from_username":from,
     "to_username":to

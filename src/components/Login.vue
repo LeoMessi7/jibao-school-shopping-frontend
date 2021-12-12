@@ -72,6 +72,7 @@
 <script>
 import {checkAccount, checkEmailCaptcha, getImageCaptcha, loginGet} from "../api/user/login";
 import {message, my_name, set_name, avatar_url, set_avatar_url, addMessage} from "../js/global"
+import {getChat} from "../api/user/chat";
 export default {
   name: 'Login',
   data() {
@@ -256,9 +257,10 @@ export default {
               var data = JSON.parse(evt.data);
               console.log(data)
               let from_username = data.from_username
-              let to_username = data.from_tousername
+              let to_username = data.to_username
               let content = data.content
               let avatar_url = data.avatar_url
+
               addMessage(from_username, to_username, content, avatar_url)
             };
 

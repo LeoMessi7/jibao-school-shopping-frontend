@@ -50,6 +50,7 @@
 <script>
 import {mapState} from 'vuex'
 import {message, current_to_name, change_to, my_name, sendMessage, send, avatar_url} from "../../js/global"
+import {getChat, saveChat} from "../../api/user/chat";
 export default {
   name: "x",
   data () {
@@ -100,6 +101,14 @@ export default {
       if (e.ctrlKey && e.keyCode ===13 && this.content.length) {
         sendMessage(this.content)
         global.ws.send(send(my_name, current_to_name, this.content))
+
+
+        saveChat(my_name, current_to_name, this.content).then(res =>{
+        }).catch(function (error) {
+          console.log(666);
+        });
+
+
         this.content = '';
       }
     },
