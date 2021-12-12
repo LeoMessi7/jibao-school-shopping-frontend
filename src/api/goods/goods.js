@@ -24,10 +24,7 @@ export function searchGoods(key_word){
   const map = {key_word: key_word}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/goods/search',
-    headers: {
-      isToken: false
-    },
+    url: '/search',
     params: map
   })
 }

@@ -109,6 +109,7 @@ export default {
       if(e.keyCode === 13){
         searchGoods(this.keyWord).then(res =>{
           setGoodsList(res.data)
+          console.log(res.data)
           if (this.$route.name !== '物品') {
             this.$router.push({
               path: '/shop/item',
