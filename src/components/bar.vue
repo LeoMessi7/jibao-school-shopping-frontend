@@ -46,6 +46,9 @@
                 已选商品 <span style="margin:0px 5px;">{{goodsNum}}</span>件 合计:
                 <span style="margin:0px 5px;">{{totalNum}}</span>元
               </div>
+              <div class="buy">
+              <el-button type="primary" icon="el-icon-circle-check">购买</el-button>
+              </div>
             </div>
           </div>
         </el-drawer>
