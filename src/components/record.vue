@@ -33,7 +33,7 @@
       </el-dialog>
       <el-container class="box">
         <el-aside class="img"
-                  v-bind:style="{'background':'url('+item.url+')', 'background-repeat':'no-repeat','background-position':'center','background-size':'cover' }"></el-aside>
+                  v-bind:style="{'background':'url('+item.url+')'}"></el-aside>
         <el-main class="text">
           <div style="position: relative;height: 70%">
             <span>商品：</span>
@@ -165,7 +165,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   border-radius: 20px 0px 0px 20px;
-
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:cover!important
 }
 
 .text span {
