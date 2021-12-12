@@ -8,6 +8,18 @@ import axiosInstance from "../index.js"
 
 const axios = axiosInstance
 
+
+
+export function searchRandomGoods(){
+  return axios({
+    method: 'POST',
+    url: '/randomSearch',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+}
+
 export function searchGoods(key_word){
   const map = {key_word: key_word}
   return axios({
