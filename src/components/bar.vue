@@ -95,6 +95,7 @@ export default {
     handleLogout(){
       this.$cookies.remove("user_name")
       this.$cookies.remove("avatar_url")
+      this.$cookies.remove("balance")
       this.$router.push('/Login')
     },
     search(){

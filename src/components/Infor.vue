@@ -79,6 +79,9 @@
                     <el-form-item label="邮箱" prop="email">
                       <el-input v-model="user.email" maxlength="50" disabled/>
                     </el-form-item>
+                    <el-form-item label="余额" prop="rate">
+                      <el-input v-model="user.balance" maxlength="50" disabled/>
+                    </el-form-item>
                     <el-form-item label="综合评分" prop="rate">
                       <el-input v-model="user.rate" maxlength="50" disabled/>
                     </el-form-item>
@@ -132,9 +135,10 @@ export default {
       // 是否显示弹出层
       activeName: 'userinfo',
       user: {
-        nickName: '',
-        email: '',
-        rate: '4.5',
+        nickName: this.$cookies.get("email"),
+        email: this.$cookies.get("user_name"),
+        rate: this.$cookies.get("mark"),
+        balance: this.$cookies.get("balance")
       },
       formPassword:{
         oldpassword:'',
@@ -172,13 +176,6 @@ export default {
       this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
       this.$router.push("/Login")
     }
-    this.user.email = this.$cookies.get("email")
-    this.user.nickName = this.$cookies.get("user_name")
-    window.onresize = () => {
-      this.user.email = this.$cookies.get("email")
-      this.user.nickName = this.$cookies.get("user_name")
-      this.user.rate = this.$cookies.get("mark")
-    };
   },
   methods: {
     // 编辑头像

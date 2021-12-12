@@ -21,26 +21,34 @@ export function searchGoods(key_word){
 }
 
 export function uploadGoods(description, name,sub_category, price, image){
-  const map = {description: description, name: name, sub_category: sub_category, price: price, image: image}
+  let formData = new FormData()
+  formData.append("description", description)
+  formData.append("name", name)
+  formData.append("sub_category", sub_category)
+  formData.append("price", price)
+  formData.append("image", image)
   return axios({
     method: 'POST',
     url: 'goods/upload',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type':'multipart/form-data'
     },
-    params: map
+    data: formData
   })
 }
 
 export function modifyGoods(id,description, name,sub_category, price, image){
-  const map = {gid:id,description: description, name: name, sub_category: sub_category, price: price, image: image}
+  let formData = new FormData()
+  formData.append("image", image)
+  const map = {gid:id,description: description, name: name, sub_category: sub_category, price: price}
   return axios({
     method: 'POST',
     url: 'goods/update',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type':'multipart/form-data'
     },
-    params: map
+    params: map,
+    data: formData
   })
 }
 

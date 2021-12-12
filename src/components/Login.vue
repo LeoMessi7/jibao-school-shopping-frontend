@@ -232,6 +232,7 @@ export default {
             this.$cookies.set("password", this.loginForm.password)
             this.$cookies.set("user_name", res.data.user_name)
             this.$cookies.set("mark", res.data.mark)
+            this.$cookies.set("balance", res.data.balance)
             console.log(this.$cookies.get("mark"))
             this.$cookies.set("avatar_url", 'http://localhost:8081/' + res.data.avatar_url + "?timestamp=" + new Date().getTime())
 

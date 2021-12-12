@@ -92,7 +92,11 @@ export default {
 
 
   mounted:function() {
-      getPurchase().then(res =>{
+    if (!this.$cookies.isKey("user_name")) {
+      this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
+      this.$router.push("/Login")
+    }
+    getPurchase().then(res =>{
       let purchase_list = res.data.goodsInfoList
       let length = res.data.length
       this.onItemList = []

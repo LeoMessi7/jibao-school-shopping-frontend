@@ -144,6 +144,7 @@ export default {
     return {
       options: [],
       activeName: 'y',
+      formData: new FormData(),
       //修改商品用的
       temp: {
         url: '',
@@ -268,6 +269,7 @@ export default {
       console.log(file);
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+      this.formData.append("goods",file)
     },
     handleEditChange(file, fileList) {
       let vm = this;
@@ -277,7 +279,8 @@ export default {
     submitForm(commodity) {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
-          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, this.commodity.image).then(res => {
+          let image = this.formData.get("goods")
+          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, image).then(res => {
             this.$message.success("上传成功！")
             getUpload().then(res => {
               this.onItemList=[]
@@ -330,6 +333,7 @@ export default {
           item.price=this.temp.price
           item.url=this.temp.url
           item.category=this.temp.category
+
           modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1], this.temp.price, this.temp.url).then(res => {
             this.$message.success("上传成功！")
             item.showonload = false
@@ -347,43 +351,7 @@ export default {
         this.showuploadcommodity = false;
       this.$refs[formName].resetFields();
     },
-    // 覆盖默认的上传行为
-    requestUpload() {
-    },
-    // 上传预处理
-    beforeUpload(file) {
-      if (file.type.indexOf("image/") === -1) {
-        this.$message("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
-      } else {
-        console.log(file)
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          this.img = reader.result;
-          this.flag = false;
-          this.$cookies.set("avatar_img", file)
-        }
-      }
-    },
-    // 上传图片
-    uploadImg() {
-      let image = this.$cookies.get("avatar_img")
-      console.log(image)
-      updateAvatar(image).then(res => {
-        let code = res.data.code
-        if (code === 1) {
-          this.$message({message: "修改失败", type: 'failed', customClass: 'zZindex'});
-        } else if (code === 0) {
-          this.open = false;
-          this.$message({message: "修改成功", type: 'success', customClass: 'zZindex'});
-          this.img = 'http://127.0.0.1:8081/' + res.data.avatar_url
-          this.$cookies.set("avatar_url", 'http://127.0.0.1:8081/' + res.data.avatar_url)
-          this.visible = false;
-        }
-      })
-      // let formData = new FormData();
-      // formData.append("avatarfile", data);
-    },
+
     editItem(item) {
       item.showonload = true
       this.temp.name = item.name
