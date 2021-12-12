@@ -98,6 +98,7 @@ export default {
     }
     getPurchase().then(res =>{
       let purchase_list = res.data.goodsInfoList
+        console.log(res.data.goodsInfoList)
       let length = res.data.length
       this.onItemList = []
       for(let i = 0; i < length; i++){
@@ -109,6 +110,7 @@ export default {
           price: purchase_list[i].price,
           purchase_time: purchase_list[i].date,
           seller_name: purchase_list[i].user_name,
+          seller_avatar_url: purchase_list[i].avatar_url,
           showcomment: false,
           rate: null,
           comment: '',
@@ -123,6 +125,8 @@ export default {
 
     addUser(item){
       addChatUser(item.seller_name, item.seller_avatar_url)
+      console.log(item)
+      this.$router.push('/chat')
     },
 
     mouseOver(index) {
