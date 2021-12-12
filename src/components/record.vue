@@ -51,7 +51,7 @@
           </div>
           <el-footer style="float:right;height: 42px;">
             <div class="contact" style="">
-              <el-button round icon="el-icon-edit" type="warning" @click="item.showcomment=true">评价</el-button>
+              <el-button round icon="el-icon-edit" type="warning" @click="checkComment(item)">评价</el-button>
               <el-button round icon="el-icon-chat-dot-square" style="display: inline" type="success" @click="addUser(item)">卖家</el-button>
             </div>
           </el-footer>
@@ -145,9 +145,21 @@ export default {
         this.icolor1=  'color: black';
 
     },
+    checkComment(item){
+      commentCheck(item.seller_name).then(res => {
+        console.log(res.data)
+        if(res.data.code===0)
+          item.showcomment = true
+        else
+          this.$message.warning("你已提交过评论，请勿反复评论！！")
+      }).catch(function (error) {
+        console.log(error)
+      });
+    },
     submitComment(item) {
+      console.log(item.rate,item.comment)
       if(item.rate!==null&&item.comment!==''){
-        comment(item.seller_name,item.content,item.rate).then(res => {
+        comment(item.seller_name,item.comment,item.rate).then(res => {
           this.$message.success("上传成功！")
           item.showcomment = false
         }).catch(function (error) {
@@ -155,9 +167,10 @@ export default {
         });
       }
       else{
-
+        this.$message.warning("评分和评价内容不能为空！")
       }
     },
+
     clickCancel(item) {
       item.content='';
       item.rate=null;
