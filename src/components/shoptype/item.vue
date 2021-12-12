@@ -13,7 +13,7 @@
         <p>类别：{{item.category}}</p>
         <p>价格：{{item.price}}</p>
         <el-row class="collectbuy">
-          <el-button :type="item.collecttype" :icon="item.collectionicon" circle @click="changecolor(item)"></el-button>
+          <el-button :type="item.collecttype" :icon="item.collectionicon" circle v-on:click="addShoppingCart(item)"></el-button>
           <el-button type="success" icon="el-icon-goods" circle ></el-button>
           <el-button type="danger" icon="el-icon-view" circle @click="detail(item)"></el-button>
         </el-row>
@@ -26,7 +26,7 @@
 
 <script>
 import {goodsList, message, setGoodsList} from "../../js/global";
-import {searchGoods, searchRandomGoods} from "../../api/goods/goods";
+import {getPurchase, select, searchRandomGoods} from "../../api/goods/goods";
 export default {
   name: "item",
   data(){
@@ -51,6 +51,20 @@ export default {
     setInterval(this.timer, 1000);
   },
   methods:{
+
+    addShoppingCart(item){
+      if (!this.$cookies.isKey("user_name")) {
+        this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
+        this.$router.push("/Login")
+      }
+      this.changecolor(item)
+      select(item.goods_id).then(res =>{
+      }).catch(function (error) {
+        console.log(error)
+      });
+    },
+
+
     timer:function (){
       this.goods_list = goodsList
       this.list = []
@@ -83,14 +97,19 @@ export default {
     },
 
     detail(item){
-      this.$cookies.set("details_id",item.goods_id)
-      this.$cookies.set("details_name",item.title)
-      this.$cookies.set("details_category",item.category)
-      this.$cookies.set("details_description",item.description)
-      this.$cookies.set("details_price",item.price)
-      this.$cookies.set("details_url",item.url)
-      this.$router.push("/itemdetail")
+      this.$router.push({
+        path: "/itemdetail",
+        query: {
+          "details_id": item.goods_id,
+          "details_name": item.title,
+          "details_category": item.category,
+          "details_description": item.description,
+          "details_price": item.price,
+          "details_url": item.url
+        }
+      })
     }
+
   }
 }
 </script>

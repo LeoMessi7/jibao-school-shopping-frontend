@@ -98,3 +98,16 @@ export function getUpload() {
     params: {}
   })
 }
+
+
+export function select(gid) {
+  const map = {gid: gid}
+  return axios({
+    method: 'POST',
+    url: '/goods/select',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    params: map
+  })
+}
