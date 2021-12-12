@@ -95,9 +95,6 @@ export default {
       loginState: this.$cookies.isKey("user_name")
     }
   },
-  watch:{
-    $route(to, from) {this.$router.go(0)}
-  },
   methods:{
     handleLogout(){
       this.$cookies.remove("user_name")
