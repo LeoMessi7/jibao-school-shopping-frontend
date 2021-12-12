@@ -23,7 +23,15 @@
       <span style="font-weight:bold">综合评分：</span>
       <el-rate v-model="finalmark" style="display: inline;" disabled></el-rate>
     </p>
+    &nbsp;
 
+    <el-row class="collectbuy" span="24">
+      <el-button type="primary" icon="el-icon-shopping-cart-2">加入购物车</el-button>
+      <el-button type="success" icon="el-icon-goods" style="margin-left:15px;">购买</el-button>
+      <el-button type="danger" icon="el-icon-user-solid" style="margin-left:15px;">联系商家</el-button>
+    </el-row>
+
+    &nbsp;
     &nbsp;
     <div class="buyercomments">
       <p style="font-weight:bold">买家评价：</p>
@@ -57,6 +65,8 @@ export default {
       provider:'小绿小绿',
       price:'100.00',
       finalmark:'3',
+      collecttype:'',
+      collectionicon:'el-icon-shopping-cart-2',
       comments:[
         {buyer:'哈哈哈',time:'2021-12-12',content:'wanglaoshi',mark:'4'},
         {buyer:'嘻嘻嘻',time:'2021-12-13',content:'aoneogewi',mark:'3'},

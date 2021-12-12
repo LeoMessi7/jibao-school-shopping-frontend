@@ -14,8 +14,8 @@
         <p>价格：{{item.price}}</p>
         <el-row class="collectbuy">
           <el-button :type="item.collecttype" :icon="item.collectionicon" circle @click="changecolor(item)"></el-button>
-          <el-button type="success" icon="el-icon-goods" circle></el-button>
-          <el-button type="danger" icon="el-icon-user-solid" circle plain></el-button>
+          <el-button type="success" icon="el-icon-goods" circle ></el-button>
+          <el-button type="danger" icon="el-icon-view" circle ></el-button>
         </el-row>
       </div>
     </div>
