@@ -71,7 +71,7 @@
 <script>
 import {getPurchase, searchGoods} from "../api/goods/goods";
 import {goodsList, setGoodsList} from "../js/global";
-import {getShopcart} from "../api/shopcart/selection";
+import {getShopcart, deleteShopcart} from "../api/shopcart/selection";
 
 export default {
   name: "bar",
@@ -100,7 +100,7 @@ export default {
       for(let i = 0; i < length; i++){
         this.list.push({
           id: i,
-          gid: goodsInfolist[i].gid,
+          gid: goodsInfolist[i].goods_id,
           imgUrl: 'http://127.0.0.1:8081/' + goodsInfolist[i].goods_url,
           name: goodsInfolist[i].goods_name,
           price: goodsInfolist[i].price / 100,
@@ -174,9 +174,15 @@ export default {
     },
     deleteClick(index) {
       if(this.list[index].pd){
-        this.totalNum-=this.list[index].price*this.list[index].num;
-        this.goodsNum-=this.list[index].num;
-        this.list.splice(index,this.list[index].num);
+        console.log(this.list[index])
+        deleteShopcart(this.list[index].gid).then(res =>{
+          this.totalNum-=this.list[index].price*this.list[index].num;
+          this.goodsNum-=this.list[index].num;
+          this.list.splice(index,this.list[index].num);
+        }).catch(function (error) {
+          console.log(error)
+        });
+
       }else{
         alert('请先选择删除的选项')
       }

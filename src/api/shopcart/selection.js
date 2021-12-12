@@ -14,12 +14,15 @@ export function getShopcart(){
 }
 
 
-export function deleteShopcart(){
+export function deleteShopcart(gid){
+  const map = {gid: gid}
+  console.log(map)
   return axios({
     method: 'POST',
-    url: '/goods/getSelection',
+    url: '/goods/deleteSelection',
     headers: {
       'Content-Type': 'application/json'
     },
+    params: map
   })
 }
