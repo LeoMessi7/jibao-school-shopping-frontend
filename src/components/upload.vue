@@ -118,7 +118,7 @@
                 <span style="color: #656565; font-weight: 600">买家:</span>
                 <p style="color: #656565;">{{ item.customer }}</p><br>
                 <span style="color: #656565; font-weight: 600">卖出时间：</span>
-                <p style="color: #656565;">{{ item.time }}</p><br>
+                <p style="color: #656565;">{{ item.date }}</p><br>
               </div>
               <div style="position: fixed;height: 42px; right: 20px;">
                 <el-button round icon="el-icon-s-custom" type="primary">买家</el-button>
@@ -152,24 +152,8 @@ export default {
         category: '',
         description: '',
       },
-      onItemList: [
-        {
-          url: '../../static/item/jt1.jpg',
-          name: '123',
-          price: '123',
-          category: '数学',
-          description: '123',
-          showonload: false,
-        },
-      ],
-      buyItemList: [
-        {
-          url: '../../static/item/jt1.jpg',
-          name: '123',
-          time: '123',
-          customer: '123',
-        },
-      ],
+      onItemList: [],
+      buyItemList: [],
       showuploadcommodity: false,
       //上传商品用的
       commodity: {
@@ -237,22 +221,28 @@ export default {
     getUpload().then(res => {
       console.log(res.data)
       let goodsList = res.data.goodsInfoList
-      for (let i; i < goodsList.length; i++) {
+      for (let i=0; i < res.data.goodsInfoList.length; i++) {
         if (goodsList[i].status === "售卖中")
           this.onItemList.push({
-            name: goodsList[i].name,
+            id:goodsList[i].goods_id,
+            name: goodsList[i].goods_name,
             description: goodsList[i].description,
-            category: goodsList[i].sub_category,
+            category: goodsList[i].category,
+            sub_category: goodsList[i].sub_category,
             url: goodsList[i].goods_url,
             price: goodsList[i].price,
             showonload: false,
           })
         else {
           this.buyItemList.push({
-            name: goodsList[i].name,
-            time: goodsList[i].time,
+            id:goodsList[i].goods_id,
+            price: goodsList[i].price,
+            category: goodsList[i].category,
+            sub_category: goodsList[i].sub_category,
+            name: goodsList[i].goods_name,
+            date: goodsList[i].date,
             url: goodsList[i].goods_url,
-            customer: goodsList[i].customer,
+            customer: goodsList[i].user_name,
           })
         }
       }
