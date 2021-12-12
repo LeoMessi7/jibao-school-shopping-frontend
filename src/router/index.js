@@ -20,6 +20,7 @@ import item from '../components/shoptype/item'
 import Infor from '../components/Infor'
 import admin from '../components/administrator/admin'
 import dealfeedback from "../components/administrator/dealfeedback"
+import itemdetail from "../components/shoptype/itemdetail";
 import 'animate.css'
 
 Vue.use(Router)
@@ -126,6 +127,11 @@ export default new Router({
       path:'/dealfeedback',
       name:'dealfeedback',
       component:dealfeedback
+    },
+    {
+      path:'/itemdetail',
+      name:'itemdetail',
+      component:itemdetail
     }
   ]
 })

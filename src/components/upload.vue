@@ -121,7 +121,7 @@
                 <p style="color: #656565;">{{ item.date }}</p><br>
               </div>
               <div style="position: fixed;height: 42px; right: 20px;">
-                <el-button round icon="el-icon-s-custom" type="primary">买家</el-button>
+                <el-button round icon="el-icon-s-custom" type="primary" @click="addUser(item)">买家</el-button>
               </div>
             </el-main>
           </el-container>
@@ -135,7 +135,7 @@
 <script>
 import {modifyGoods,withdrawGoods, getUpload, uploadGoods} from "../api/goods/goods"
 import {getCategory} from "../api/category/category";
-
+import {addChatUser} from "../js/global";
 export default {
   name: "upload",
   data() {
@@ -224,6 +224,7 @@ export default {
       this.onItemList=[]
       this.buyItemList=[]
       let goodsList = res.data.goodsInfoList
+      console.log(goodsList)
       for (let i=0; i < res.data.goodsInfoList.length; i++) {
         if (goodsList[i].status === "售卖中") {
           this.onItemList.push({
@@ -237,6 +238,7 @@ export default {
           })
         }
         else if(goodsList[i].status === "已售出"){
+          console.log(goodsList[i])
           this.buyItemList.push({
             id:goodsList[i].goods_id,
             price: goodsList[i].price,
@@ -245,6 +247,7 @@ export default {
             date: goodsList[i].date,
             url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
             customer: goodsList[i].user_name,
+            avatar_url: goodsList[i].avatar_url
           })
 
         }
@@ -254,6 +257,12 @@ export default {
     });
   },
   methods: {
+    addUser(item) {
+      console.log(item)
+      console.log(item.avatar_url)
+      addChatUser(item.customer, item.avatar_url)
+      this.$router.push('/chat')
+    },
     editCropper() {
       this.open = true;
     },
