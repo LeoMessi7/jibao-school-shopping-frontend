@@ -84,7 +84,7 @@
                 </el-form-item>
               </el-form>
             </el-dialog>
-            <el-container class="box1">
+            <el-container class="box1" style="min-width: 500px">
               <el-aside class="img1"
                         v-bind:style="{'background':'url('+item.url+')'}"></el-aside>
               <el-main class="text">
@@ -94,7 +94,7 @@
                   <span style="color: #656565; font-weight: 600">价格：</span>
                   <p style="color: #656565">{{ item.price }}</p><br>
                   <span style="color: #656565; font-weight: 600">分类：</span>
-                  <p style="color: #656565;">{{ item.category[1] }}</p><br>
+                  <p style="color: #656565;">{{ item.category[0]+'/'+item.category[1]}}</p><br>
                   <span style="color: #656565; font-weight: 600">描述：</span>
                   <p style="color: #656565;">{{ item.description }}</p><br>
                 </div>
@@ -249,7 +249,6 @@ export default {
             customer: goodsList[i].user_name,
             avatar_url: goodsList[i].avatar_url
           })
-
         }
       }
     }).catch(function (error) {
