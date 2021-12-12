@@ -63,6 +63,10 @@ export default {
     }
   },
   mounted:function() {
+    if (!this.$cookies.isKey("user_name")) {
+      this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
+      this.$router.push("/Login")
+    }
     this.$store.dispatch('initData');
   },
   filters: {

@@ -12,32 +12,22 @@ export function searchGoods(key_word){
   const map = {key_word: key_word}
   return axios({
     method: 'POST',
-    url: '/search',
+    url: 'http://localhost:8081/goods/search',
     headers: {
-      'Content-Type': 'application/json'
+      isToken: false
     },
     params: map
   })
 }
 
-
-export function searchRandomGoods(){
-  return axios({
-    method: 'POST',
-    url: '/randomSearch',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  })
-}
-
-export function uploadGoods(description, name,sub_category, price, image){
+export function uploadGoods(description, name, sub_category, price, image){
   let formData = new FormData()
   formData.append("description", description)
   formData.append("name", name)
   formData.append("sub_category", sub_category)
   formData.append("price", price)
   formData.append("image", image)
+  console.log(image)
   return axios({
     method: 'POST',
     url: 'goods/upload',
@@ -48,17 +38,20 @@ export function uploadGoods(description, name,sub_category, price, image){
   })
 }
 
-export function modifyGoods(id,description, name,sub_category, price, image){
+export function modifyGoods(id, description, name, sub_category, price, image){
   let formData = new FormData()
+  formData.append("gid", id)
+  formData.append("description", description)
+  formData.append("name", name)
+  formData.append("sub_category", sub_category)
+  formData.append("price", price)
   formData.append("image", image)
-  const map = {gid:id,description: description, name: name, sub_category: sub_category, price: price}
   return axios({
     method: 'POST',
     url: 'goods/update',
     headers: {
       'Content-Type':'multipart/form-data'
     },
-    params: map,
     data: formData
   })
 }
