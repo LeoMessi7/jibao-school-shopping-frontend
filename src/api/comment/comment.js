@@ -20,7 +20,7 @@ export function commentCheck(seller_name){
   })
 }
 export function comment(seller_name,content,mark){
-  const map = {seller_name: seller_name,content:content,mark:content}
+  const map = {seller_name: seller_name,content:content,mark:mark}
   return axios({
     method: 'POST',
     url: '/comment',

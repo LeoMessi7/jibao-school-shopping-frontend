@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
     <p style="font-weight:bold">商品图片：</p>
-    <img src='../../../static/item/jt1.jpg'>
+    <img :src = url>
 
     <p>
       <span style="font-weight:bold">商品名称：</span>{{title}}
@@ -58,12 +58,13 @@ export default {
   name: "itemdetail",
   data() {
     return{
-      url:'../../../static/item/jt1.jpg',
-      title:'奥利给',
-      category:'小姐姐',
-      description:'好吃不贵',
+      id: this.$cookies.get("details_id"),
+      url: this.$cookies.get("details_url"),
+      title: this.$cookies.get("details_name"),
+      category: this.$cookies.get("details_category"),
+      description: this.$cookies.get("details_description"),
       provider:'小绿小绿',
-      price:'100.00',
+      price: this.$cookies.get("details_price"),
       finalmark:'3',
       collecttype:'',
       collectionicon:'el-icon-shopping-cart-2',
@@ -73,6 +74,9 @@ export default {
         {buyer:'啦啦啦',time:'2021-12-14',content:'owneog',mark:'1'},
       ]
     }
+  },
+  mounted(){
+    console.log(this.$cookies.get("details_url"))
   },
   methods: {
 

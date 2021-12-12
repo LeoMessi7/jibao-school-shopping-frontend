@@ -15,7 +15,7 @@
         <el-row class="collectbuy">
           <el-button :type="item.collecttype" :icon="item.collectionicon" circle @click="changecolor(item)"></el-button>
           <el-button type="success" icon="el-icon-goods" circle ></el-button>
-          <el-button type="danger" icon="el-icon-view" circle ></el-button>
+          <el-button type="danger" icon="el-icon-view" circle @click="detail(item)"></el-button>
         </el-row>
       </div>
     </div>
@@ -80,6 +80,16 @@ export default {
       }else{
         item.collectionicon="el-icon-shopping-cart-2";
       }
+    },
+
+    detail(item){
+      this.$cookies.set("details_id",item.goods_id)
+      this.$cookies.set("details_name",item.title)
+      this.$cookies.set("details_category",item.category)
+      this.$cookies.set("details_description",item.description)
+      this.$cookies.set("details_price",item.price)
+      this.$cookies.set("details_url",item.url)
+      this.$router.push("/itemdetail")
     }
   }
 }
