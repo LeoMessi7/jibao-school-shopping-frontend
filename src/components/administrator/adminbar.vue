@@ -34,16 +34,6 @@ export default {
       icolor2:'color:black',
       drawer: false,
       num: null,
-      list: [
-        { id: 0, imgUrl:'./image/jt1.jpg',price: 2,num: 1, pd: false,isActive:false },
-        { id: 1, imgUrl:'./image/jt2.jpg',price: 4,num: 1, pd: false,isActive:false },
-        { id: 2, imgUrl:'./image/jt3.jpg',price: 5,num: 1, pd: false,isActive:false },
-        { id: 3, imgUrl:'./image/jt4.jpg',price: 3,num: 1, pd: false,isActive:false },
-        { id: 4, imgUrl:'./image/jt5.jpg',price: 6,num: 1, pd: false,isActive:false }
-      ],
-      totalInt:false,
-      goodsNum:0,
-      totalNum:0,
       loginState: this.$cookies.isKey("user_name")
     }
   },
@@ -91,51 +81,6 @@ export default {
       else
         this.icolor2=  'color: black';
     },
-    deleteClick(index) {
-      if(this.list[index].pd){
-        this.totalNum-=this.list[index].price*this.list[index].num;
-        this.goodsNum-=this.list[index].num;
-        this.list.splice(index,this.list[index].num);
-      }else{
-        alert('请先选择删除的选项')
-      }
-    },
-    totalClick(){
-      this.totalInt=!this.totalInt;
-      if(this.totalInt){
-        for(let i in this.list) {
-          this.list[i].pd = true;
-          this.list[i].isActive = true;
-        }
-        this.goodsNum=0;
-        this.totalNum=0;
-        for(let j in this.list){
-          this.goodsNum+=this.list[j].num;
-          this.totalNum+=this.list[j].num*this.list[j].price;
-          console.log(this.list[j].num);
-        }
-      }else{
-        for(var i in this.list){
-          this.list[i].pd=false;
-          this.list[i].isActive=false;
-          this.goodsNum=0;
-          this.totalNum=0;
-        }
-      }
-    },
-    itemClick(index){
-      this.list[index].pd=!this.list[index].pd;
-      if(this.list[index].pd){
-        this.list[index].isActive=true;
-        this.goodsNum+=this.list[index].num;
-        this.totalNum+=this.list[index].num*this.list[index].price;
-      }else{
-        this.list[index].isActive=false;
-        this.totalInt=false;
-        this.totalNum-=this.list[index].num*this.list[index].price;
-        this.goodsNum-=this.list[index].num;
-      }
-    }
   }
 }
 </script>

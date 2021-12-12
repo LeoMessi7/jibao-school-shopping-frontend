@@ -36,7 +36,7 @@
                 <input type="checkbox" class="fl minInput" v-model="item.pd" @click="itemClick(index)"/>
                 <img :src="item.imgUrl" class="fl" :class="{active:item.isActive}"/>
                 <span class="fl" style="margin-left: 10px">{{item.price.toFixed(2)}} 元</span>
-                <span class="fl" style="margin-left:20px;">{{item.num}}</span>
+                <span class="fl" style="margin-left:20px;">{{item.name}}</span>
                 <span class="fl" style="color:red;margin-left:30px;" @click="deleteClick(index)">删除</span>
               </li>
             </ul>
@@ -45,6 +45,9 @@
               <div class="goodsNum">
                 已选商品 <span style="margin:0px 5px;">{{goodsNum}}</span>件 合计:
                 <span style="margin:0px 5px;">{{totalNum}}</span>元
+              </div>
+              <div class="buy">
+              <el-button type="primary" icon="el-icon-circle-check">购买</el-button>
               </div>
             </div>
           </div>
@@ -69,8 +72,9 @@
   </div>
 </template>
 <script>
-import {searchGoods} from "../api/goods/goods";
+import {getPurchase, searchGoods} from "../api/goods/goods";
 import {goodsList, setGoodsList} from "../js/global";
+import {getShopcart, deleteShopcart} from "../api/shopcart/selection";
 
 export default {
   name: "bar",
@@ -83,17 +87,37 @@ export default {
       drawer: false,
       num: null,
       list: [
-        { id: 0, imgUrl:'./image/jt1.jpg',price: 2,num: 1, pd: false,isActive:false },
-        { id: 1, imgUrl:'./image/jt2.jpg',price: 4,num: 1, pd: false,isActive:false },
-        { id: 2, imgUrl:'./image/jt3.jpg',price: 5,num: 1, pd: false,isActive:false },
-        { id: 3, imgUrl:'./image/jt4.jpg',price: 3,num: 1, pd: false,isActive:false },
-        { id: 4, imgUrl:'./image/jt5.jpg',price: 6,num: 1, pd: false,isActive:false }
       ],
       totalInt:false,
       goodsNum:0,
       totalNum:0,
       loginState: this.$cookies.isKey("user_name")
     }
+  },
+  mounted() {
+    getShopcart().then(res =>{
+      console.log(res.data)
+      let goodsInfolist = res.data.selection
+      console.log(res.data.goodsInfoList)
+      let length = res.data.length
+      for(let i = 0; i < length; i++){
+        this.list.push({
+          id: i,
+          gid: goodsInfolist[i].goods_id,
+          imgUrl: 'http://127.0.0.1:8081/' + goodsInfolist[i].goods_url,
+          name: goodsInfolist[i].goods_name,
+          price: goodsInfolist[i].price / 100,
+          num: 1,
+          pd: false,
+          isActive:false
+        })
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
+  },
+  watch:{
+    $route(to, from) {this.$router.go(0)}
   },
   methods:{
     handleLogout(){
@@ -153,9 +177,15 @@ export default {
     },
     deleteClick(index) {
       if(this.list[index].pd){
-        this.totalNum-=this.list[index].price*this.list[index].num;
-        this.goodsNum-=this.list[index].num;
-        this.list.splice(index,this.list[index].num);
+        console.log(this.list[index])
+        deleteShopcart(this.list[index].gid).then(res =>{
+          this.totalNum-=this.list[index].price*this.list[index].num;
+          this.goodsNum-=this.list[index].num;
+          this.list.splice(index,this.list[index].num);
+        }).catch(function (error) {
+          console.log(error)
+        });
+
       }else{
         alert('请先选择删除的选项')
       }
