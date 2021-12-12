@@ -1,21 +1,21 @@
 <template>
   <div id="bar" style="height: 60px;z-index: 100">
-  <el-header class="head" style="height: 60px;min-width: 400px">
-    <div style="margin: 0 auto; height: 60px; width: 1140px; min-width: 400px">
-      <el-image style="height: 50px" :src="require('@/assets/logo2.png')"></el-image>
-      <el-image style="top:-6px;margin-left:120px;height: 30px" :src="require('@/assets/title.png')"></el-image>
-      <div class="search-bar-top">
-        <div class="bar7">
-          <form>
-            <input type="text" placeholder="请输入您要搜索的物品...">
+    <el-header class="head" style="height: 60px;min-width: 400px">
+      <div style="margin: 0 auto; height: 60px; width: 1140px; min-width: 400px">
+        <el-image style="height: 50px" :src="require('@/assets/logo2.png')"></el-image>
+        <el-image style="top:-6px;margin-left:120px;height: 30px" :src="require('@/assets/title.png')"></el-image>
+        <div class="search-bar-top">
+          <div class="bar7">
+            <form>
+              <input type="text" placeholder="请输入您要搜索的物品...">
               <i class="el-icon-search"
                  :style="icolor"
                  @mouseover="mouseOver(0)"
                  @mouseleave="mouseLeave(0)"></i>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
-      <div style="display:inline;float: right;">
+        <div style="display:inline;float: right;">
         <span class="s1">
           <i class="el-icon-shopping-cart-1"
              :style="icolor1"
@@ -23,49 +23,49 @@
              @mouseleave="mouseLeave(1)"
              @click="drawer = true"></i>
         </span>
-        <el-drawer
-          title="购物车"
-          :visible.sync="drawer"
-          direction="rtl"
-          z-index="1"
-          style="text-align: center"
-        >
-          <div class="car" style="">
-            <ul>
-              <li class="clearfix" v-for="(item,index) in list" :key="item.id">
-                <input type="checkbox" class="fl minInput" v-model="item.pd" @click="itemClick(index)"/>
-                <img :src="item.imgUrl" class="fl" :class="{active:item.isActive}"/>
-                <span class="fl" style="margin-left: 10px">{{item.price.toFixed(2)}} 元</span>
-                <span class="fl" style="margin-left:20px;">{{item.num}}</span>
-                <span class="fl" style="color:red;margin-left:30px;" @click="deleteClick(index)">删除</span>
-              </li>
-            </ul>
-            <div class="footer">
-              <input type="checkbox" style="width: 20px;height: 20px" @click="totalClick" v-model="totalInt"/>全选
-              <div class="goodsNum">
-                已选商品 <span style="margin:0px 5px;">{{goodsNum}}</span>件 合计:
-                <span style="margin:0px 5px;">{{totalNum}}</span>元
+          <el-drawer
+            title="购物车"
+            :visible.sync="drawer"
+            direction="rtl"
+            z-index="1"
+            style="text-align: center"
+          >
+            <div class="car" style="">
+              <ul>
+                <li class="clearfix" v-for="(item,index) in list" :key="item.id">
+                  <input type="checkbox" class="fl minInput" v-model="item.pd" @click="itemClick(index)"/>
+                  <img :src="item.imgUrl" class="fl" :class="{active:item.isActive}"/>
+                  <span class="fl" style="margin-left: 10px">{{item.price.toFixed(2)}} 元</span>
+                  <span class="fl" style="margin-left:20px;">{{item.num}}</span>
+                  <span class="fl" style="color:red;margin-left:30px;" @click="deleteClick(index)">删除</span>
+                </li>
+              </ul>
+              <div class="footer">
+                <input type="checkbox" style="width: 20px;height: 20px" @click="totalClick" v-model="totalInt"/>全选
+                <div class="goodsNum">
+                  已选商品 <span style="margin:0px 5px;">{{goodsNum}}</span>件 合计:
+                  <span style="margin:0px 5px;">{{totalNum}}</span>元
+                </div>
               </div>
             </div>
-          </div>
-        </el-drawer>
-        <el-dropdown trigger="click" @command="handleLogin2">
+          </el-drawer>
+          <el-dropdown trigger="click" @command="handleLogin2">
           <span class="s1">
             <i class="el-icon-user"
                :style="icolor2"
                @mouseover="mouseOver(2)"
                @mouseleave="mouseLeave(2)"></i>
           </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="/Login" v-show=!this.loginState>登录</el-dropdown-item>
-            <el-dropdown-item command="/Infor" v-show=this.loginState>个人中心</el-dropdown-item>
-            <el-dropdown-item @click.native="handleLogout" v-show=this.loginState>注销</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="/Login" v-show=!this.loginState>登录</el-dropdown-item>
+              <el-dropdown-item command="/Infor" v-show=this.loginState>个人中心</el-dropdown-item>
+              <el-dropdown-item @click.native="handleLogout" v-show=this.loginState>注销</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
-    </div>
-    <el-divider style="margin-top: 0px;margin-bottom: 0px;"></el-divider>
-  </el-header>
+      <el-divider style="margin-top: 0px;margin-bottom: 0px;"></el-divider>
+    </el-header>
   </div>
 </template>
 <script>
