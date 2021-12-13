@@ -8,14 +8,26 @@ import axiosInstance from "../index.js"
 
 const axios = axiosInstance
 
-export function feedback(content){
-  const map = {content: content}
+export function feedback(user_name, content, fid){
+  const map = {user_name: user_name, content: content, fid:fid}
   return axios({
     method: 'POST',
-    url: '/feedback',
+    url: '/administrator/feedback',
     headers: {
       'Content-Type':'application/json'
     },
     params: map
+  })
+}
+
+
+export function getFeedback(){
+  return axios({
+    method: 'POST',
+    url: '/administrator/get/feedback',
+    headers: {
+      'Content-Type':'application/json'
+    },
+    params: {}
   })
 }

@@ -82,6 +82,8 @@
 
 <script>
 import AdminBar from './adminbar'
+import {getDetail} from "../../api/comment/comment";
+import {getFeedback, feedback} from "../../api/feedback/feedback";
 export default{
   name:"DealFeedback",
   components:{
@@ -90,70 +92,30 @@ export default{
   data(){
     return{
       feedback:[
-        {
-          name:"搁浅的晴天一路向北",
-          time:"2002-10-23",
-          content:"lsy太帅了",
-          IsFeedbackShow:false,
-          IsFeedbackSend:false,
-          reply:'',
-          finish:"确认",
-          send:"el-icon-message",
-        },
-        {
-          name:"prince",
-          time:"2021-12-06",
-          content:"听说贝克汉姆都没他拽",
-          IsFeedbackShow:false,
-          IsFeedbackSend:false,
-          reply:'',
-          finish:"确认",
-          send:"el-icon-message",
-        },
-        {
-          name:"某人",
-          time:"2021-12-06",
-          content:'隔壁的xjj好漂亮',
-          IsFeedbackShow:false,
-          IsFeedbackSend:false,
-          reply:'',
-          finish:"确认",
-          send:"el-icon-message",
-        },
-        {
-          name:"某人",
-          time:"2021-12-06",
-          content:'隔壁的xjj好漂亮',
-          IsFeedbackShow:false,
-          IsFeedbackSend:false,
-          reply:'',
-          finish:"确认",
-          send:"el-icon-message",
-        },
-        {
-          name:"某人",
-          time:"2021-12-06",
-          content:'隔壁的xjj好漂亮',
-          IsFeedbackShow:false,
-          IsFeedbackSend:false,
-          reply:'',
-          finish:"确认",
-          send:"el-icon-message",
-        },
-        {
-          name:"某人",
-          time:"2021-12-06",
-          content:'隔壁的xjj好漂亮',
-          IsFeedbackShow:false,
-          IsFeedbackSend:false,
-          reply:'',
-          finish:"确认",
-          send:"el-icon-message",
-        },
       ],
       readonly:true,
       replynumber:0,
     }
+  },
+  mounted() {
+    getFeedback().then(res =>{
+      let feedbacks = res.data.feedback
+      for(let i=0; i<feedbacks.length; i++){
+        this.feedback.push({
+          name: feedbacks[i].user_name,
+          time: feedbacks[i].time,
+          content:feedbacks[i].content,
+          fid: feedbacks[i].fid,
+          IsFeedbackShow:false,
+          IsFeedbackSend:false,
+          reply:'',
+          finish:"确认",
+          send:"el-icon-message",
+        })
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
   },
   methods: {
     clickreply:function(item){
@@ -163,7 +125,15 @@ export default{
       item.IsFeedbackShow=false;
     },
     clickfinish:function(item){
-      if(item.finish=="确认"){
+      if(item.finish==="确认"){
+
+        feedback(item.name, item.reply, item.fid).then(res =>{
+          alert("发送成功")
+        }).catch(function (error) {
+          console.log(error)
+        });
+
+
         if(!item.IsFeedbackSend){
           this.replynumber++;
         }
