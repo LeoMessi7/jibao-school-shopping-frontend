@@ -101,25 +101,22 @@ export default {
     console.log(this.$cookies.get("details_url"))
   },
   methods: {
-    addCar()
-{
-  document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
-    if (!button.classList.contains('loading')) {
-
-      button.classList.add('loading');
-
-      setTimeout(() => button.classList.remove('loading'), 3700);
+    addCar() {
+      document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        if (!button.classList.contains('loading')) {
+          button.classList.add('loading');
+          setTimeout(() => button.classList.remove('loading'), 3700);
+        }
+        e.preventDefault();
+      }));
 
     }
-    e.preventDefault();
-  }));
-
-}
-}
+  }
 }
 </script>
 <style>
 @import "../../css/button.css";
+
 .itemdetail {
   position: relative;
   overflow: hidden;
