@@ -75,20 +75,7 @@ export default {
       activeName: 'first',
       icolor:'color:grey' ,
       icolor1:'color:grey',
-      onItemList: [
-        {
-          name: '',
-          url: '',
-          title: '',
-          content: '',
-          purchase_time: '',
-          price: '',
-          seller_name: '',
-          showcomment: false,
-          rate: null,
-          comment: '',
-        },
-      ],
+      onItemList: [],
     };
   },
 
@@ -220,5 +207,8 @@ export default {
 /deep/ .el-textarea__inner:focus {
   border: 1px solid rgb(252, 208, 195);
   box-shadow: 0 1px 3px rgb(252, 208, 195), 0 3px 3px rgb(243, 244, 246);
+}
+/deep/ .el-message{
+  z-index: 1000;
 }
 </style>
