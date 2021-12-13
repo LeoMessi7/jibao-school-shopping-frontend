@@ -4,7 +4,6 @@
     <el-container style="height: 650px">
       <sidebar></sidebar>
       <el-main style="background-color: #faeaea;; height: 650px">
-
         <el-row :gutter="20" style="width: 70%;margin: auto">
           <el-col :span="8" :xs="24">
             <el-card class="box-card">
@@ -76,16 +75,35 @@
                     <el-form-item label="用户昵称" prop="nickName">
                       <el-input v-model="user.nickName" disabled/>
                     </el-form-item>
-                    <el-form-item label="邮箱" prop="email">
+                    <el-form-item label="电子邮箱" prop="email">
                       <el-input v-model="user.email" maxlength="50" disabled/>
-                    </el-form-item>
-                    <el-form-item label="余额" prop="rate">
-                      <el-input v-model="user.balance" maxlength="50" disabled/>
                     </el-form-item>
                     <el-form-item label="综合评分" prop="rate">
                       <el-input v-model="user.rate" maxlength="50" disabled/>
                     </el-form-item>
+                    <el-form-item label="余额" prop="rate">
+                      <el-input v-model="user.balance" maxlength="50" disabled/>
+                    </el-form-item>
+                    <el-form-item label="校区">
+                      <el-select v-model="user.campus" placeholder="请选择校区" style="width: 100%">
+                        <el-option label="四平校区" value="四平校区"></el-option>
+                        <el-option label="嘉定校区" value="嘉定校区"></el-option>
+                        <el-option label="沪西校区" value="沪西校区"></el-option>
+                        <el-option label="彰武路校区" value="彰武路校区"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="专业">
+                      <el-select v-model="user.major" placeholder="请选择专业" style="width: 100%">
+                        <el-option label="软件工程" value="软件工程"></el-option>
+                        <el-option label="电子信息工程" value="电子信息工程"></el-option>
+                        <el-option label="医学" value="医学"></el-option>
+                        <el-option label="数学" value="数学"></el-option>
+                        <el-option label="建筑设计" value="建筑设计"></el-option>
+                        <el-option label="车辆工程" value="车辆工程"></el-option>
+                      </el-select>
+                    </el-form-item>
                     <el-form-item>
+                      <el-button type="primary" size="mini" @click="saveInfo">保存</el-button>
                       <el-button type="danger" size="mini" @click="close">关闭</el-button>
                     </el-form-item>
                   </el-form>
@@ -121,7 +139,7 @@
 <script>
 import bar from './bar'
 import sidebar from './sidebar'
-import {changePassword, updateAvatar} from "../api/user/info";
+import {saveUseInfo, changePassword, updateAvatar} from "../api/user/info";
 
 export default {
   name: "Infor",
@@ -135,8 +153,10 @@ export default {
       // 是否显示弹出层
       activeName: 'userinfo',
       user: {
-        nickName: this.$cookies.get("email"),
-        email: this.$cookies.get("user_name"),
+        nickName: this.$cookies.get("user_name"),
+        email: this.$cookies.get("email"),
+        campus:this.$cookies.get("campus"),
+        major:this.$cookies.get("major"),
         rate: this.$cookies.get("mark"),
         balance: this.$cookies.get("balance")
       },
@@ -220,6 +240,23 @@ export default {
       }).catch(function (error) {
         console.log(error)
       });
+    },
+    saveInfo(){
+      if(this.user.major!=='请选择专业'&&this.user.campus!=='请选择校区'){
+        saveUseInfo(this.user.major,this.user.campus).then(res=>{
+          let code = res.data.code
+          if (code === 1) {
+            this.$message({message: "修改失败！", type: 'error', customClass: 'zZindex'})
+          } else if (code === 0) {
+            this.$message({message: "修改成功！", type: 'success', customClass: 'zZindex'});
+            this.$cookies.set("major", this.user.major)
+            this.$cookies.set("campus", this.user.campus)
+          }
+        }).catch(function (error) {
+          console.log(error)
+        });
+      }
+
     },
     close() {
       this.$router.push({path: "/"});

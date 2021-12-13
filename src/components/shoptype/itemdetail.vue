@@ -52,6 +52,7 @@
       </el-container>
       <div class="buyercomments" style="width: 80%;margin: auto;">
         <p style="font-weight:bold">买家评价：</p>
+        <p v-if="comments.length===0" style="padding-bottom: 50px"> 暂无评价</p>
         <div class="content" v-for="(item,index) in comments" :key="index" style="line-height: 25px">
           <div class="title" style="display: inline">
             <span style="font-size:15px;font-weight:600;color:#656565;">{{ item.buyer }}</span>
@@ -92,8 +93,7 @@ export default {
       finalmark: '3',
       collecttype: '',
       collectionicon: 'el-icon-shopping-cart-2',
-      comments: [
-      ]
+      comments: []
     }
   },
   mounted() {

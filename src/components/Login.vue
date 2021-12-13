@@ -73,6 +73,7 @@
 import {checkAccount, checkEmailCaptcha, getImageCaptcha, loginGet} from "../api/user/login";
 import {message, my_name, set_name, avatar_url, set_avatar_url, addMessage} from "../js/global"
 import {getChat} from "../api/user/chat";
+
 export default {
   name: 'Login',
   data() {
@@ -117,18 +118,18 @@ export default {
     handleLogon() {
       this.loading = true;
       if (this.regForm.email === "")
-        this.$message({message:"邮箱不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "邮箱不能为空！", type: 'error', customClass: 'zZindex'})
       else if (this.regForm.captcha_code === "")
-        this.$message({message:"验证码不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "验证码不能为空！", type: 'error', customClass: 'zZindex'})
       else {
         checkEmailCaptcha(this.regForm.email, this.regForm.captcha_code).then(res => {
           let code = res.data.code
           if (code === 1)
-            this.$message({message:"注册失败！该邮箱不存在！",type:'error',customClass:'zZindex'})
+            this.$message({message: "注册失败！该邮箱不存在！", type: 'error', customClass: 'zZindex'})
           else if (code === 2 || code === 3)
-            this.$message({message:"注册失败！验证码错误！",type:'error',customClass:'zZindex'})
+            this.$message({message: "注册失败！验证码错误！", type: 'error', customClass: 'zZindex'})
           else if (code === 0) {
-            this.$message({message:"注册成功！",type:'success',customClass:'zZindex'})
+            this.$message({message: "注册成功！", type: 'success', customClass: 'zZindex'})
             this.$cookies.set("email", this.regForm.email)
             this.$cookies.set("password", this.regForm.password)
             this.moveToLogin()
@@ -174,25 +175,25 @@ export default {
       let x = document.getElementsByClassName("dyEmailButton");
       this.waitingtime--;
       if (this.regForm.userName === "") {
-        this.$message({message:"用户名不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "用户名不能为空！", type: 'error', customClass: 'zZindex'})
         this.waitingtime = 60;
       } else if (this.regForm.password === "" && this.regForm.confirm === "") {
-        this.$message({message:"密码不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "密码不能为空！", type: 'error', customClass: 'zZindex'})
         this.waitingtime = 60;
       } else if (this.regForm.email === "") {
-        this.$message({message:"邮箱不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "邮箱不能为空！", type: 'error', customClass: 'zZindex'})
         this.waitingtime = 60;
       } else if (this.regForm.password !== this.regForm.confirm) {
-        this.$message({message:"两次输入的密码不一致！",type:'error',customClass:'zZindex'})
+        this.$message({message: "两次输入的密码不一致！", type: 'error', customClass: 'zZindex'})
         this.waitingtime = 60;
       } else {
         checkAccount(this.regForm.email, this.regForm.password, this.regForm.userName).then(res => {
           let code = res.data.code
           if (code === 1) {
-            this.$message({message:"该邮箱已被注册！",type:'error',customClass:'zZindex'})
+            this.$message({message: "该邮箱已被注册！", type: 'error', customClass: 'zZindex'})
             this.waitingtime = 60;
           } else {
-            this.$message({message:"验证码已发送至邮箱！",type:'success',customClass:'zZindex'})
+            this.$message({message: "验证码已发送至邮箱！", type: 'success', customClass: 'zZindex'})
             let timer = setInterval(() => {
               this.emailbtn = this.waitingtime + "秒后重新发送"
               this.waitingtime--;
@@ -211,27 +212,35 @@ export default {
     handleLogin() {
       this.loading = true;
       if (this.loginForm.email === "")
-        this.$message({message:"邮箱不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "邮箱不能为空！", type: 'error', customClass: 'zZindex'})
       else if (this.loginForm.password === "")
-        this.$message({message:"密码不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "密码不能为空！", type: 'error', customClass: 'zZindex'})
       else if (this.loginForm.captcha_code === "")
-        this.$message({message:"验证码不能为空！",type:'error',customClass:'zZindex'})
+        this.$message({message: "验证码不能为空！", type: 'error', customClass: 'zZindex'})
       else {
         loginGet(this.loginForm.email, this.loginForm.password, this.loginForm.captcha_code).then(res => {
           let code = res.data.code
           console.log(code)
           if (code === 1)
-            this.$message({message:"登录失败！该用户不存在！",type:'error',customClass:'zZindex'})
+            this.$message({message: "登录失败！该用户不存在！", type: 'error', customClass: 'zZindex'})
           else if (code === 2)
-            this.$message({message:"登录失败！用户名与密码不匹配！",type:'error',customClass:'zZindex'})
+            this.$message({message: "登录失败！用户名与密码不匹配！", type: 'error', customClass: 'zZindex'})
           else if (code === 3)
-            this.$message({message:"登录失败！验证码错误！",type:'error',customClass:'zZindex'})
+            this.$message({message: "登录失败！验证码错误！", type: 'error', customClass: 'zZindex'})
           else if (code === 0) {
-            this.$message({message:"登录成功！",type:'success',customClass:'zZindex'})
+            this.$message({message: "登录成功！", type: 'success', customClass: 'zZindex'})
             this.$cookies.set("email", this.loginForm.email)
             this.$cookies.set("password", this.loginForm.password)
             this.$cookies.set("user_name", res.data.user_name)
             this.$cookies.set("mark", res.data.mark)
+            if(res.data.major===undefined)
+              this.$cookies.set("major", '请选择专业')
+            else
+              this.$cookies.set("major", res.data.major)
+            if(res.data.campus===undefined)
+              this.$cookies.set("campus", '请选择校区')
+            else
+              this.$cookies.set("campus", res.data.campus)
             this.$cookies.set("balance", res.data.balance)
             console.log(this.$cookies.get("mark"))
             this.$cookies.set("avatar_url", 'http://localhost:8081/' + res.data.avatar_url + "?timestamp=" + new Date().getTime())
@@ -240,8 +249,7 @@ export default {
             set_name(res.data.user_name)
             set_avatar_url('http://127.0.0.1:8081/' + res.data.avatar_url)
             console.log(my_name)
-            global.ws.onopen = function()
-            {
+            global.ws.onopen = function () {
               console.log("connect");
               message[0].content.push(
                 {
@@ -256,7 +264,7 @@ export default {
               console.log("close");
             };
 
-            global.ws.onmessage = function(evt){
+            global.ws.onmessage = function (evt) {
               var data = JSON.parse(evt.data);
               console.log(data)
               let from_username = data.from_username
