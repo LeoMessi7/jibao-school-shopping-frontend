@@ -36,9 +36,9 @@
               <li class="clearfix" v-for="(item,index) in list" :key="item.id">
                 <input type="checkbox" class="fl minInput" v-model="item.pd" @click="itemClick(index)"/>
                 <img :src="item.imgUrl" class="fl" :class="{active:item.isActive}"/>
-                <span class="fl" style="margin-left: 10px">{{item.price.toFixed(2)}} 元</span>
                 <span class="fl" style="margin-left:20px;">{{item.name}}</span>
-                <span class="fl" style="color:red;margin-left:30px;" @click="deleteClick(index)">删除</span>
+                <span class="fl" style="margin-left: 10px">{{item.price.toFixed(2)}} 元</span>
+                <el-button type="text" class="fl" style="float: right;color:red;margin-right:30px;padding-top: 43px" @click="deleteClick(index)">删除</el-button>
               </li>
             </ul>
             <div class="footer">
@@ -144,8 +144,10 @@ export default {
         this.$message.error("购物车为空")
       else {
         let gid_list = []
-        for (let i = 0; i < this.list.length; i++)
-          gid_list.push(this.list[i].gid)
+        for (let i = 0; i < this.list.length; i++) {
+          if(this.list[i].pd)
+            gid_list.push(this.list[i].gid)
+        }
         buyAll(gid_list, this.totalNum * 100).then(res => {
           if (res.data.code === 1)
             this.$message.error("余额不足")
@@ -299,7 +301,7 @@ export default {
   top: 0;
   right: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 10;
   background-color: #ffffff;
   line-height: 60px;
   height: 60px;
@@ -457,5 +459,8 @@ input {
   height: 1px;
   width: 100%;
   margin: 0 0;
+}
+/deep/ .el-message{
+  z-index: 5000;
 }
 </style>
