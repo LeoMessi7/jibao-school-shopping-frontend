@@ -30,3 +30,15 @@ export function comment(seller_name,content,mark){
     params: map
   })
 }
+
+export function getDetail(gid){
+  const map = {gid: gid}
+  return axios({
+    method: 'POST',
+    url: '/get/detail',
+    headers: {
+      'Content-Type':'application/json'
+    },
+    params: map
+  })
+}

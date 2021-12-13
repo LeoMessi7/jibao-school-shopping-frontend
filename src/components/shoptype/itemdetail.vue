@@ -44,7 +44,7 @@
                 </button>
 
                 <el-button type="success" icon="el-icon-goods" style="margin-left:15px;">购买</el-button>
-                <el-button type="danger" icon="el-icon-user-solid" style="margin-left:15px;">联系商家</el-button>
+                <el-button type="danger" icon="el-icon-user-solid" style="margin-left:15px;" v-on:click="addUser">联系商家</el-button>
               </el-row>
             </el-footer>
           </el-container>
@@ -74,33 +74,60 @@
   </div>
 </template>
 <script>
+import {getDetail} from "../../api/comment/comment";
+import {deleteShopcart, getShopcart} from "../../api/shopcart/selection";
+import {addChatUser} from "../../js/global";
 export default {
   name: "itemdetail",
   data() {
     return {
-      id: this.$cookies.get("details_id"),
-      url: this.$cookies.get("details_url"),
-      title: this.$cookies.get("details_name"),
-      category: this.$cookies.get("details_category"),
-      description: this.$cookies.get("details_description"),
-      provider: '小绿小绿',
+      id: this.$router.currentRoute.query.details_id,
+      url: this.$router.currentRoute.query.details_url,
+      title: this.$router.currentRoute.query.details_name,
+      category: this.$router.currentRoute.query.details_category,
+      avatar_url: this.$router.currentRoute.query.seller_avatar_url,
+      description: this.$router.currentRoute.query.details_description,
+      provider: "",
       price: this.$cookies.get("details_price"),
       finalmark: '3',
       collecttype: '',
       collectionicon: 'el-icon-shopping-cart-2',
       comments: [
-        {buyer: '哈哈哈', time: '2021-12-12', content: 'wanglaoshi', mark: '4'},
-        {buyer: '嘻嘻嘻', time: '2021-12-13', content: 'aoneogewi', mark: '3'},
-        {buyer: '啦啦啦', time: '2021-12-14', content: 'owneog', mark: '1'},
-        {buyer: '啦啦啦', time: '2021-12-14', content: 'owneog', mark: '1'},
-        {buyer: '啦啦啦', time: '2021-12-14', content: 'owneog', mark: '1'},
       ]
     }
   },
   mounted() {
+    getDetail(this.$router.currentRoute.query.details_id).then(res =>{
+      this.provider = res.data.seller_name
+      let comments = res.data.comments
+      console.log(res.data)
+      let comment_time = res.data.comment_time
+      let avg_mark = res.data.avg_mark
+      let marks = res.data.marks
+      this.finalmark = avg_mark
+      for(let i = 0; i < comments.length; i++){
+        this.comments.push({
+          buyer: "用户" + (i + 1),
+          time: comment_time[i],
+          content: comments[i],
+          mark: marks[i]
+        })
+      }
+    }).catch(function (error) {
+      console.log(error)
+    });
     console.log(this.$cookies.get("details_url"))
+
   },
   methods: {
+
+    addUser(){
+      addChatUser(this.provider, this.avatar_url)
+      this.$router.push('/chat')
+    },
+
+
+
     addCar()
 {
   document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
