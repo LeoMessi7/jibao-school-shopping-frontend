@@ -21,6 +21,7 @@
              :style="icolor1"
              @mouseover="mouseOver(1)"
              @mouseleave="mouseLeave(1)"
+             v-on:click="update"
              @click="drawer = true"></i>
         </span>
         <el-drawer
@@ -95,82 +96,92 @@ export default {
     }
   },
   mounted() {
-    getShopcart().then(res =>{
-      console.log(res.data)
-      let goodsInfolist = res.data.selection
-      console.log(res.data.goodsInfoList)
-      let length = res.data.length
-      let f = 0
-      for(let i = 0; i < length; i++){
-        console.log(goodsInfolist[i].status)
-        if(goodsInfolist[i].status !== "售卖中") {
-          alert(goodsInfolist[i].goods_name + "已售出或下架，已经为您清除购物车!")
-          deleteShopcart(goodsInfolist[i].goods_id).then(res =>{
-          }).catch(function (error) {
-            console.log(error)
-          });
-
-        }
-        else {
-          this.list.push({
-            id: f,
-            gid: goodsInfolist[i].goods_id,
-            imgUrl: 'http://127.0.0.1:8081/' + goodsInfolist[i].goods_url,
-            name: goodsInfolist[i].goods_name,
-            price: goodsInfolist[i].price / 100,
-            num: 1,
-            pd: false,
-            isActive: false
-          })
-          f = f + 1
-        }
-      }
-    }).catch(function (error) {
-      console.log(error)
-    });
   },
 
   methods:{
-    buy(){
-      let gid_list = []
-      for(let i=0; i<this.list.length; i++)
-        gid_list.push(this.list[i].gid)
-      buyAll(gid_list, this.totalNum * 100).then(res =>{
-        if(res.data.code === 1)
-          alert("余额不足")
-        else if(res.data.code === 2) {
-          alert("购买失败，已为您更新购物车")
-          getShopcart().then(res =>{
-            this.list = []
-            let goodsInfolist = res.data.selection
-            console.log(res.data.goodsInfoList)
-            let length = res.data.length
-            let f = 0
-            for(let i = 0; i < length; i++) {
-              this.list.push({
-                id: f,
-                gid: goodsInfolist[i].goods_id,
-                imgUrl: 'http://127.0.0.1:8081/' + goodsInfolist[i].goods_url,
-                name: goodsInfolist[i].goods_name,
-                price: goodsInfolist[i].price / 100,
-                num: 1,
-                pd: false,
-                isActive: false
-              })
-              f = f + 1
-            }
-          }).catch(function (error) {
-            console.log(error)
-          });
 
-        }
-        else{
-          alert("购买成功")
-          this.list = []
+
+    update(){
+      this.list = []
+      getShopcart().then(res =>{
+        console.log(res.data)
+        let goodsInfolist = res.data.selection
+        console.log(res.data.goodsInfoList)
+        let length = res.data.length
+        let f = 0
+        for(let i = 0; i < length; i++){
+          console.log(goodsInfolist[i].status)
+          if(goodsInfolist[i].status !== "售卖中") {
+            alert(goodsInfolist[i].goods_name + "已售出或下架，已经为您清除购物车!")
+            deleteShopcart(goodsInfolist[i].goods_id).then(res =>{
+            }).catch(function (error) {
+              console.log(error)
+            });
+
+          }
+          else {
+            this.list.push({
+              id: f,
+              gid: goodsInfolist[i].goods_id,
+              imgUrl: 'http://127.0.0.1:8081/' + goodsInfolist[i].goods_url,
+              name: goodsInfolist[i].goods_name,
+              price: goodsInfolist[i].price / 100,
+              num: 1,
+              pd: false,
+              isActive: false
+            })
+            f = f + 1
+          }
         }
       }).catch(function (error) {
         console.log(error)
       });
+    },
+
+
+    buy(){
+      if(this.list.length === 0)
+        this.$message.error("购物车为空")
+      else {
+        let gid_list = []
+        for (let i = 0; i < this.list.length; i++)
+          gid_list.push(this.list[i].gid)
+        buyAll(gid_list, this.totalNum * 100).then(res => {
+          if (res.data.code === 1)
+            this.$message.error("余额不足")
+          else if (res.data.code === 2) {
+            this.$message.error("购买失败，已为您更新购物车")
+            getShopcart().then(res => {
+              this.list = []
+              let goodsInfolist = res.data.selection
+              console.log(res.data.goodsInfoList)
+              let length = res.data.length
+              let f = 0
+              for (let i = 0; i < length; i++) {
+                this.list.push({
+                  id: f,
+                  gid: goodsInfolist[i].goods_id,
+                  imgUrl: 'http://127.0.0.1:8081/' + goodsInfolist[i].goods_url,
+                  name: goodsInfolist[i].goods_name,
+                  price: goodsInfolist[i].price / 100,
+                  num: 1,
+                  pd: false,
+                  isActive: false
+                })
+                f = f + 1
+              }
+            }).catch(function (error) {
+              console.log(error)
+            });
+
+          } else {
+            this.$message.success("购买成功")
+            this.list = []
+          }
+        }).catch(function (error) {
+          console.log(error)
+        });
+      }
     },
     handleLogout(){
       this.$cookies.remove("user_name")

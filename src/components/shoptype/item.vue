@@ -59,7 +59,9 @@ export default {
       }
       this.changecolor(item)
       select(item.goods_id).then(res =>{
+        this.$message.success("加入成功")
       }).catch(function (error) {
+        this.$message.error("加入失败")
         console.log(error)
       });
     },

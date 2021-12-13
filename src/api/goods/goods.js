@@ -80,7 +80,7 @@ export function withdrawGoods(gid){
 export function getPurchase(){
   return axios({
     method: 'POST',
-    url: 'getPurchase',
+    url: '/goods/getPurchase',
     headers: {
       'Content-Type': 'application/json'
     },
