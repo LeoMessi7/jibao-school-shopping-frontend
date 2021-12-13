@@ -29,13 +29,14 @@ export function searchGoods(key_word){
   })
 }
 
-export function uploadGoods(description, name, sub_category, price, image){
+export function uploadGoods(description, name, sub_category,campus, price, image){
   let formData = new FormData()
   formData.append("description", description)
   formData.append("name", name)
   formData.append("sub_category", sub_category)
   formData.append("price", price)
   formData.append("image", image)
+  formData.append("campus", campus)
   console.log(image)
   return axios({
     method: 'POST',
@@ -47,13 +48,14 @@ export function uploadGoods(description, name, sub_category, price, image){
   })
 }
 
-export function modifyGoods(id, description, name, sub_category, price, image){
+export function modifyGoods(id, description, name, sub_category,campus, price, image){
   let formData = new FormData()
   formData.append("gid", id)
   formData.append("description", description)
   formData.append("name", name)
   formData.append("sub_category", sub_category)
   formData.append("price", price)
+  formData.append("campus", campus)
   formData.append("image", image)
   return axios({
     method: 'POST',

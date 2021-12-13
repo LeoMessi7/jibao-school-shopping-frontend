@@ -35,7 +35,16 @@
               v-model="commodity.category"
               :show-all-levels="false"
               :options="options"
+              style="width: 100%"
               clearable></el-cascader>
+          </el-form-item>
+          <el-form-item label="校区" prop="campus" required>
+            <el-select v-model="commodity.campus" placeholder="请选择校区" style="width: 100%">
+              <el-option label="四平校区" value="四平校区"></el-option>
+              <el-option label="嘉定校区" value="嘉定校区"></el-option>
+              <el-option label="沪西校区" value="沪西校区"></el-option>
+              <el-option label="彰武路校区" value="彰武路校区"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="商品描述" prop="description">
             <el-input type="textarea" v-model="commodity.description"></el-input>
@@ -75,6 +84,14 @@
                     :options="options"
                     clearable></el-cascader>
                 </el-form-item>
+                <el-form-item label="校区" prop="campus" required>
+                  <el-select v-model="temp.campus" placeholder="请选择校区" style="width: 100%">
+                    <el-option label="四平校区" value="四平校区"></el-option>
+                    <el-option label="嘉定校区" value="嘉定校区"></el-option>
+                    <el-option label="沪西校区" value="沪西校区"></el-option>
+                    <el-option label="彰武路校区" value="彰武路校区"></el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="商品描述" prop="description">
                   <el-input type="textarea" v-model="temp.description"></el-input>
                 </el-form-item>
@@ -95,6 +112,8 @@
                   <p style="color: #656565">{{ item.price }}</p><br>
                   <span style="color: #656565; font-weight: 600">分类：</span>
                   <p style="color: #656565;">{{ item.category[0]+'/'+item.category[1]}}</p><br>
+                  <span style="color: #656565; font-weight: 600">校区：</span>
+                  <p style="color: #656565;">{{ item.campus }}</p><br>
                   <span style="color: #656565; font-weight: 600">描述：</span>
                   <p style="color: #656565;">{{ item.description }}</p><br>
                 </div>
@@ -150,6 +169,7 @@ export default {
         price: '',
         category: [],
         description: '',
+        campus:'',
       },
       onItemList: [],
       buyItemList: [],
@@ -161,6 +181,7 @@ export default {
         price: '',
         category:'',
         description: '',
+        campus:'',
       },
       uploadURL: '',
       headerObj: {
@@ -183,6 +204,9 @@ export default {
         ],
         description: [
           {required: true, message: "请输入商品描述", trigger: 'blur'}
+        ],
+        campus: [
+          {required: true, message: "请输入商品所在校区", trigger: 'blur'}
         ]
       }
     };
@@ -230,6 +254,7 @@ export default {
           this.onItemList.push({
             id: goodsList[i].goods_id,
             name: goodsList[i].goods_name,
+            campus:goodsList[i].campus,
             description: goodsList[i].description,
             category: [goodsList[i].category, goodsList[i].sub_category,],
             url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
@@ -245,6 +270,7 @@ export default {
             category: [goodsList[i].category,goodsList[i].sub_category,],
             name: goodsList[i].goods_name,
             date: goodsList[i].date,
+            campus:goodsList[i].campus,
             url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
             customer: goodsList[i].user_name,
             avatar_url: goodsList[i].avatar_url
@@ -304,7 +330,7 @@ export default {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
           let image = this.formData.get("upload")
-          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1], this.commodity.price, image).then(res => {
+          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1],this.commodity.campus, this.commodity.price, image).then(res => {
             this.$message.success("上传成功！")
             getUpload().then(res => {
               this.onItemList=[]
@@ -316,6 +342,7 @@ export default {
                     id: goodsList[i].goods_id,
                     name: goodsList[i].goods_name,
                     description: goodsList[i].description,
+                    campus:goodsList[i].campus,
                     category: [goodsList[i].category, goodsList[i].sub_category,],
                     url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
                     price: goodsList[i].price,
@@ -327,6 +354,7 @@ export default {
                     id:goodsList[i].goods_id,
                     price: goodsList[i].price,
                     category: [goodsList[i].category,goodsList[i].sub_category,],
+                    campus:goodsList[i].campus,
                     name: goodsList[i].goods_name,
                     date: goodsList[i].date,
                     url: 'http://127.0.0.1:8081/'+goodsList[i].goods_url,
@@ -355,10 +383,11 @@ export default {
           item.description=this.temp.description
           item.name=this.temp.name
           item.price=this.temp.price
+          item.campus=this.temp.campus
           item.url=this.temp.url
           item.category=this.temp.category
           let image = this.formData.get("modify")
-          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1], this.temp.price, image).then(res => {
+          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1],this.temp.campus, this.temp.price, image).then(res => {
             this.$message.success("上传成功！")
             item.showonload = false
           }).catch(function (error) {
@@ -381,6 +410,7 @@ export default {
       this.temp.name = item.name
       this.temp.url = item.url
       console.log(item.url)
+      this.temp.campus=item.campus
       this.temp.category = item.category
       this.temp.price = item.price
       this.temp.description = item.description

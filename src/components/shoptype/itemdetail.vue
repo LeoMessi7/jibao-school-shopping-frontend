@@ -13,7 +13,7 @@
 
 
         </el-aside>
-        <el-main class="body">
+        <el-main class="body" style="margin-top: -20px">
           <el-container>
             <el-main>
               <span style="color: #656565; font-weight: 600">商品名称：</span>
@@ -24,6 +24,8 @@
               <p style="color: #656565;display: inline">{{ price }}元</p><br>
               <span style="color: #656565; font-weight: 600">商品分类：</span>
               <p style="color: #656565;display: inline">{{ category }}</p><br>
+              <span style="color: #656565; font-weight: 600">校区：</span>
+              <p style="color: #656565;display: inline">{{ campus }}</p><br>
               <span style="color: #656565; font-weight: 600">商家：</span>
               <p style="color: #656565;display: inline">{{ provider }}</p><br>
               <span style="color: #656565; font-weight: 600">综合评分：</span>
@@ -43,7 +45,7 @@
                   </div>
                 </button>
 
-                <el-button type="success" icon="el-icon-goods" style="margin-left:15px;">购买</el-button>
+                <el-button type="success" icon="el-icon-goods" style="margin-left:15px; " @click="purchaseGoods">购买</el-button>
                 <el-button type="danger" icon="el-icon-user-solid" style="margin-left:15px;" v-on:click="addUser">联系商家</el-button>
               </el-row>
             </el-footer>
@@ -78,6 +80,9 @@
 import {getDetail} from "../../api/comment/comment";
 import {deleteShopcart, getShopcart} from "../../api/shopcart/selection";
 import {addChatUser} from "../../js/global";
+import {purchase} from "../../api/user/purchase";
+import {select} from "../../api/goods/goods";
+
 export default {
   name: "itemdetail",
   data() {
@@ -86,6 +91,7 @@ export default {
       url: this.$router.currentRoute.query.details_url,
       title: this.$router.currentRoute.query.details_name,
       category: this.$router.currentRoute.query.details_category,
+      campus:this.$router.currentRoute.query.details_campus,
       avatar_url: '',
       description: this.$router.currentRoute.query.details_description,
       provider: "",
@@ -127,6 +133,21 @@ export default {
       this.$router.push('/chat')
     },
 
+
+    purchaseGoods(){
+      purchase(this.id).then(res =>{
+        let code = res.data.code
+        if(code === 0)
+          this.$message.success("购买成功")
+        else if(code === 1)
+          this.$message.error("余额不足")
+        else
+          this.$message.error("商品已经被别人抢走啦")
+      }).catch(function (error) {
+        this.$message.error("购买失败")
+        console.log(error)
+      });
+    },
 
 
     addCar() {

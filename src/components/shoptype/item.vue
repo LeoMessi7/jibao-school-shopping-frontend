@@ -11,6 +11,7 @@
         <span>{{item.title}}</span>
         <p>描述：{{item.description}}</p>
         <p>类别：{{item.category}}</p>
+        <p>校区：{{item.campus}}</p>
         <p>价格：{{item.price}}</p>
         <el-row class="collectbuy">
           <el-button :type="item.collecttype" :icon="item.collectionicon" circle v-on:click="addShoppingCart(item)"></el-button>
@@ -33,8 +34,7 @@ export default {
   data(){
     return{
       goods_list: goodsList,
-      list:[
-      ],
+      list:[],
 
     }
   },
@@ -94,6 +94,7 @@ export default {
           description: goodsInfoList[i].description,
           category: goodsInfoList[i].sub_category,
           price: goodsInfoList[i].price,
+          campus:goodsInfoList[i].campus,
           goods_id: goodsInfoList[i].goods_id,
           collecttype:"",
           collectionicon:"el-icon-shopping-cart-2"
@@ -121,6 +122,7 @@ export default {
           "details_id": item.goods_id,
           "details_name": item.title,
           "details_category": item.category,
+          "details_campus":item.campus,
           "details_description": item.description,
           "details_price": item.price,
           "details_url": item.url
@@ -231,8 +233,9 @@ export default {
   text-align: justify;
 }
 .collectbuy{
-  margin-top:40px;
-  margin-left:150px;
+  float: right;
+  bottom: 10px;
+  right:10px;
 }
 
 @font-face {
