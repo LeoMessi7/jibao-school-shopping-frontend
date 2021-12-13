@@ -1,6 +1,6 @@
 <template>
   <div id="upload">
-    <div class="my" style="width:80%; background-color: #faeaea; margin:auto; margin-top: 30px">
+    <div class="my" style="position:relative;width:80%;height: 20%; background-color: #faeaea; margin:auto; margin-top: 30px">
       <el-button type="danger" plain
                  style="transform: translateY(8%); position: relative;float: right;z-index: 2;right:8.3%"
                  @click="showuploadcommodity = true">上传

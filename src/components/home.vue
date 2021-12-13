@@ -3,9 +3,8 @@
   <bar></bar>
   <el-container style="height: 650px">
     <sidebar></sidebar>
-    <el-main style="height: 650px;background-color: #faeaea;overflow: hidden">
+    <el-main style="height: 650px;background-color: #faeaea;">
       <router-view/>
-
     </el-main>
   </el-container>
   </div>

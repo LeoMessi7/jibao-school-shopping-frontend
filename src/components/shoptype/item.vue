@@ -14,7 +14,7 @@
         <p>价格：{{item.price}}</p>
         <el-row class="collectbuy">
           <el-button :type="item.collecttype" :icon="item.collectionicon" circle v-on:click="addShoppingCart(item)"></el-button>
-          <el-button type="success" icon="el-icon-goods" circle ></el-button>
+          <el-button type="success" icon="el-icon-goods" circle @click="purchaseGoods(item)"></el-button>
           <el-button type="danger" icon="el-icon-view" circle @click="detail(item)"></el-button>
         </el-row>
       </div>
@@ -27,6 +27,7 @@
 <script>
 import {goodsList, message, setGoodsList} from "../../js/global";
 import {getPurchase, select, searchRandomGoods} from "../../api/goods/goods";
+import {purchase} from "../../api/user/purchase";
 export default {
   name: "item",
   data(){
@@ -51,6 +52,21 @@ export default {
     setInterval(this.timer, 1000);
   },
   methods:{
+
+    purchaseGoods(item){
+      purchase(item.goods_id).then(res =>{
+        let code = res.data.code
+        if(code === 0)
+        this.$message.success("购买成功")
+        else if(code === 1)
+          this.$message.error("余额不足")
+        else
+          this.$message.error("商品已经被别人抢走啦")
+      }).catch(function (error) {
+        this.$message.error("购买失败")
+        console.log(error)
+      });
+    },
 
     addShoppingCart(item){
       if (!this.$cookies.isKey("user_name")) {

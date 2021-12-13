@@ -12,9 +12,9 @@ export function purchase(gid){
   const map = {gid: gid}
   return axios({
     method: 'POST',
-    url: 'http://localhost:8081/user/info/purchase',
+    url: '/goods/purchase',
     headers: {
-      isToken: false
+      'Content-Type':'application/json'
     },
     params: map
   })
