@@ -85,10 +85,10 @@ export default {
       url: this.$router.currentRoute.query.details_url,
       title: this.$router.currentRoute.query.details_name,
       category: this.$router.currentRoute.query.details_category,
-      avatar_url: this.$router.currentRoute.query.seller_avatar_url,
+      avatar_url: '',
       description: this.$router.currentRoute.query.details_description,
       provider: "",
-      price: this.$cookies.get("details_price"),
+      price: this.$router.currentRoute.query.details_price,
       finalmark: '3',
       collecttype: '',
       collectionicon: 'el-icon-shopping-cart-2',
@@ -99,6 +99,7 @@ export default {
   mounted() {
     getDetail(this.$router.currentRoute.query.details_id).then(res =>{
       this.provider = res.data.seller_name
+      this.avatar_url = res.data.avatar_url
       let comments = res.data.comments
       console.log(res.data)
       let comment_time = res.data.comment_time
@@ -122,26 +123,33 @@ export default {
   methods: {
 
     addUser(){
+      alert(this.avatar_url)
       addChatUser(this.provider, this.avatar_url)
       this.$router.push('/chat')
     },
 
 
 
-    addCar()
-{
-  document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
-    if (!button.classList.contains('loading')) {
-
-      button.classList.add('loading');
-
-      setTimeout(() => button.classList.remove('loading'), 3700);
-
+    addCar() {
+      if (!this.$cookies.isKey("user_name")) {
+        this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
+        this.$router.push("/Login")
+      }
+      select(this.id).then(res => {
+        this.$message({message: "加入成功！", type: 'success', customClass: 'zZindex'})
+      }).catch(function (error) {
+        console.log(error)
+      })
+      document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        if (!button.classList.contains('loading')) {
+          button.classList.add('loading');
+          setTimeout(() => button.classList.remove('loading'), 3700);
+        }
+        e.preventDefault();
+      }))
     }
-    e.preventDefault();
-  }));
 
-}
+
 }
 }
 </script>

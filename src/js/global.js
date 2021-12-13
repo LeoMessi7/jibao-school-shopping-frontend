@@ -30,6 +30,7 @@ export let message = [
 
 
 export function addChatUser(user_name, avatar){
+  alert(avatar)
   let flag = 1
   for(let i =0; i<message.length;i++){
     if(message[i].to === user_name){
