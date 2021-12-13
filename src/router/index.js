@@ -15,6 +15,7 @@ import Infor from '../components/Infor'
 import admin from '../components/administrator/admin'
 import dealfeedback from "../components/administrator/dealfeedback"
 import itemdetail from "../components/shoptype/itemdetail";
+import adminLogin from "../components/adminLogin"
 import 'animate.css'
 
 Vue.use(Router)
@@ -97,5 +98,10 @@ export default new Router({
       name:'dealfeedback',
       component:dealfeedback
     },
+    {
+      path:'/adminLogin',
+      name:'adminLogin',
+      component:adminLogin
+    }
   ]
 })
