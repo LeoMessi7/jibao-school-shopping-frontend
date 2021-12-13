@@ -93,11 +93,10 @@ export function getPurchase(){
 export function getUpload() {
   return axios({
     method: 'POST',
-    url: 'goods/getUpload',
+    url: '/goods/getUpload',
     headers: {
       'Content-Type': 'application/json'
-    },
-    params: {}
+    }
   })
 }
 
