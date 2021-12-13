@@ -52,6 +52,7 @@
 import {checkAccount, checkEmailCaptcha, getImageCaptcha, loginGet} from "../api/user/login";
 import {message, my_name, set_name, avatar_url, set_avatar_url, addMessage} from "../js/global"
 import {getChat} from "../api/user/chat";
+import {adminLogin} from "../api/admin/admin"
 export default {
   name: 'adminLogin',
   data() {
@@ -92,55 +93,17 @@ export default {
       else if (this.loginForm.password === "")
         this.$message({message:"密码不能为空！",type:'error',customClass:'zZindex'})
       else {
-        loginGet(this.loginForm.email, this.loginForm.password, this.loginForm.captcha_code).then(res => {
+        adminLogin(this.loginForm.email, this.loginForm.password).then(res => {
           let code = res.data.code
           console.log(code)
           if (code === 1)
-            this.$message({message:"登录失败！该用户不存在！",type:'error',customClass:'zZindex'})
+            this.$message({message:"登录失败！该管理员用户不存在！",type:'error',customClass:'zZindex'})
           else if (code === 2)
-            this.$message({message:"登录失败！用户名与密码不匹配！",type:'error',customClass:'zZindex'})
+            this.$message({message:"登录失败！管理员用户名与密码不匹配！",type:'error',customClass:'zZindex'})
           else if (code === 0) {
             this.$message({message:"登录成功！",type:'success',customClass:'zZindex'})
-            this.$cookies.set("email", this.loginForm.email)
-            this.$cookies.set("password", this.loginForm.password)
             this.$cookies.set("user_name", res.data.user_name)
-            this.$cookies.set("mark", res.data.mark)
-            this.$cookies.set("balance", res.data.balance)
-            console.log(this.$cookies.get("mark"))
-            this.$cookies.set("avatar_url", 'http://localhost:8081/' + res.data.avatar_url + "?timestamp=" + new Date().getTime())
-
-            global.ws = new WebSocket('ws://127.0.0.1:8081/chat/' + res.data.user_name)
-            set_name(res.data.user_name)
-            set_avatar_url('http://127.0.0.1:8081/' + res.data.avatar_url)
-            console.log(my_name)
-            global.ws.onopen = function()
-            {
-              console.log("connect");
-              message[0].content.push(
-                {
-                  from: "robert",
-                  to: my_name,
-                  content: "welcome, " + my_name,
-                  date: new Date(),
-                }
-              )
-            };
-            global.ws.onclose = function () {
-              console.log("close");
-            };
-
-            global.ws.onmessage = function(evt){
-              var data = JSON.parse(evt.data);
-              console.log(data)
-              let from_username = data.from_username
-              let to_username = data.to_username
-              let content = data.content
-              let avatar_url = data.avatar_url
-
-              addMessage(from_username, to_username, content, avatar_url)
-            };
-
-            this.$router.push('/shop/item')
+            this.$router.push('/dealfeedback')
           }
         }).catch(function (error) {
           console.log(error)
