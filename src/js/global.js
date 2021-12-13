@@ -4,7 +4,7 @@ import {getPurchase} from "../api/goods/goods";
 
 var ws=null;
 
-export let current_to_name = "robert";
+export let current_to_name = "all";
 export let my_name = null;
 export let avatar_url = null;
 
@@ -13,16 +13,10 @@ export let goodsList = null;
 
 export let message = [
 {
-  to: 'robert',
+  to: 'all',
   avatar: '../../../static/touxiang/1.jpg',
   content:[]
 },
-
-  {
-    to: '456',
-    avatar: '../../../static/touxiang/1.jpg',
-    content:[]
-  }
 ]
 
 
@@ -30,7 +24,6 @@ export let message = [
 
 
 export function addChatUser(user_name, avatar){
-  alert(avatar)
   let flag = 1
   for(let i =0; i<message.length;i++){
     if(message[i].to === user_name){

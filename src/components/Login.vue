@@ -247,7 +247,7 @@ export default {
                 {
                   from: "robert",
                   to: my_name,
-                  content: "welcome, " + my_name,
+                  content: "欢迎来到公共聊天室" + my_name,
                   date: new Date(),
                 }
               )

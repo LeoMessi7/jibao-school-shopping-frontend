@@ -260,6 +260,7 @@ export default {
       console.log(item)
       console.log(item.avatar_url)
       addChatUser(item.customer, item.avatar_url)
+
       this.$router.push('/chat')
     },
     editCropper() {

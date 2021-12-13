@@ -123,7 +123,6 @@ export default {
   methods: {
 
     addUser(){
-      alert(this.avatar_url)
       addChatUser(this.provider, this.avatar_url)
       this.$router.push('/chat')
     },
