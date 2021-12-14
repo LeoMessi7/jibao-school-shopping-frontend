@@ -105,6 +105,7 @@
                     <el-form-item>
                       <el-button type="primary" size="mini" @click="saveInfo">保存</el-button>
                       <el-button type="danger" size="mini" @click="close">关闭</el-button>
+                      <el-button type="success" size="mini" @click="close">关闭</el-button>
                     </el-form-item>
                   </el-form>
                 </el-tab-pane>
@@ -140,6 +141,8 @@
 import bar from './bar'
 import sidebar from './sidebar'
 import {saveUseInfo, changePassword, updateAvatar} from "../api/user/info";
+import {changePassword, getBalance, updateAvatar} from "../api/user/info";
+import {alipayRecharge} from "../api/alipay/alipay";
 
 export default {
   name: "Infor",
@@ -158,7 +161,7 @@ export default {
         campus:this.$cookies.get("campus"),
         major:this.$cookies.get("major"),
         rate: this.$cookies.get("mark"),
-        balance: this.$cookies.get("balance")
+        balance: 0
       },
       formPassword:{
         oldpassword:'',
@@ -196,6 +199,9 @@ export default {
       this.$message({message: "请先登录！", type: 'warning', customClass: 'zZindex'})
       this.$router.push("/Login")
     }
+    getBalance().then(res => {
+      this.user.balance = res.data / 100
+    })
   },
   methods: {
     // 编辑头像
@@ -281,6 +287,26 @@ export default {
     },
     resetForm(formPassword) {
       this.$refs[formPassword].resetFields();
+    },
+    recharge(){
+      alipayRecharge(10000).then(res => {
+        console.log(res.data)
+        if(res.status === 200){
+          // 添加之前先删除一下，如果单页面，页面不刷新，添加进去的内容会一直保留在页面中，二次调用form表单会出错
+          let divForm = document.getElementsByTagName('divform')
+          if (divForm.length) {
+            document.body.removeChild(divForm[0])
+          }
+          document.querySelector('body').innerHTML = res.data
+          document.forms[0].submit()
+        }else{
+          this.$alert("错误：请求错误","提示",{
+            confirmButtonText:'确定'
+          });
+        }
+      }).catch(function (error) {
+        console.log(error)
+      })
     }
   }
 }
