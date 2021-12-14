@@ -32,15 +32,3 @@ export function changePassword(password){
     params: map
   })
 }
-export function saveUseInfo(major,campus){
-  const map = {major: major,campus:campus}
-  return axios({
-    method: 'POST',
-    url: '/user/info/update',
-    headers: {
-      'Content-Type':'application/json'
-    },
-    params: map
-  })
-}
-
