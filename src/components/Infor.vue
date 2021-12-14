@@ -105,7 +105,7 @@
                     <el-form-item>
                       <el-button type="primary" size="mini" @click="saveInfo">保存</el-button>
                       <el-button type="danger" size="mini" @click="close">关闭</el-button>
-                      <el-button type="success" size="mini" @click="close">关闭</el-button>
+                      <el-button type="success" size="mini" @click="recharge">充值</el-button>
                     </el-form-item>
                   </el-form>
                 </el-tab-pane>
@@ -140,8 +140,7 @@
 <script>
 import bar from './bar'
 import sidebar from './sidebar'
-import {saveUseInfo, changePassword, updateAvatar} from "../api/user/info";
-import {changePassword, getBalance, updateAvatar} from "../api/user/info";
+import {saveUseInfo, changePassword, getBalance, updateAvatar} from "../api/user/info";
 import {alipayRecharge} from "../api/alipay/alipay";
 
 export default {
@@ -289,7 +288,8 @@ export default {
       this.$refs[formPassword].resetFields();
     },
     recharge(){
-      alipayRecharge(10000).then(res => {
+      let amount = 10000
+      alipayRecharge(amount).then(res => {
         console.log(res.data)
         if(res.status === 200){
           // 添加之前先删除一下，如果单页面，页面不刷新，添加进去的内容会一直保留在页面中，二次调用form表单会出错

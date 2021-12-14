@@ -258,7 +258,7 @@ export default {
             description: goodsList[i].description,
             category: [goodsList[i].category, goodsList[i].sub_category,],
             url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
-            price: goodsList[i].price,
+            price: goodsList[i].price / 100,
             showonload: false,
           })
         }
@@ -266,7 +266,7 @@ export default {
           console.log(goodsList[i])
           this.buyItemList.push({
             id:goodsList[i].goods_id,
-            price: goodsList[i].price,
+            price: goodsList[i].price / 100,
             category: [goodsList[i].category,goodsList[i].sub_category,],
             name: goodsList[i].goods_name,
             date: goodsList[i].date,
@@ -330,7 +330,7 @@ export default {
       this.$refs[commodity].validate((valid) => {
         if (valid) {
           let image = this.formData.get("upload")
-          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1],this.commodity.campus, this.commodity.price, image).then(res => {
+          uploadGoods(this.commodity.description, this.commodity.name, this.commodity.category[1],this.commodity.campus, this.commodity.price * 100, image).then(res => {
             this.$message.success("上传成功！")
             getUpload().then(res => {
               this.onItemList=[]
@@ -345,14 +345,14 @@ export default {
                     campus:goodsList[i].campus,
                     category: [goodsList[i].category, goodsList[i].sub_category,],
                     url: 'http://127.0.0.1:8081/' + goodsList[i].goods_url,
-                    price: goodsList[i].price,
+                    price: goodsList[i].price / 100,
                     showonload: false,
                   })
                 }
                 else if(goodsList[i].status === "已售出"){
                   this.buyItemList.push({
                     id:goodsList[i].goods_id,
-                    price: goodsList[i].price,
+                    price: goodsList[i].price / 100,
                     category: [goodsList[i].category,goodsList[i].sub_category,],
                     campus:goodsList[i].campus,
                     name: goodsList[i].goods_name,
@@ -387,7 +387,7 @@ export default {
           item.url=this.temp.url
           item.category=this.temp.category
           let image = this.formData.get("modify")
-          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1],this.temp.campus, this.temp.price, image).then(res => {
+          modifyGoods(item.id,this.temp.description, this.temp.name, this.temp.category[1],this.temp.campus, this.temp.price * 100, image).then(res => {
             this.$message.success("上传成功！")
             item.showonload = false
           }).catch(function (error) {

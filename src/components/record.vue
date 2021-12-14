@@ -96,7 +96,7 @@ export default {
           name: purchase_list[i].goods_name,
           title: purchase_list[i].category + "/" + purchase_list[i].sub_category,
           content: purchase_list[i].description,
-          price: purchase_list[i].price,
+          price: purchase_list[i].price / 100,
           purchase_time: purchase_list[i].date,
           seller_name: purchase_list[i].user_name,
           seller_avatar_url: purchase_list[i].avatar_url,

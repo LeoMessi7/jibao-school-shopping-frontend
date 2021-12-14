@@ -93,7 +93,7 @@ export default {
           title:goodsInfoList[i].goods_name,
           description: goodsInfoList[i].description,
           category: goodsInfoList[i].sub_category,
-          price: goodsInfoList[i].price,
+          price: goodsInfoList[i].price / 100,
           campus:goodsInfoList[i].campus,
           goods_id: goodsInfoList[i].goods_id,
           collecttype:"",
