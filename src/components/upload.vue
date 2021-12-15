@@ -197,7 +197,8 @@ export default {
           {required: true, message: "请输入商品名称", trigger: 'blur'}
         ],
         price: [
-          {required: true, message: "请输入商品价格", trigger: 'blur'}
+          {required: true, message: "请输入商品价格", trigger: 'blur'},
+          {pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/, message: "商品价格不合法", trigger: 'blur'}
         ],
         category: [
           {required: true, message: "请输入商品分类", trigger: 'blur'}
