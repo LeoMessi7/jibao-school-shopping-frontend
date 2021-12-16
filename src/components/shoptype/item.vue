@@ -1,6 +1,7 @@
 <template>
 <div id="item">
   <div class="wrapper">
+    <el-empty v-if="list.length===0 " :image-size="400" description="暂无卖出物品"></el-empty>
     <div class="box" v-for="(item,index) in list" :key="index">
       <div class="front-face">
         <div class= "img" v-bind:style="{'background':'url('+item.url+')'}">

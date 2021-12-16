@@ -3,7 +3,18 @@
     <bar></bar>
     <el-container style="height: 650px">
       <sidebar></sidebar>
-      <el-main style="background-color: #faeaea;; height: 650px">
+      <el-main style="background-color: #faeaea; height: 650px">
+        <el-dialog title="充值" width="500px" :visible.sync="showRecharge" @close="showRecharge=false">
+          <el-form :rules="rule" ref="charge" :model="showRecharge" label-width="80px" style="width: 400px" class="demo-ruleForm">
+            <el-form-item label="充值金额" style="text-align: center">
+              <el-input v-model="charge"></el-input>
+            </el-form-item>
+            <el-form-item style="text-align: center">
+              <el-button type="primary" @click="recharge(charge)">充值</el-button>
+              <el-button type="danger" @click="showRecharge=false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
         <el-row :gutter="20" style="width: 70%;margin: auto">
           <el-col :span="8" :xs="24">
             <el-card class="box-card">
@@ -35,8 +46,8 @@
                           <i class="el-icon-upload el-icon--right"></i>
                         </el-button>
                       </el-upload>
-                      <el-button style="margin-right:40px;float: right" type="primary" size="small" @click="uploadImg">提
-                        交
+                      <el-button style="margin-right:40px;float: right" type="primary" size="small" @click="uploadImg">
+                        提交
                       </el-button>
                     </el-row>
                   </el-dialog>
@@ -105,7 +116,7 @@
                     <el-form-item>
                       <el-button type="primary" size="mini" @click="saveInfo">保存</el-button>
                       <el-button type="danger" size="mini" @click="close">关闭</el-button>
-                      <el-button type="success" size="mini" @click="recharge">充值</el-button>
+                      <el-button type="success" size="mini" v-on:click="showRecharge=true">充值</el-button>
                     </el-form-item>
                   </el-form>
                 </el-tab-pane>
@@ -153,6 +164,8 @@ export default {
   data() {
     return {
       // 是否显示弹出层
+      charge:'',
+      showRecharge:false,
       activeName: 'userinfo',
       user: {
         nickName: this.$cookies.get("user_name"),
@@ -178,6 +191,12 @@ export default {
       },
       previews: {},
       // 表单校验
+      rule: {
+        charge: [
+          {required: true, message: "请输入商品价格", trigger: 'blur'},
+          {pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/, message: "商品价格不合法", trigger: 'blur'}
+        ],
+      },
       rules: {
         nickName: [
           {required: true, message: "用户昵称不能为空", trigger: "blur"}
@@ -287,10 +306,10 @@ export default {
     resetForm(formPassword) {
       this.$refs[formPassword].resetFields();
     },
-    recharge(){
-      let amount = 10000
+    recharge(charge){
+      let amount = charge;
+      this.showRecharge=false
       alipayRecharge(amount).then(res => {
-        console.log(res.data)
         if(res.status === 200){
           // 添加之前先删除一下，如果单页面，页面不刷新，添加进去的内容会一直保留在页面中，二次调用form表单会出错
           let divForm = document.getElementsByTagName('divform')

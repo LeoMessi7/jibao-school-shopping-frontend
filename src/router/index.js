@@ -12,8 +12,10 @@ import shop from '../components/shoptype/shop'
 import item from '../components/shoptype/item'
 import Infor from '../components/Infor'
 import admin from '../components/administrator/admin'
+import adminbar from "../components/administrator/adminbar"
+import dealcategory from "../components/administrator/dealcategory"
 import dealfeedback from "../components/administrator/dealfeedback"
-import itemdetail from "../components/shoptype/itemdetail";
+import itemdetail from "../components/shoptype/itemdetail"
 import adminLogin from "../components/adminLogin"
 import 'animate.css'
 
@@ -85,7 +87,24 @@ export default new Router({
     {
       path:'/admin',
       name:'admin',
-      component:admin
+      component:admin,
+      children:[
+        {
+          path:'/adminbar',
+          name:'adminbar',
+          component:adminbar,
+        },
+        {
+          path:'/dealfeedback',
+          name:'dealfeedback',
+          component:dealfeedback,
+        },
+        {
+          path:'/dealcategory',
+          name:'dealcategory',
+          component:dealcategory,
+        },
+      ]
     },
     {
       path:'/dealfeedback',

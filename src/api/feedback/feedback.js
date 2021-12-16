@@ -20,6 +20,17 @@ export function feedback(user_name, content, fid){
   })
 }
 
+export function userfeedback(content){
+  const map = {content: content}
+  return axios({
+    method: 'POST',
+    url: '/feedback',
+    headers: {
+      'Content-Type':'application/json'
+    },
+    params: map
+  })
+}
 
 export function getFeedback(){
   return axios({

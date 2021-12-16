@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {feedback} from "../api/feedback/feedback";
+import {userfeedback} from "../api/feedback/feedback";
 
 export default {
   name: "feedback",
@@ -45,7 +45,7 @@ export default {
           type: 'warning'
         }).then(() => {
           setTimeout(() => {
-            feedback(this.form.content).then(res => {
+            userfeedback(this.form.content).then(res => {
               let code = res.data.code
               console.log(code)
               if (code === 1)

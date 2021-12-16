@@ -5,19 +5,24 @@
         <el-image style="height: 50px" :src="require('@/assets/logo2.png')"></el-image>
         <el-image style="top:-6px;margin-left:120px;height: 30px" :src="require('@/assets/title.png')"></el-image>
         <div style="display:inline;float: right;">
-          <el-dropdown trigger="click" @command="handleLogin2">
+          <el-tooltip class="item" effect="dark" content="管理类别" placement="bottom">
           <span class="s1">
-            <i class="el-icon-user"
+            <i class="el-icon-edit"
+               :style="icolor1"
+               @mouseover="mouseOver(1)"
+               @mouseleave="mouseLeave(1)"
+               @click="gotoCategory"></i>
+          </span>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="反馈处理" placement="bottom">
+          <span class="s1">
+            <i class="el-icon-tickets"
                :style="icolor2"
                @mouseover="mouseOver(2)"
-               @mouseleave="mouseLeave(2)"></i>
+               @mouseleave="mouseLeave(2)"
+               @click="gotoFeedback"></i>
           </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="/Login" v-show=!this.loginState>登录</el-dropdown-item>
-              <el-dropdown-item command="/Infor" v-show=this.loginState>个人中心</el-dropdown-item>
-              <el-dropdown-item @click.native="handleLogout" v-show=this.loginState>注销</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          </el-tooltip>
         </div>
       </div>
       <el-divider style="margin-top: 0px;margin-bottom: 0px;"></el-divider>
@@ -47,23 +52,11 @@ export default {
     search(){
       this.$router.push('/Login');
     },
-    filters: {
-      priceNum: function(val) {
-        return val.toFixed(2);
-      }
+    gotoCategory(){
+      this.$router.push('/dealcategory')
     },
-    computed:{
-
-    },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
-    handleLogin2(command) {
-      this.$router.push(command);
+    gotoFeedback(){
+      this.$router.push('/dealfeedback')
     },
     mouseOver(index) {
       if(index==0)

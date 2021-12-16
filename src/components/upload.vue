@@ -61,7 +61,6 @@
         <el-tab-pane label="在售" name="y">
           <el-empty v-if="onItemList.length===0 " :image-size="300" description="暂无上架物品"></el-empty>
           <div v-for="(item,index) in onItemList" :key="index">
-
             <el-dialog title="编辑商品" :visible.sync="item.showonload">
               <el-form :rules="rules" ref="temp" :model="item" label-width="80px" class="demo-ruleForm">
                 <el-form-item label="商品图片">

@@ -1,28 +1,7 @@
 <template>
   <div class="deal">
-    <AdminBar></AdminBar>
     <el-container>
       <el-main>
-        <div class="returnbutton">
-          <el-button type="primary" icon="el-icon-back" style="width:90px" @click="clickreturn">返回</el-button>
-        </div>
-        <div class="feedbacknumber">
-          <span style="margin:10px;">
-          <el-badge :value="feedback.length" class="feedbackitem">
-            <el-button>反馈</el-button>
-          </el-badge>
-          </span>
-          <span style="margin:10px;">
-          <el-badge :value="replynumber" class="replyitem" type="primary">
-            <el-button>回复</el-button>
-          </el-badge>
-          </span>
-          <span style="margin:10px;">
-          <el-badge :value="feedback.length-replynumber" class="refuseitem" type="warning">
-            <el-button>未回复</el-button>
-          </el-badge>
-          </span>
-        </div>
         <div class="details">
           <div class="feedbackcontent" v-for="(item,index) in feedback" :key="index">
             <div class="content">
