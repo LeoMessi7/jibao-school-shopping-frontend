@@ -1,5 +1,6 @@
 <template>
   <div id="record">
+    <el-empty v-if="onItemList.length===0 " :image-size="300" description="还未购买任何物品"></el-empty>
     <div v-for="(item,index) in onItemList" :key="index">
       <el-dialog :visible.sync="item.showcomment" style="padding-top: 80px;margin:auto;width: 80%" @close="item.rate=null,item.content=''">
         <div style="margin-left: 5%">

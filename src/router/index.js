@@ -4,7 +4,6 @@ import Router from 'vue-router'
 import Login from '../components/Login'
 import bar from '../components/bar'
 import home from '../components/home'
-import car from '../components/shopcar'
 import upload from '../components/upload'
 import feedback from '../components/feedback'
 import chat from '../components/chat/x'
@@ -65,11 +64,6 @@ export default new Router({
           path:'/upload',
           name:'upload',
           component:upload
-        },
-        {
-          path:'/shopcar',
-          name:'car',
-          component:car
         },
       ]
     },
