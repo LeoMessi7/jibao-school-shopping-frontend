@@ -15,6 +15,9 @@
 ![image-20220415155820046](readmeImage/image-20220415155820046.png)
 
 ![](readmeImage/b5e98579-19da-4f4b-a9d9-1eea863322e2.png)
+### 个人信息
+
+![image-20220415164211870](readmeImage/image-20220415164211870.png)
 
 ### 上传物品
 
